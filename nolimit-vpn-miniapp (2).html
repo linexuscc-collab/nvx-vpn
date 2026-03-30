@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>NoLimit VPN</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #0d0d18;
+  --bg2:     #13131f;
+  --bg3:     #1a1a2e;
+  --border:  rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.11);
+  --text:    #ffffff;
+  --text2:   rgba(255,255,255,0.55);
+  --text3:   rgba(255,255,255,0.28);
+  --purple:  #7b6ef6;
+  --purple2: #5a4fcf;
+  --green:   #3ddc84;
+  --red:     #ff5b5b;
+  --nav-h:   68px;
+  --hdr-h:   58px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;position:relative}
+
+/* ── 3D CANVAS BACKGROUND ── */
+#bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+
+/* ── HEADER ── */
+.hdr{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  height:var(--hdr-h);
+  background:rgba(13,13,24,0.75);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 14px;gap:10px;
+}
+.hdr-av{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--bg3);border:1.5px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;flex-shrink:0;
+}
+.hdr-id{font-family:monospace;font-size:11px;color:var(--text3);margin-top:1px}
+.hdr-dots{color:var(--text3);font-size:18px;letter-spacing:1.5px;padding:4px 6px;cursor:pointer;flex:1}
+.hdr-bal{
+  display:flex;align-items:center;gap:5px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid var(--border2);
+  border-radius:20px;padding:5px 13px;
+  font-size:13px;font-weight:600;
+}
+
+/* ── NAV ── */
+.nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:50;
+  height:var(--nav-h);
+  background:rgba(13,13,24,0.92);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);
+  display:flex;align-items:flex-start;padding-top:10px;
+}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;color:var(--text3);transition:.2s;position:relative}
+.ni.on{color:var(--text)}
+.ni.on::before{content:'';position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:26px;height:2px;border-radius:2px;background:var(--text)}
+.ni svg{width:21px;height:21px}
+.ni span{font-size:9.5px;font-weight:500}
+
+/* ── PAGES ── */
+.pages{position:relative;z-index:1}
+.pg{display:none;padding-top:calc(var(--hdr-h)+2px);padding-bottom:calc(var(--nav-h)+12px);min-height:100vh}
+.pg.on{display:block}
+.pc{padding:14px 14px}
+
+/* ── WELCOME ── */
+.welcome{font-size:21px;font-weight:700;color:var(--text);margin-bottom:4px;letter-spacing:-.02em}
+.divline{width:30px;height:2px;background:rgba(255,255,255,0.18);border-radius:2px;margin-bottom:16px}
+
+/* ── STATUS CARD (Envy style) ── */
+.sc{
+  background:rgba(19,19,31,0.65);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:22px 16px;
+  text-align:center;
+  margin-bottom:14px;
+  position:relative;overflow:hidden;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+.sc-icon-box{
+  width:68px;height:68px;border-radius:20px;
+  background:rgba(255,255,255,0.07);
+  border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 14px;font-size:28px;
+  position:relative;overflow:hidden;
+}
+.sc-icon-box::after{content:'';position:absolute;top:0;left:0;right:0;height:45%;background:linear-gradient(180deg,rgba(255,255,255,0.08) 0%,transparent 100%)}
+.sc-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  border-radius:20px;padding:4px 12px;
+  font-size:11px;font-weight:600;
+  letter-spacing:.04em;text-transform:uppercase;margin-bottom:10px;
+}
+.sc-badge.no{background:rgba(255,91,91,0.13);border:1px solid rgba(255,91,91,0.28);color:var(--red)}
+.sc-badge.ok{background:rgba(61,220,132,0.13);border:1px solid rgba(61,220,132,0.28);color:var(--green)}
+.sc-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.sc-desc{font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:18px}
+
+/* ── BUTTONS ── */
+.btn{display:block;width:100%;padding:14px;border-radius:13px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;letter-spacing:.01em;transition:.15s}
+.btn:active{transform:scale(.98);opacity:.9}
+.btn-purple{background:linear-gradient(135deg,#7060d8,#4e3faa);color:#fff}
+.btn-green{background:linear-gradient(135deg,#2dcc74,#1aaa5e);color:#fff}
+.btn-ghost{background:rgba(255,255,255,0.06);border:1px solid var(--border2);color:var(--text)}
+
+/* ── TRIAL CARD (Envy style) ── */
+.tc{
+  background:rgba(19,19,31,0.65);
+  border:1px solid var(--border);
+  border-radius:18px;overflow:hidden;margin-bottom:12px;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+}
+.tc-head{display:flex;align-items:center;gap:10px;padding:14px 16px 12px;border-bottom:1px solid var(--border)}
+.tc-head-ico{font-size:18px}
+.tc-head-lbl{font-size:15px;font-weight:700}
+.tr{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border)}
+.tr:last-of-type{border-bottom:none}
+.tr-key{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text2)}
+.tr-ico{
+  width:28px;height:28px;border-radius:8px;
+  background:rgba(255,255,255,0.06);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+}
+.tr-val{text-align:right}
+.tr-val-main{font-size:13px;font-weight:600;color:var(--text)}
+.tr-val-sub{font-size:10px;color:var(--text3);margin-top:1px}
+.tc-foot{padding:13px 16px}
+
+/* ── PAGE TITLE ── */
+.ptitle{font-size:21px;font-weight:700;margin-bottom:4px;letter-spacing:-.02em}
+
+/* ── TARIFF CARD ── */
+.tfc{
+  background:rgba(19,19,31,0.65);
+  border:1px solid var(--border);
+  border-radius:18px;margin-bottom:12px;overflow:hidden;position:relative;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+}
+.tfc.pop{border-color:rgba(123,110,246,0.38)}
+.tfc.pop::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple2),var(--purple))}
+.pop-badge{position:absolute;top:14px;right:14px;background:linear-gradient(135deg,var(--purple2),var(--purple));color:#fff;font-size:9px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:3px 9px;border-radius:6px}
+.tfc-head{padding:16px 16px 10px}
+.tfc-top{display:flex;align-items:flex-end;gap:6px;margin-bottom:12px}
+.tfc-days{font-size:38px;font-weight:800;line-height:1}
+.tfc-unit{font-size:14px;color:var(--text2);font-weight:500;margin-bottom:5px}
+.tfc-price{margin-left:auto;background:rgba(255,255,255,0.06);border:1px solid var(--border2);border-radius:10px;padding:6px 13px;font-size:18px;font-weight:800}
+.tfc-specs{display:flex;gap:8px;flex-wrap:wrap}
+.tfc-spec{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;padding:5px 9px;font-size:12px;color:var(--text2);font-weight:500}
+.tfc-countries{padding:0 16px 10px}
+.c-lbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:7px;padding:4px 8px;font-size:11px;font-weight:600;color:var(--text2)}
+.tfc-note{margin-top:8px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:11px;color:var(--text3)}
+.tfc-foot{padding:12px 16px 16px}
+
+/* ── REF ── */
+.ref-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.rs{background:rgba(19,19,31,0.65);border:1px solid var(--border);border-radius:14px;padding:14px 10px;text-align:center;backdrop-filter:blur(8px)}
+.rs-val{font-size:18px;font-weight:800}
+.rs-key{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);margin-top:4px}
+.ref-link{background:rgba(19,19,31,0.65);border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:12px;backdrop-filter:blur(8px)}
+.ref-link-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.ref-link-row{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:10px 12px}
+.ref-url{flex:1;font-size:11px;color:var(--text2);font-family:monospace;word-break:break-all}
+.copy-btn{width:32px;height:32px;flex-shrink:0;border-radius:8px;border:none;cursor:pointer;background:rgba(255,255,255,0.09);display:flex;align-items:center;justify-content:center;transition:.2s}
+.copy-btn:active{background:rgba(61,220,132,0.25);transform:scale(.92)}
+.copy-btn svg{width:15px;height:15px;color:#fff}
+.hint{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:13px;padding:11px 14px;font-size:12px;color:var(--text2);line-height:1.55;margin-bottom:14px;display:flex;gap:8px}
+.hint-i{font-size:14px;flex-shrink:0}
+.sec-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);margin-bottom:10px}
+
+/* ── LIST ITEM ── */
+.li{background:rgba(19,19,31,0.65);border:1px solid var(--border);border-radius:14px;padding:13px 14px;display:flex;align-items:center;gap:12px;margin-bottom:8px;cursor:pointer;transition:.15s;backdrop-filter:blur(8px)}
+.li:active{background:rgba(255,255,255,0.05)}
+.li-ico{width:38px;height:38px;border-radius:11px;background:rgba(255,255,255,0.06);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.li-body{flex:1}
+.li-title{font-size:14px;font-weight:600}
+.li-desc{font-size:12px;color:var(--text3);margin-top:2px}
+.li-arr svg{width:15px;height:15px;color:var(--text3)}
+
+/* ── PROMO ── */
+.promo{background:rgba(19,19,31,0.65);border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:12px;backdrop-filter:blur(8px)}
+.promo-h{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;margin-bottom:12px}
+.promo-ico{width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,0.06);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:16px}
+.promo-row{display:flex;gap:8px}
+.promo-in{flex:1;background:rgba(255,255,255,0.05);border:1px solid var(--border2);border-radius:10px;padding:11px 14px;font-family:'Inter',sans-serif;font-size:13px;font-weight:500;color:var(--text);outline:none;letter-spacing:.04em}
+.promo-in::placeholder{color:var(--text3)}
+.promo-in:focus{border-color:rgba(123,110,246,0.45)}
+.promo-go{background:rgba(255,255,255,0.1);border:1px solid var(--border2);border-radius:10px;padding:11px 14px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;white-space:nowrap;transition:.15s}
+.promo-go:active{transform:scale(.96)}
+
+/* ── SUPPORT ── */
+.sup-top{background:rgba(19,19,31,0.65);border:1px solid var(--border);border-radius:18px;padding:22px 16px;text-align:center;margin-bottom:14px;backdrop-filter:blur(8px)}
+.sup-ico{width:62px;height:62px;border-radius:18px;background:rgba(255,255,255,0.06);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 12px}
+.sup-title{font-size:15px;font-weight:700;margin-bottom:14px}
+.btn-chat{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,0.08);border:1px solid var(--border2);border-radius:10px;padding:10px 20px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;transition:.15s}
+.btn-chat:active{transform:scale(.97)}
+
+/* ── FAQ ── */
+.faq{background:rgba(19,19,31,0.65);border:1px solid var(--border);border-radius:13px;margin-bottom:8px;overflow:hidden;backdrop-filter:blur(8px)}
+.faq-h{display:flex;align-items:center;gap:10px;padding:13px 14px;cursor:pointer}
+.faq-ico{width:30px;height:30px;border-radius:9px;background:rgba(255,255,255,0.06);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.faq-q{flex:1;font-size:13px;font-weight:600}
+.faq-ch{color:var(--text3);transition:.25s;display:flex}
+.faq-ch svg{width:16px;height:16px}
+.faq.open .faq-ch{transform:rotate(180deg)}
+.faq-body{max-height:0;overflow:hidden;transition:.3s}
+.faq.open .faq-body{max-height:200px}
+.faq-ans{padding:12px 14px 14px;font-size:13px;color:var(--text2);line-height:1.6;border-top:1px solid var(--border)}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.pg.on .pc>*{animation:fadeUp .22s ease both}
+.pg.on .pc>*:nth-child(2){animation-delay:.05s}
+.pg.on .pc>*:nth-child(3){animation-delay:.1s}
+.pg.on .pc>*:nth-child(4){animation-delay:.14s}
+.pg.on .pc>*:nth-child(5){animation-delay:.18s}
+</style>
+</head>
+<body>
+
+<!-- 3D BACKGROUND -->
+<canvas id="bg-canvas"></canvas>
+
+<header class="hdr">
+  <div class="hdr-av">👤</div>
+  <div>
+    <div class="hdr-id">ID: 641915862</div>
+  </div>
+  <div class="hdr-dots">···</div>
+  <div class="hdr-bal">💎 0.00₽</div>
+</header>
+
+<div class="pages">
+
+  <!-- HOME -->
+  <div class="pg on" id="pg-home">
+    <div class="pc">
+      <div class="welcome">Добро пожаловать,</div>
+      <div class="divline"></div>
+
+      <div class="sc">
+        <div class="sc-icon-box">🔓</div>
+        <div class="sc-badge no"><div class="sc-dot"></div>Нет активной подписки</div>
+        <div class="sc-desc">Активируйте подписку чтобы начать пользоваться VPN</div>
+        <button class="btn btn-purple" onclick="go('tariffs')">🔒 Выбрать подписку</button>
+      </div>
+
+      <div class="tc">
+        <div class="tc-head"><span class="tc-head-ico">⚗️</span><span class="tc-head-lbl">Тестовый период</span></div>
+        <div class="tr">
+          <div class="tr-key"><div class="tr-ico">💾</div>Трафик</div>
+          <div class="tr-val"><div class="tr-val-main">48 ГБ</div><div class="tr-val-sub">1.5 ГБ на локацию</div></div>
+        </div>
+        <div class="tr">
+          <div class="tr-key"><div class="tr-ico">⏳</div>Длительность</div>
+          <div class="tr-val"><div class="tr-val-main">1 день</div></div>
+        </div>
+        <div class="tr">
+          <div class="tr-key"><div class="tr-ico">📱</div>Устройств</div>
+          <div class="tr-val"><div class="tr-val-main">32</div><div class="tr-val-sub">1 на локацию</div></div>
+        </div>
+        <div class="tr">
+          <div class="tr-key"><div class="tr-ico">🌍</div>Локации</div>
+          <div class="tr-val"><div class="tr-val-main">Все доступные</div></div>
+        </div>
+        <div class="tr">
+          <div class="tr-key"><div class="tr-ico">ℹ️</div>Условие</div>
+          <div class="tr-val"><div class="tr-val-main">1 раз в 31 день</div></div>
+        </div>
+        <div class="tc-foot"><button class="btn btn-green">⚡ Активировать бесплатно</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TARIFFS -->
+  <div class="pg" id="pg-tariffs">
+    <div class="pc">
+      <div class="ptitle">Выберите тариф</div>
+      <div class="divline"></div>
+
+      <div class="tfc">
+        <div class="tfc-head">
+          <div class="tfc-top"><div class="tfc-days">30</div><div class="tfc-unit">дней</div><div class="tfc-price">129₽</div></div>
+          <div class="tfc-specs"><div class="tfc-spec">💾 1 920 ГБ</div><div class="tfc-spec">📱 32 уст. (1/лок.)</div><div class="tfc-spec">⚡ VLESS</div></div>
+        </div>
+        <div class="tfc-countries">
+          <div class="c-lbl">📍 Страны в подписке</div>
+          <div class="chips"><span class="chip">🇱🇻 LV</span><span class="chip">🇳🇱 NL</span><span class="chip">🇷🇺 RU</span><span class="chip">🇺🇸 US</span><span class="chip">🇵🇱 PL</span><span class="chip">🇰🇿 KZ</span><span class="chip">🇸🇪 SE</span><span class="chip">🇹🇷 TR</span><span class="chip">🇺🇦 UA</span></div>
+          <div class="tfc-note">💾 60 ГБ на локацию — всего 1 920 ГБ</div>
+        </div>
+        <div class="tfc-foot"><button class="btn btn-ghost">Выбрать →</button></div>
+      </div>
+
+      <div class="tfc pop">
+        <div class="pop-badge">Популярный</div>
+        <div class="tfc-head">
+          <div class="tfc-top"><div class="tfc-days">90</div><div class="tfc-unit">дней</div><div class="tfc-price">369₽</div></div>
+          <div class="tfc-specs"><div class="tfc-spec">💾 5 760 ГБ</div><div class="tfc-spec">📱 64 уст. (2/лок.)</div><div class="tfc-spec">⚡ VLESS</div></div>
+        </div>
+        <div class="tfc-countries">
+          <div class="c-lbl">📍 Страны в подписке</div>
+          <div class="chips"><span class="chip">🇱🇻 LV</span><span class="chip">🇳🇱 NL</span><span class="chip">🇷🇺 RU</span><span class="chip">🇺🇸 US</span><span class="chip">🇵🇱 PL</span><span class="chip">🇰🇿 KZ</span><span class="chip">🇸🇪 SE</span><span class="chip">🇹🇷 TR</span><span class="chip">🇺🇦 UA</span></div>
+          <div class="tfc-note">💾 180 ГБ на локацию — всего 5 760 ГБ</div>
+        </div>
+        <div class="tfc-foot"><button class="btn btn-purple">Выбрать →</button></div>
+      </div>
+
+      <div class="tfc">
+        <div class="tfc-head">
+          <div class="tfc-top"><div class="tfc-days">180</div><div class="tfc-unit">дней</div><div class="tfc-price">719₽</div></div>
+          <div class="tfc-specs"><div class="tfc-spec">💾 11 520 ГБ</div><div class="tfc-spec">📱 96 уст. (3/лок.)</div><div class="tfc-spec">⚡ VLESS</div></div>
+        </div>
+        <div class="tfc-countries">
+          <div class="c-lbl">📍 Страны в подписке</div>
+          <div class="chips"><span class="chip">🇱🇻 LV</span><span class="chip">🇳🇱 NL</span><span class="chip">🇷🇺 RU</span><span class="chip">🇺🇸 US</span><span class="chip">🇵🇱 PL</span><span class="chip">🇰🇿 KZ</span><span class="chip">🇸🇪 SE</span><span class="chip">🇹🇷 TR</span><span class="chip">🇺🇦 UA</span></div>
+          <div class="tfc-note">💾 360 ГБ на локацию — всего 11 520 ГБ</div>
+        </div>
+        <div class="tfc-foot"><button class="btn btn-ghost">Выбрать →</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REFERRALS -->
+  <div class="pg" id="pg-referrals">
+    <div class="pc">
+      <div class="ptitle">Приглашайте друзей<br>и зарабатывайте</div>
+      <div class="divline"></div>
+      <div class="ref-stats">
+        <div class="rs"><div class="rs-val">0</div><div class="rs-key">Приглашено</div></div>
+        <div class="rs"><div class="rs-val">0₽</div><div class="rs-key">Заработано</div></div>
+        <div class="rs"><div class="rs-val" style="color:var(--green)">25%</div><div class="rs-key">Процент</div></div>
+      </div>
+      <div class="ref-link">
+        <div class="ref-link-lbl">🔗 Ваша реферальная ссылка</div>
+        <div class="ref-link-row">
+          <div class="ref-url">https://t.me/NoLimitVPNBot?start=ref641915862</div>
+          <button class="copy-btn" onclick="copyRef(this)"><svg viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="9" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M3 11V3a2 2 0 0 1 2-2h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+        </div>
+      </div>
+      <div class="hint"><span class="hint-i">💡</span><span>Отправляйте ссылку друзьям, публикуйте в чатах и соцсетях — заработок будет расти автоматически</span></div>
+      <div class="sec-lbl">Вывод средств</div>
+      <div class="li"><div class="li-ico">💳</div><div class="li-body"><div class="li-title">На карту</div><div class="li-desc">Вывод на банковскую карту (от 500₽)</div></div><div class="li-arr"><svg viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+      <div class="li"><div class="li-ico">👛</div><div class="li-body"><div class="li-title">На баланс</div><div class="li-desc">Перевести на баланс бота (от 1₽)</div></div><div class="li-arr"><svg viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+    </div>
+  </div>
+
+  <!-- TOPUP -->
+  <div class="pg" id="pg-topup">
+    <div class="pc">
+      <div class="ptitle">Пополнить баланс</div>
+      <div class="divline"></div>
+      <div class="promo">
+        <div class="promo-h"><div class="promo-ico">🎟️</div>Активировать промокод</div>
+        <div class="promo-row"><input class="promo-in" placeholder="ВВЕДИТЕ ПРОМОКОД"/><button class="promo-go">Активировать</button></div>
+      </div>
+      <div class="hint" style="margin-bottom:14px"><span class="hint-i">ℹ️</span><span>Выберите удобный способ оплаты и желаемую сумму. Средства зачисляются мгновенно.</span></div>
+      <div class="sec-lbl">Доступные способы</div>
+      <div class="li"><div class="li-ico">🏦</div><div class="li-body"><div class="li-title">СБП</div><div class="li-desc">Система быстрых платежей</div></div><div class="li-arr"><svg viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+      <div class="li"><div class="li-ico">₿</div><div class="li-body"><div class="li-title">CryptoBot</div><div class="li-desc">Криптовалютные платежи</div></div><div class="li-arr"><svg viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+      <div class="li"><div class="li-ico">⭐</div><div class="li-body"><div class="li-title">Telegram Stars</div><div class="li-desc">Встроенная платёжная система Telegram</div></div><div class="li-arr"><svg viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+    </div>
+  </div>
+
+  <!-- SUPPORT -->
+  <div class="pg" id="pg-support">
+    <div class="pc">
+      <div class="ptitle">Служба поддержки</div>
+      <div class="divline"></div>
+      <div class="sup-top">
+        <div class="sup-ico">🎧</div>
+        <div class="sup-title">Есть вопросы? Свяжитесь с нами 24/7</div>
+        <button class="btn-chat">💬 Открыть чат</button>
+      </div>
+      <div class="sec-lbl">Часто задаваемые вопросы</div>
+      <div class="faq" onclick="toggleFaq(this)"><div class="faq-h"><div class="faq-ico">🔄</div><span class="faq-q">Как продлить подписку?</span><div class="faq-ch"><svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="faq-body"><div class="faq-ans">Перейдите в раздел «Тарифы» и выберите нужный план. Оплата пройдёт через любой удобный способ, подписка активируется мгновенно.</div></div></div>
+      <div class="faq" onclick="toggleFaq(this)"><div class="faq-h"><div class="faq-ico">📱</div><span class="faq-q">Как подключить дополнительное устройство?</span><div class="faq-ch"><svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="faq-body"><div class="faq-ans">После активации подписки появится кнопка «Получить конфиг». Скачайте файл и импортируйте его в приложение на новом устройстве.</div></div></div>
+      <div class="faq" onclick="toggleFaq(this)"><div class="faq-h"><div class="faq-ico">⚠️</div><span class="faq-q">VPN не подключается или работает нестабильно</span><div class="faq-ch"><svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="faq-body"><div class="faq-ans">Попробуйте сменить сервер. Если проблема сохраняется — обратитесь в чат поддержки, мы оперативно поможем.</div></div></div>
+      <div class="faq" onclick="toggleFaq(this)"><div class="faq-h"><div class="faq-ico">💳</div><span class="faq-q">Какие способы пополнения доступны?</span><div class="faq-ch"><svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="faq-body"><div class="faq-ans">СБП, CryptoBot (криптовалюта) и Telegram Stars — встроенная платёжная система Telegram.</div></div></div>
+      <div class="faq" onclick="toggleFaq(this)"><div class="faq-h"><div class="faq-ico">⚗️</div><span class="faq-q">Как получить тестовый период?</span><div class="faq-ch"><svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="faq-body"><div class="faq-ans">На главной странице нажмите «Активировать бесплатно». Доступно 1 раз в 31 день для каждого аккаунта.</div></div></div>
+      <div class="faq" onclick="toggleFaq(this)"><div class="faq-h"><div class="faq-ico">🌍</div><span class="faq-q">Сколько серверов и в каких странах?</span><div class="faq-ch"><svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="faq-body"><div class="faq-ans">LV, NL, RU, US, PL, KZ, SE, TR, UA. Список постоянно расширяется.</div></div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="ni on" onclick="go('home')" id="ni-home">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M3 12L12 3l9 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 21V12h6v9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>Главная</span>
+  </div>
+  <div class="ni" onclick="go('tariffs')" id="ni-tariffs">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><rect x="9" y="3" width="6" height="4" rx="1" stroke="currentColor" stroke-width="1.8"/><path d="M9 12h6M9 16h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <span>Тарифы</span>
+  </div>
+  <div class="ni" onclick="go('referrals')" id="ni-referrals">
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="7" r="3" stroke="currentColor" stroke-width="1.8"/><circle cx="17" cy="9" r="2" stroke="currentColor" stroke-width="1.8"/><path d="M2 20c0-3.314 3.134-6 7-6s7 2.686 7 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M17 14c1.657 0 3 1.343 3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <span>Рефералы</span>
+  </div>
+  <div class="ni" onclick="go('topup')" id="ni-topup">
+    <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="14" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M2 10h20" stroke="currentColor" stroke-width="1.8"/><path d="M6 14h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <span>Пополнить</span>
+  </div>
+  <div class="ni" onclick="go('support')" id="ni-support">
+    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="17" r=".5" fill="currentColor" stroke="currentColor" stroke-width="1"/></svg>
+    <span>Поддержка</span>
+  </div>
+</nav>
+
+<script>
+// ── NAV ──
+function go(name){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
+  document.getElementById('pg-'+name).classList.add('on');
+  document.getElementById('ni-'+name).classList.add('on');
+  window.scrollTo(0,0);
+}
+function toggleFaq(el){el.classList.toggle('open')}
+function copyRef(btn){
+  navigator.clipboard?.writeText('https://t.me/NoLimitVPNBot?start=ref641915862').catch(()=>{});
+  btn.style.background='rgba(61,220,132,0.25)';
+  setTimeout(()=>btn.style.background='',900);
+}
+
+// ── WEBGL 3D BLOB BACKGROUND ──
+(function(){
+  const canvas = document.getElementById('bg-canvas');
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if(!gl) return;
+
+  function resize(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    gl.viewport(0,0,canvas.width,canvas.height);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const VS = `
+    attribute vec2 a_pos;
+    void main(){ gl_Position = vec4(a_pos,0.,1.); }
+  `;
+
+  const FS = `
+    precision mediump float;
+    uniform float u_time;
+    uniform vec2  u_res;
+
+    // smooth noise
+    float hash(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
+    float noise(vec2 p){
+      vec2 i=floor(p), f=fract(p);
+      vec2 u=f*f*(3.-2.*f);
+      return mix(mix(hash(i),hash(i+vec2(1,0)),u.x),
+                 mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),u.x),u.y);
+    }
+    float fbm(vec2 p){
+      float v=0.,a=.5;
+      for(int i=0;i<5;i++){v+=a*noise(p);p*=2.;a*=.5;}
+      return v;
+    }
+
+    void main(){
+      vec2 uv=(gl_FragCoord.xy/u_res)*2.-1.;
+      uv.x *= u_res.x/u_res.y;
+
+      float t = u_time * 0.18;
+
+      // organic blob shape — twisted torus knot inspired
+      vec2 q = uv;
+      q += 0.18*vec2(fbm(uv + t*0.6), fbm(uv + vec2(1.7,9.2)));
+      vec2 r = vec2(
+        fbm(q + vec2(1.7,9.2) + 0.22*t),
+        fbm(q + vec2(8.3,2.8) + 0.22*t)
+      );
+      float shape = fbm(uv + r);
+
+      // dist from blob center
+      float d = length(uv - vec2(0.0, 0.1));
+
+      // deep purple/indigo palette (matching Envy)
+      vec3 c1 = vec3(0.06, 0.04, 0.18); // very dark indigo
+      vec3 c2 = vec3(0.14, 0.10, 0.38); // mid purple
+      vec3 c3 = vec3(0.22, 0.17, 0.55); // lighter purple highlight
+
+      float m = shape * 0.8 + (1.0 - d*0.6) * 0.35;
+      m = clamp(m, 0., 1.);
+
+      vec3 col = mix(c1, c2, m);
+      col = mix(col, c3, pow(m,2.8)*0.5);
+
+      // vignette
+      float vign = 1.0 - smoothstep(0.5, 1.6, d);
+      col *= vign;
+
+      // overall very dark — translucent feel
+      float alpha = clamp(m * 0.85, 0., 1.);
+      gl_FragColor = vec4(col, alpha);
+    }
+  `;
+
+  function mkShader(type, src){
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, mkShader(gl.VERTEX_SHADER, VS));
+  gl.attachShader(prog, mkShader(gl.FRAGMENT_SHADER, FS));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(prog,'a_pos');
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+
+  const uTime = gl.getUniformLocation(prog,'u_time');
+  const uRes  = gl.getUniformLocation(prog,'u_res');
+
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+  let start = null;
+  function frame(ts){
+    if(!start) start=ts;
+    const t=(ts-start)/1000;
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.uniform1f(uTime, t);
+    gl.uniform2f(uRes, canvas.width, canvas.height);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
