@@ -6,569 +6,419 @@
 <title>NVX VPN</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#0c0c1d;
-  --bg2:#13132b;
-  --bg3:#1c1c38;
-  --border:rgba(255,255,255,0.07);
-  --border2:rgba(255,255,255,0.12);
-  --text:#fff;
-  --text2:rgba(255,255,255,0.5);
-  --text3:rgba(255,255,255,0.28);
-  --purple:#7b6ef6;
-  --purple2:#5a4fcf;
-  --green:#3ddc84;
-  --red:#ff5b5b;
-  --nav-h:64px;
-  --hdr-h:62px;
-}
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overflow-x:hidden}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;position:relative}
-
-/* BG */
-.bg-wrap{position:fixed;inset:0;z-index:0;overflow:hidden;background:var(--bg)}
-.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:0.55}
-.b1{width:460px;height:460px;background:radial-gradient(circle,#231963,#130e3d);top:-80px;left:-80px;animation:m1 20s ease-in-out infinite}
-.b2{width:380px;height:380px;background:radial-gradient(circle,#1b1258,#0d0a2e);top:35%;right:-100px;animation:m2 24s ease-in-out infinite}
-.b3{width:320px;height:320px;background:radial-gradient(circle,#1e1450,#0e0930);bottom:-60px;left:15%;animation:m3 22s ease-in-out infinite}
-@keyframes m1{0%,100%{transform:translate(0,0)}40%{transform:translate(50px,70px)}70%{transform:translate(-30px,30px)}}
-@keyframes m2{0%,100%{transform:translate(0,0)}40%{transform:translate(-60px,40px)}70%{transform:translate(30px,-50px)}}
-@keyframes m3{0%,100%{transform:translate(0,0)}40%{transform:translate(40px,-30px)}70%{transform:translate(-20px,50px)}}
-
-/* HEADER */
-.hdr{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  height:var(--hdr-h);
-  background:rgba(12,12,29,0.8);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  display:flex;align-items:center;
-  padding:0 12px;gap:10px;
-}
-.hdr-card{
-  flex:1;display:flex;align-items:center;gap:10px;
-  background:rgba(255,255,255,0.05);
-  border:1px solid var(--border2);
-  border-radius:16px;padding:8px 12px;
-}
-.hdr-av{
-  width:38px;height:38px;border-radius:50%;
-  background:#2a2448;
-  border:2px solid rgba(123,110,246,0.3);
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;overflow:hidden;
-}
-.hdr-av svg{width:22px;height:22px;color:rgba(255,255,255,0.5)}
-.hdr-mid{flex:1}
-.hdr-id{font-size:13px;font-weight:500;color:var(--text2);font-family:monospace}
-.hdr-dots{font-size:16px;color:var(--text3);letter-spacing:2px}
-.hdr-bal{
-  display:flex;align-items:center;gap:7px;
-  background:rgba(255,255,255,0.06);
-  border:1px solid var(--border2);
-  border-radius:20px;padding:7px 14px;
-  font-size:13px;font-weight:700;flex-shrink:0;
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; overflow-x: hidden; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0d0d1f;
+  color: #ffffff;
+  min-height: 100vh;
 }
 
-/* NAV — flat Envy style */
-.nav{
-  position:fixed;bottom:0;left:0;right:0;z-index:100;
-  height:var(--nav-h);
-  background:rgba(12,12,29,0.97);
-  border-top:1px solid var(--border);
-  display:flex;align-items:center;
-  padding:0 4px;
+/* ── HEADER ── */
+.hdr {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 10px 12px;
+  background: #0d0d1f;
 }
-.ni{
-  flex:1;display:flex;flex-direction:column;align-items:center;
-  gap:4px;cursor:pointer;padding:6px 4px;border-radius:14px;
-  color:var(--text3);transition:all .2s;
+.hdr-inner {
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 16px;
+  padding: 8px 12px;
 }
-.ni.on{
-  background:rgba(255,255,255,0.08);
-  color:var(--purple);
+.hdr-av {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: #2a2448;
+  border: 2px solid rgba(123,110,246,0.35);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
 }
-.ni svg{width:22px;height:22px}
-.ni span{font-size:9.5px;font-weight:600;letter-spacing:.01em}
+.hdr-av svg { width: 22px; height: 22px; color: rgba(255,255,255,0.4); }
+.hdr-info { flex: 1; }
+.hdr-name {
+  font-size: 14px; font-weight: 700; color: #fff;
+  line-height: 1.2;
+}
+.hdr-id {
+  font-size: 12px; font-weight: 400;
+  color: rgba(255,255,255,0.4);
+  font-family: monospace;
+  margin-top: 1px;
+}
+.hdr-dots {
+  font-size: 15px; letter-spacing: 2px;
+  color: rgba(255,255,255,0.3);
+}
+.hdr-bal {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(123,110,246,0.35);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 13px; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+}
+.hdr-bal svg { width: 18px; height: 18px; }
 
-/* PAGES */
-.pages{position:relative;z-index:1}
-.pg{display:none;padding-top:calc(var(--hdr-h)+2px);padding-bottom:calc(var(--nav-h)+8px);min-height:100vh}
-.pg.on{display:block}
-.pc{padding:0 14px 14px}
-
-/* WELCOME */
-.welcome-wrap{padding:14px 0 16px}
-.welcome{font-size:22px;font-weight:700;color:var(--text);letter-spacing:-.02em}
-.welcome-line{width:28px;height:2px;background:var(--purple);border-radius:2px;margin-top:6px;opacity:.8}
-
-/* SUBSCRIPTION CARD — Envy exact */
-.sub-card{
-  background:rgba(255,255,255,0.05);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:18px;
-  overflow:hidden;
-  margin-bottom:12px;
+/* ── CONTENT ── */
+.content {
+  padding: 72px 12px 72px;
 }
-.sub-title-row{
-  display:flex;align-items:center;gap:8px;
-  padding:14px 16px 12px;
-}
-.sub-title-ico{
-  width:26px;height:26px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-}
-.sub-title-ico svg{width:20px;height:20px;color:var(--purple)}
-.sub-title-text{font-size:15px;font-weight:700;color:var(--purple)}
 
-/* Rows — no background boxes, just icon + text */
-.sub-row{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:10px 16px;
-  border-top:1px solid rgba(255,255,255,0.06);
+/* ── WELCOME ── */
+.welcome { padding: 14px 0 14px; }
+.welcome-text {
+  font-size: 21px; font-weight: 700;
+  color: #ffffff; letter-spacing: -0.02em;
 }
-.sub-row-left{
-  display:flex;align-items:center;gap:10px;
-  font-size:13px;color:var(--text2);
+.welcome-line {
+  width: 28px; height: 2px;
+  background: #7b6ef6; border-radius: 2px;
+  margin-top: 6px;
 }
-.sub-row-ico{
-  width:20px;height:20px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
+
+/* ── MAIN CARD (status + trial combined) ── */
+.main-card {
+  background: #141430;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 10px;
 }
-.sub-row-ico svg{width:16px;height:16px;color:var(--purple)}
-.sub-row-right{text-align:right}
-.sub-row-val{font-size:13px;font-weight:700;color:var(--text)}
-.sub-row-sub{font-size:11px;color:var(--text3);margin-top:1px}
 
-/* Connect button row */
-.connect-row{
-  display:flex;align-items:center;
-  padding:12px 16px;
-  border-top:1px solid rgba(255,255,255,0.06);
-  cursor:pointer;background:rgba(255,255,255,0.03);
-  transition:.15s;
+/* STATUS SECTION */
+.status-section {
+  padding: 22px 16px 20px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
 }
-.connect-row:active{background:rgba(255,255,255,0.07)}
-.connect-ico{
-  width:34px;height:34px;border-radius:10px;
-  background:rgba(123,110,246,0.15);
-  border:1px solid rgba(123,110,246,0.25);
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;margin-right:12px;
+.status-lock-box {
+  width: 62px; height: 62px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px;
 }
-.connect-ico svg{width:18px;height:18px;color:var(--purple)}
-.connect-body{flex:1}
-.connect-title{font-size:14px;font-weight:700;color:var(--text)}
-.connect-sub{font-size:12px;color:var(--text3);margin-top:2px}
-.connect-arr svg{width:16px;height:16px;color:var(--text3)}
-
-/* STATUS CARD (when no subscription) */
-.status-card{
-  background:rgba(255,255,255,0.05);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:18px;padding:24px 16px;
-  text-align:center;margin-bottom:12px;
-  position:relative;overflow:hidden;
+.status-lock-box svg { width: 28px; height: 28px; color: rgba(255,255,255,0.85); }
+.status-info-row {
+  display: flex; align-items: center; justify-content: center;
+  gap: 6px; margin-bottom: 8px;
 }
-.status-card::before{
-  content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);
-  width:220px;height:220px;
-  background:radial-gradient(circle,rgba(123,110,246,0.1) 0%,transparent 65%);
-  pointer-events:none;
+.status-info-row svg { width: 16px; height: 16px; color: #8b80f9; flex-shrink: 0; }
+.status-info-text { font-size: 15px; font-weight: 700; color: #8b80f9; }
+.status-desc {
+  font-size: 13px; color: rgba(255,255,255,0.5);
+  line-height: 1.5; margin-bottom: 18px;
 }
-.status-shield{
-  width:70px;height:70px;border-radius:20px;
-  background:rgba(123,110,246,0.15);
-  border:1px solid rgba(123,110,246,0.25);
-  display:flex;align-items:center;justify-content:center;
-  margin:0 auto 16px;
+.btn-subscribe {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 14px 16px;
+  border-radius: 26px; border: none; cursor: pointer;
+  background: rgba(107,92,231,0.55);
+  color: #fff; font-family: 'Inter', sans-serif;
+  font-size: 15px; font-weight: 600;
+  transition: opacity .15s;
 }
-.status-shield svg{width:32px;height:32px;color:var(--purple)}
-.status-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  background:rgba(255,91,91,0.15);border:1px solid rgba(255,91,91,0.3);
-  border-radius:20px;padding:5px 14px;
-  font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
-  color:var(--red);margin-bottom:10px;
+.btn-subscribe:active { opacity: .85; }
+.btn-subscribe svg { width: 16px; height: 16px; }
+
+/* TRIAL SECTION */
+.trial-section { padding: 0; }
+
+.trial-header {
+  display: flex; align-items: center; gap: 8px;
+  padding: 14px 16px 12px;
 }
-.status-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
-.status-desc{font-size:13px;color:var(--text2);line-height:1.55;margin-bottom:18px}
-.btn-purple{display:block;width:100%;padding:15px;border-radius:14px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;background:linear-gradient(135deg,#7060d8,#4e3faa);color:#fff;transition:.15s}
-.btn-purple:active{transform:scale(.98)}
-.btn-green{display:block;width:100%;padding:15px;border-radius:14px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;background:linear-gradient(135deg,#2dcc74,#1aaa5e);color:#fff;transition:.15s;margin-top:2px}
-.btn-green:active{transform:scale(.98)}
+.trial-header svg { width: 18px; height: 18px; color: #7b6ef6; flex-shrink: 0; }
+.trial-header-text { font-size: 15px; font-weight: 700; color: #7b6ef6; }
 
-/* TRIAL CARD */
-.trial-card{
-  background:rgba(255,255,255,0.05);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:18px;overflow:hidden;
+.trial-row {
+  display: flex; align-items: center;
+  padding: 11px 16px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  min-height: 42px;
 }
-.trial-title-row{
-  display:flex;align-items:center;gap:8px;
-  padding:14px 16px 12px;
+.trial-row-ico {
+  width: 18px; height: 18px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  margin-right: 12px;
 }
-.trial-title-ico{width:20px;height:20px;display:flex;align-items:center;justify-content:center}
-.trial-title-ico svg{width:18px;height:18px;color:var(--purple)}
-.trial-title-text{font-size:15px;font-weight:700;color:var(--text)}
+.trial-row-ico svg { width: 16px; height: 16px; color: #7b6ef6; }
+.trial-row-key {
+  font-size: 13px; font-weight: 400;
+  color: rgba(255,255,255,0.55); flex: 1;
+}
+.trial-row-val {
+  display: flex; align-items: baseline; gap: 5px;
+}
+.trial-row-val-main { font-size: 13px; font-weight: 700; color: #fff; }
+.trial-row-val-sub { font-size: 11px; color: rgba(255,255,255,0.3); }
 
-/* SECTION LABEL */
-.sec-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);margin-bottom:10px}
+.trial-footer { padding: 14px 16px; }
+.btn-activate {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 14px 16px;
+  border-radius: 26px; border: none; cursor: pointer;
+  background: rgba(107,92,231,0.55);
+  color: #fff; font-family: 'Inter', sans-serif;
+  font-size: 15px; font-weight: 600;
+  transition: opacity .15s;
+}
+.btn-activate:active { opacity: .85; }
+.btn-activate svg { width: 15px; height: 15px; }
 
-/* LIST ITEMS (ref, topup) */
-.li{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:8px;cursor:pointer;transition:.15s}
-.li:active{background:rgba(255,255,255,0.08)}
-.li-ico{width:40px;height:40px;border-radius:12px;background:rgba(123,110,246,0.15);border:1px solid rgba(123,110,246,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.li-ico svg{width:20px;height:20px;color:var(--purple)}
-.li-body{flex:1}
-.li-title{font-size:14px;font-weight:700}
-.li-desc{font-size:12px;color:var(--text3);margin-top:2px}
-.li-arr svg{width:16px;height:16px;color:var(--text3)}
-
-/* REF */
-.ref-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
-.rs{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:16px;padding:14px 10px;text-align:center}
-.rs-ico{display:flex;justify-content:center;margin-bottom:6px}
-.rs-ico svg{width:20px;height:20px;color:var(--purple)}
-.rs-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:4px}
-.rs-val{font-size:20px;font-weight:800}
-.ref-link{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:12px}
-.ref-link-lbl{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:10px;display:flex;align-items:center;gap:7px}
-.ref-link-lbl svg{width:14px;height:14px;color:var(--purple)}
-.ref-link-row{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:12px;padding:10px 12px}
-.ref-url{flex:1;font-size:11px;color:var(--text2);font-family:monospace;word-break:break-all;line-height:1.4}
-.copy-btn{width:36px;height:36px;flex-shrink:0;border-radius:10px;border:none;cursor:pointer;background:rgba(123,110,246,0.2);border:1px solid rgba(123,110,246,0.3);display:flex;align-items:center;justify-content:center;transition:.2s}
-.copy-btn:active{transform:scale(.9)}
-.copy-btn svg{width:16px;height:16px;color:var(--purple)}
-.hint{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:14px;padding:12px 14px;font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:14px;display:flex;gap:9px;align-items:flex-start}
-.hint svg{width:16px;height:16px;color:var(--purple);flex-shrink:0;margin-top:1px}
-
-/* PROMO */
-.promo{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px}
-.promo-h{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700;margin-bottom:14px}
-.promo-h svg{width:20px;height:20px;color:var(--purple)}
-.promo-row{display:flex;gap:8px}
-.promo-in{flex:1;background:rgba(255,255,255,0.06);border:1px solid var(--border2);border-radius:12px;padding:12px 14px;font-family:'Inter',sans-serif;font-size:13px;color:var(--text);outline:none;letter-spacing:.04em}
-.promo-in::placeholder{color:var(--text3)}
-.promo-in:focus{border-color:rgba(123,110,246,0.5)}
-.promo-go{background:linear-gradient(135deg,#7060d8,#4e3faa);border:none;border-radius:12px;padding:12px 16px;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:#fff;cursor:pointer;white-space:nowrap}
-
-/* SUPPORT */
-.sup-top{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:20px;padding:28px 16px;text-align:center;margin-bottom:16px;position:relative;overflow:hidden}
-.sup-top::before{content:'';position:absolute;top:-50px;left:50%;transform:translateX(-50%);width:200px;height:200px;background:radial-gradient(circle,rgba(123,110,246,0.1) 0%,transparent 65%);pointer-events:none}
-.sup-ico{width:68px;height:68px;border-radius:20px;background:rgba(123,110,246,0.15);border:1px solid rgba(123,110,246,0.25);display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
-.sup-ico svg{width:30px;height:30px;color:var(--purple)}
-.sup-title{font-size:14px;color:var(--text2);margin-bottom:16px}
-.btn-chat{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:1px solid var(--border2);border-radius:14px;padding:12px 24px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;color:var(--text);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
-.btn-chat svg{width:16px;height:16px}
-
-/* FAQ */
-.faq{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:14px;margin-bottom:8px;overflow:hidden}
-.faq-h{display:flex;align-items:center;gap:10px;padding:14px;cursor:pointer}
-.faq-ico{width:32px;height:32px;border-radius:9px;background:rgba(123,110,246,0.15);border:1px solid rgba(123,110,246,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.faq-ico svg{width:17px;height:17px;color:var(--purple)}
-.faq-q{flex:1;font-size:13px;font-weight:600;line-height:1.3}
-.faq-ch{color:var(--text3);transition:.25s;display:flex;flex-shrink:0}
-.faq-ch svg{width:17px;height:17px}
-.faq.open .faq-ch{transform:rotate(180deg)}
-.faq-body{max-height:0;overflow:hidden;transition:.3s}
-.faq.open .faq-body{max-height:200px}
-.faq-ans{padding:0 14px 14px;padding-top:12px;font-size:13px;color:var(--text2);line-height:1.6;border-top:1px solid var(--border)}
-
-/* TARIFF */
-.tfc{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:20px;margin-bottom:12px;overflow:hidden;position:relative}
-.tfc.pop{border-color:rgba(123,110,246,0.4)}
-.tfc.pop::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple2),var(--purple))}
-.pop-badge{position:absolute;top:14px;right:14px;background:linear-gradient(135deg,var(--purple2),var(--purple));color:#fff;font-size:9px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:4px 10px;border-radius:8px}
-.tfc-head{padding:16px 16px 10px}
-.tfc-top{display:flex;align-items:flex-end;gap:6px;margin-bottom:12px}
-.tfc-days{font-size:40px;font-weight:800;line-height:1}
-.tfc-unit{font-size:15px;color:var(--text2);font-weight:500;margin-bottom:6px}
-.tfc-price{margin-left:auto;background:rgba(255,255,255,0.08);border:1px solid var(--border2);border-radius:12px;padding:7px 14px;font-size:20px;font-weight:800}
-.tfc-specs{display:flex;gap:8px;flex-wrap:wrap}
-.tfc-spec{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:9px;padding:5px 10px;font-size:12px;color:var(--text2);font-weight:600}
-.tfc-spec svg{width:14px;height:14px;color:var(--purple)}
-.tfc-countries{padding:0 16px 10px}
-.c-lbl{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;display:flex;align-items:center;gap:5px}
-.c-lbl svg{width:12px;height:12px;color:var(--purple)}
-.chips{display:flex;flex-wrap:wrap;gap:5px}
-.chip{background:rgba(255,255,255,0.07);border:1px solid var(--border);border-radius:8px;padding:5px 9px;font-size:11px;font-weight:700;color:var(--text2)}
-.tfc-note{margin-top:8px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:9px;padding:6px 11px;font-size:11px;color:var(--text3);display:flex;align-items:center;gap:6px}
-.tfc-note svg{width:12px;height:12px;color:var(--purple)}
-.tfc-foot{padding:12px 16px 16px}
-.btn-ghost{display:block;width:100%;padding:14px;border-radius:12px;border:1px solid var(--border2);background:rgba(255,255,255,0.06);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;font-weight:600;cursor:pointer}
-
-/* PTITLE */
-.ptitle{font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-.02em}
-.divline{width:28px;height:2px;background:var(--purple);border-radius:2px;margin-bottom:16px;opacity:.8}
-
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.pg.on .pc>*{animation:fadeUp .22s ease both}
-.pg.on .pc>*:nth-child(2){animation-delay:.05s}
-.pg.on .pc>*:nth-child(3){animation-delay:.09s}
-.pg.on .pc>*:nth-child(4){animation-delay:.13s}
+/* ── NAV ── */
+.nav {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  height: 62px;
+  background: #0c0c1e;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  display: flex; align-items: center;
+  padding: 0 6px;
+}
+.ni {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; gap: 4px;
+  cursor: pointer; padding: 6px 4px; border-radius: 12px;
+  color: rgba(255,255,255,0.35);
+}
+.ni.on {
+  background: rgba(255,255,255,0.09);
+  color: #7b6ef6;
+}
+.ni svg { width: 22px; height: 22px; }
+.ni span { font-size: 10px; font-weight: 500; }
+.ni.on span { color: #7b6ef6; }
 </style>
 </head>
 <body>
 
-<div class="bg-wrap"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
-
 <!-- HEADER -->
 <header class="hdr">
-  <div class="hdr-card">
+  <div class="hdr-inner">
     <div class="hdr-av">
-      <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <svg viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/>
+        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
     </div>
-    <div class="hdr-mid">
+    <div class="hdr-info">
+      <div class="hdr-name">ONE_DAY</div>
       <div class="hdr-id">ID: 641915862</div>
     </div>
     <div class="hdr-dots">···</div>
-  </div>
-  <div class="hdr-bal">
-    <svg viewBox="0 0 24 24" fill="none" style="width:18px;height:18px">
-      <ellipse cx="12" cy="6" rx="9" ry="3.5" stroke="#7b6ef6" stroke-width="1.8" fill="rgba(123,110,246,0.25)"/>
-      <path d="M3 6v4c0 1.93 4.03 3.5 9 3.5s9-1.57 9-3.5V6" stroke="#7b6ef6" stroke-width="1.8"/>
-      <path d="M3 10v4c0 1.93 4.03 3.5 9 3.5s9-1.57 9-3.5v-4" stroke="#7b6ef6" stroke-width="1.8"/>
-    </svg>
-    0.00₽
+    <div class="hdr-bal">
+      <svg viewBox="0 0 24 24" fill="none">
+        <ellipse cx="12" cy="6" rx="8" ry="3" fill="rgba(123,110,246,0.3)" stroke="#7b6ef6" stroke-width="1.5"/>
+        <path d="M4 6v4c0 1.66 3.58 3 8 3s8-1.34 8-3V6" stroke="#7b6ef6" stroke-width="1.5"/>
+        <path d="M4 10v4c0 1.66 3.58 3 8 3s8-1.34 8-3v-4" stroke="#7b6ef6" stroke-width="1.5"/>
+      </svg>
+      0.00₽
+    </div>
   </div>
 </header>
 
-<div class="pages">
+<!-- CONTENT -->
+<div class="content">
 
-  <!-- HOME -->
-  <div class="pg on" id="pg-home">
-    <div class="pc">
-      <div class="welcome-wrap">
-        <div class="welcome">Добро пожаловать,</div>
-        <div class="welcome-line"></div>
+  <!-- WELCOME -->
+  <div class="welcome">
+    <div class="welcome-text">Добро пожаловать,</div>
+    <div class="welcome-line"></div>
+  </div>
+
+  <!-- MAIN CARD -->
+  <div class="main-card">
+
+    <!-- STATUS SECTION -->
+    <div class="status-section">
+      <div class="status-lock-box">
+        <!-- Open lock SVG -->
+        <svg viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="11" width="18" height="11" rx="3" stroke="currentColor" stroke-width="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="12" cy="16.5" r="1.5" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="status-info-row">
+        <!-- Info circle i SVG -->
+        <svg viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+          <path d="M12 8v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="12" cy="16" r="1" fill="currentColor"/>
+        </svg>
+        <span class="status-info-text">Нет активной подписки</span>
+      </div>
+      <div class="status-desc">
+        Активируйте подписку чтобы начать<br>пользоваться VPN
+      </div>
+      <button class="btn-subscribe">
+        <!-- Closed lock SVG -->
+        <svg viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Выбрать подписку
+      </button>
+    </div>
+
+    <!-- TRIAL SECTION -->
+    <div class="trial-section">
+      <div class="trial-header">
+        <!-- Flask SVG -->
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M9 3h6M9 3v7l-5 9a1 1 0 0 0 .9 1.5h14.2A1 1 0 0 0 20 19l-5-9V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M7.5 15h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <span class="trial-header-text">Тестовый период</span>
       </div>
 
-      <!-- When NO subscription -->
-      <div class="status-card" id="no-sub-card">
-        <div class="status-shield">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L4 6v6c0 5.25 3.4 10.15 8 11.35C16.6 22.15 20 17.25 20 12V6L12 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <!-- Трафик -->
+      <div class="trial-row">
+        <div class="trial-row-ico">
+          <!-- Coins/DB stack SVG -->
+          <svg viewBox="0 0 24 24" fill="none">
+            <ellipse cx="12" cy="5" rx="9" ry="3" stroke="currentColor" stroke-width="2"/>
+            <path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" stroke="currentColor" stroke-width="2"/>
+            <path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3" stroke="currentColor" stroke-width="2"/>
+          </svg>
         </div>
-        <div class="status-badge"><div class="status-dot"></div>Нет активной подписки</div>
-        <div class="status-desc">Активируйте подписку чтобы начать пользоваться VPN</div>
-        <button class="btn-purple" onclick="go('tariffs')">
-          <svg style="width:15px;height:15px;display:inline;margin-right:6px;vertical-align:middle" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          Выбрать подписку
+        <span class="trial-row-key">Трафик</span>
+        <div class="trial-row-val">
+          <span class="trial-row-val-main">48 ГБ</span>
+          <span class="trial-row-val-sub">(1.5 ГБ на локацию)</span>
+        </div>
+      </div>
+
+      <!-- Длительность -->
+      <div class="trial-row">
+        <div class="trial-row-ico">
+          <!-- Hourglass SVG -->
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M5 3h14M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M6 3v5l6 4-6 4v5M18 3v5l-6 4 6 4v5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="trial-row-key">Длительность</span>
+        <div class="trial-row-val">
+          <span class="trial-row-val-main">1 день</span>
+        </div>
+      </div>
+
+      <!-- Устройств -->
+      <div class="trial-row">
+        <div class="trial-row-ico">
+          <!-- Phone SVG -->
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="5" y="2" width="14" height="20" rx="2" stroke="currentColor" stroke-width="2"/>
+            <circle cx="12" cy="17" r="1" fill="currentColor"/>
+          </svg>
+        </div>
+        <span class="trial-row-key">Устройств</span>
+        <div class="trial-row-val">
+          <span class="trial-row-val-main">32</span>
+          <span class="trial-row-val-sub">(1 на локацию)</span>
+        </div>
+      </div>
+
+      <!-- Локации -->
+      <div class="trial-row">
+        <div class="trial-row-ico">
+          <!-- Globe SVG -->
+          <svg viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+            <path d="M2 12h20" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M12 2a15 15 0 0 1 0 20" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M12 2a15 15 0 0 0 0 20" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <span class="trial-row-key">Локации</span>
+        <div class="trial-row-val">
+          <span class="trial-row-val-main">Все доступные</span>
+        </div>
+      </div>
+
+      <!-- Условие -->
+      <div class="trial-row">
+        <div class="trial-row-ico">
+          <!-- Info circle SVG -->
+          <svg viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 8v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="12" cy="16" r="1" fill="currentColor"/>
+          </svg>
+        </div>
+        <span class="trial-row-key">Условие</span>
+        <div class="trial-row-val">
+          <span class="trial-row-val-main">1 раз в 31 день</span>
+        </div>
+      </div>
+
+      <div class="trial-footer">
+        <button class="btn-activate">
+          <!-- Lightning SVG -->
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Активировать бесплатно
         </button>
       </div>
-
-      <!-- Trial card -->
-      <div class="trial-card">
-        <div class="trial-title-row">
-          <div class="trial-title-ico">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L4 6v6c0 5.25 3.4 10.15 8 11.35C16.6 22.15 20 17.25 20 12V6L12 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          </div>
-          <div class="trial-title-text">Тестовый период</div>
-        </div>
-        <div class="sub-row">
-          <div class="sub-row-left">
-            <div class="sub-row-ico"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="5" rx="9" ry="3" stroke="currentColor" stroke-width="2"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" stroke="currentColor" stroke-width="2"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3" stroke="currentColor" stroke-width="2"/></svg></div>
-            Трафик всего
-          </div>
-          <div class="sub-row-right">
-            <div class="sub-row-val">48 ГБ</div>
-            <div class="sub-row-sub">1.5 ГБ на локацию</div>
-          </div>
-        </div>
-        <div class="sub-row">
-          <div class="sub-row-left">
-            <div class="sub-row-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M5 3H3v18h2M19 3h2v18h-2M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
-            Дней осталось
-          </div>
-          <div class="sub-row-right"><div class="sub-row-val">1 день</div></div>
-        </div>
-        <div class="sub-row">
-          <div class="sub-row-left">
-            <div class="sub-row-ico"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="2" width="14" height="20" rx="2" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="17" r="1" fill="currentColor"/></svg></div>
-            Устройств
-          </div>
-          <div class="sub-row-right">
-            <div class="sub-row-val">32</div>
-            <div class="sub-row-sub">1 на локацию</div>
-          </div>
-        </div>
-        <div class="connect-row">
-          <div class="connect-ico">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L14.09 7.26L20 8.27L16 12.14L17.18 18.02L12 15.27L6.82 18.02L8 12.14L4 8.27L9.91 7.26L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgba(123,110,246,0.2)"/></svg>
-          </div>
-          <div class="connect-body">
-            <div class="connect-title">Как подключиться?</div>
-            <div class="connect-sub">Ссылки, QR-код и приложения</div>
-          </div>
-          <div class="connect-arr"><svg viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        </div>
-        <div style="padding:14px 16px;">
-          <button class="btn-green">
-            <svg style="width:15px;height:15px;display:inline;margin-right:6px;vertical-align:middle" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Активировать бесплатно
-          </button>
-        </div>
-      </div>
     </div>
+
   </div>
-
-  <!-- TARIFFS -->
-  <div class="pg" id="pg-tariffs">
-    <div class="pc">
-      <div class="welcome-wrap"><div class="ptitle">Выберите тариф</div><div class="divline"></div></div>
-
-      <div class="tfc">
-        <div class="tfc-head">
-          <div class="tfc-top"><div class="tfc-days">30</div><div class="tfc-unit">дней</div><div class="tfc-price">129₽</div></div>
-          <div class="tfc-specs">
-            <div class="tfc-spec"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="5" rx="9" ry="3" stroke="currentColor" stroke-width="2"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" stroke="currentColor" stroke-width="2"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3" stroke="currentColor" stroke-width="2"/></svg> 1 920 ГБ</div>
-            <div class="tfc-spec"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="2" width="14" height="20" rx="2" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="17" r="1" fill="currentColor"/></svg> 32 уст. (1/лок.)</div>
-            <div class="tfc-spec"><svg viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> VLESS</div>
-          </div>
-        </div>
-        <div class="tfc-countries">
-          <div class="c-lbl"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9" r="2.5" stroke="currentColor" stroke-width="1.5"/></svg> Страны в подписке</div>
-          <div class="chips"><span class="chip">🇱🇻 LV</span><span class="chip">🇳🇱 NL</span><span class="chip">🇷🇺 RU</span><span class="chip">🇺🇸 US</span><span class="chip">🇵🇱 PL</span><span class="chip">🇰🇿 KZ</span><span class="chip">🇸🇪 SE</span><span class="chip">🇹🇷 TR</span><span class="chip">🇺🇦 UA</span></div>
-          <div class="tfc-note"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="5" rx="9" ry="3" stroke="currentColor" stroke-width="2"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" stroke="currentColor" stroke-width="2"/></svg> 60 ГБ на локацию — всего 1 920 ГБ</div>
-        </div>
-        <div class="tfc-foot"><button class="btn-ghost">Выбрать →</button></div>
-      </div>
-
-      <div class="tfc pop">
-        <div class="pop-badge">Популярный</div>
-        <div class="tfc-head">
-          <div class="tfc-top"><div class="tfc-days">90</div><div class="tfc-unit">дней</div><div class="tfc-price">369₽</div></div>
-          <div class="tfc-specs">
-            <div class="tfc-spec"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="5" rx="9" ry="3" stroke="currentColor" stroke-width="2"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" stroke="currentColor" stroke-width="2"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3" stroke="currentColor" stroke-width="2"/></svg> 5 760 ГБ</div>
-            <div class="tfc-spec"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="2" width="14" height="20" rx="2" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="17" r="1" fill="currentColor"/></svg> 64 уст. (2/лок.)</div>
-            <div class="tfc-spec"><svg viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> VLESS</div>
-          </div>
-        </div>
-        <div class="tfc-countries">
-          <div class="c-lbl"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9" r="2.5" stroke="currentColor" stroke-width="1.5"/></svg> Страны в подписке</div>
-          <div class="chips"><span class="chip">🇱🇻 LV</span><span class="chip">🇳🇱 NL</span><span class="chip">🇷🇺 RU</span><span class="chip">🇺🇸 US</span><span class="chip">🇵🇱 PL</span><span class="chip">🇰🇿 KZ</span><span class="chip">🇸🇪 SE</span><span class="chip">🇹🇷 TR</span><span class="chip">🇺🇦 UA</span></div>
-          <div class="tfc-note"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="5" rx="9" ry="3" stroke="currentColor" stroke-width="2"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" stroke="currentColor" stroke-width="2"/></svg> 180 ГБ на локацию — всего 5 760 ГБ</div>
-        </div>
-        <div class="tfc-foot"><button class="btn-purple">Выбрать →</button></div>
-      </div>
-
-      <div class="tfc">
-        <div class="tfc-head">
-          <div class="tfc-top"><div class="tfc-days">180</div><div class="tfc-unit">дней</div><div class="tfc-price">719₽</div></div>
-          <div class="tfc-specs">
-            <div class="tfc-spec"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="5" rx="9" ry="3" stroke="currentColor" stroke-width="2"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" stroke="currentColor" stroke-width="2"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3" stroke="currentColor" stroke-width="2"/></svg> 11 520 ГБ</div>
-            <div class="tfc-spec"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="2" width="14" height="20" rx="2" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="17" r="1" fill="currentColor"/></svg> 96 уст. (3/лок.)</div>
-            <div class="tfc-spec"><svg viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> VLESS</div>
-          </div>
-        </div>
-        <div class="tfc-countries">
-          <div class="c-lbl"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9" r="2.5" stroke="currentColor" stroke-width="1.5"/></svg> Страны в подписке</div>
-          <div class="chips"><span class="chip">🇱🇻 LV</span><span class="chip">🇳🇱 NL</span><span class="chip">🇷🇺 RU</span><span class="chip">🇺🇸 US</span><span class="chip">🇵🇱 PL</span><span class="chip">🇰🇿 KZ</span><span class="chip">🇸🇪 SE</span><span class="chip">🇹🇷 TR</span><span class="chip">🇺🇦 UA</span></div>
-          <div class="tfc-note"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="5" rx="9" ry="3" stroke="currentColor" stroke-width="2"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" stroke="currentColor" stroke-width="2"/></svg> 360 ГБ на локацию — всего 11 520 ГБ</div>
-        </div>
-        <div class="tfc-foot"><button class="btn-ghost">Выбрать →</button></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- REFERRALS -->
-  <div class="pg" id="pg-referrals">
-    <div class="pc">
-      <div class="welcome-wrap"><div class="ptitle">Приглашайте друзей<br>и зарабатывайте</div><div class="divline"></div></div>
-      <div class="ref-stats">
-        <div class="rs"><div class="rs-ico"><svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="7" r="3" stroke="currentColor" stroke-width="2"/><path d="M2 20c0-3.31 3.13-6 7-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M19 11v6M16 14h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div><div class="rs-lbl">Приглашено</div><div class="rs-val">0</div></div>
-        <div class="rs"><div class="rs-ico"><svg viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M2 10h20" stroke="currentColor" stroke-width="2"/><circle cx="7" cy="15" r="1" fill="currentColor"/></svg></div><div class="rs-lbl">Заработано</div><div class="rs-val">0₽</div></div>
-        <div class="rs"><div class="rs-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M19 5L5 19M9 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM21 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div><div class="rs-lbl">Процент</div><div class="rs-val" style="color:var(--purple)">25%</div></div>
-      </div>
-      <div class="ref-link">
-        <div class="ref-link-lbl"><svg viewBox="0 0 24 24" fill="none"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Ваша реферальная ссылка</div>
-        <div class="ref-link-row">
-          <div class="ref-url">https://t.me/NVXvpn_bot?start=ref641915862</div>
-          <button class="copy-btn" onclick="copyRef(this)"><svg viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="9" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M3 11V3a2 2 0 0 1 2-2h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
-        </div>
-      </div>
-      <div class="hint"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 8v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg><span>Отправляйте ссылку друзьям, публикуйте в чатах и соцсетях — заработок будет расти автоматически</span></div>
-      <div class="sec-lbl">Вывод средств</div>
-      <div class="li"><div class="li-ico"><svg viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M2 10h20" stroke="currentColor" stroke-width="2"/><path d="M6 14h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div><div class="li-body"><div class="li-title">На карту</div><div class="li-desc">Вывод на банковскую карту (от 500₽)</div></div><div class="li-arr"><svg viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
-      <div class="li"><div class="li-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M20 12V8H4v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="18" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg></div><div class="li-body"><div class="li-title">На баланс</div><div class="li-desc">Перевести на баланс бота (от 1₽)</div></div><div class="li-arr"><svg viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
-    </div>
-  </div>
-
-  <!-- TOPUP -->
-  <div class="pg" id="pg-topup">
-    <div class="pc">
-      <div class="welcome-wrap"><div class="ptitle">Пополнить баланс</div><div class="divline"></div></div>
-      <div class="promo">
-        <div class="promo-h"><svg viewBox="0 0 24 24" fill="none"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Активировать промокод</div>
-        <div class="promo-row"><input class="promo-in" placeholder="ВВЕДИТЕ ПРОМОКОД"/><button class="promo-go">Активировать</button></div>
-      </div>
-      <div class="hint"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 8v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg><span>Выберите удобный способ оплаты и желаемую сумму. Средства зачисляются мгновенно.</span></div>
-      <div class="sec-lbl">Доступные способы</div>
-      <div class="li"><div class="li-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M3 22h18M6 18V11M10 18V11M14 18V11M18 18V11M2 11l10-7 10 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="li-body"><div class="li-title">СБП</div><div class="li-desc">Система быстрых платежей</div></div><div class="li-arr"><svg viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
-      <div class="li"><div class="li-ico"><svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="5" rx="9" ry="3" stroke="currentColor" stroke-width="2"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" stroke="currentColor" stroke-width="2"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3" stroke="currentColor" stroke-width="2"/></svg></div><div class="li-body"><div class="li-title">CryptoBot</div><div class="li-desc">Криптовалютные платежи</div></div><div class="li-arr"><svg viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
-      <div class="li"><div class="li-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="li-body"><div class="li-title">Telegram Stars</div><div class="li-desc">Встроенная платёжная система Telegram</div></div><div class="li-arr"><svg viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
-    </div>
-  </div>
-
-  <!-- SUPPORT -->
-  <div class="pg" id="pg-support">
-    <div class="pc">
-      <div class="welcome-wrap"><div class="ptitle">Служба поддержки</div><div class="divline"></div></div>
-      <div class="sup-top">
-        <div class="sup-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M3 18v-6a9 9 0 0 1 18 0v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3v5zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3v5z" stroke="currentColor" stroke-width="2"/></svg></div>
-        <div class="sup-title">Есть вопросы? Свяжитесь с нами 24/7</div>
-        <button class="btn-chat"><svg viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Открыть чат</button>
-      </div>
-      <div class="sec-lbl">Часто задаваемые вопросы</div>
-      <div class="faq" onclick="toggleFaq(this)"><div class="faq-h"><div class="faq-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M21 2H3v16h5l3 3 3-3h7V2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="faq-q">Как продлить подписку?</span><div class="faq-ch"><svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="faq-body"><div class="faq-ans">Перейдите в раздел «Тарифы» и выберите нужный план. Оплата через любой удобный способ, подписка активируется мгновенно.</div></div></div>
-      <div class="faq" onclick="toggleFaq(this)"><div class="faq-h"><div class="faq-ico"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="2" width="14" height="20" rx="2" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="17" r="1" fill="currentColor"/></svg></div><span class="faq-q">Как подключить дополнительное устройство?</span><div class="faq-ch"><svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="faq-body"><div class="faq-ans">После активации подписки появится кнопка «Получить конфиг». Скачайте файл и импортируйте в приложение на новом устройстве.</div></div></div>
-      <div class="faq" onclick="toggleFaq(this)"><div class="faq-h"><div class="faq-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 9v4M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div><span class="faq-q">VPN не подключается или работает нестабильно</span><div class="faq-ch"><svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="faq-body"><div class="faq-ans">Попробуйте сменить сервер. Если проблема сохраняется — обратитесь в чат поддержки.</div></div></div>
-      <div class="faq" onclick="toggleFaq(this)"><div class="faq-h"><div class="faq-ico"><svg viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M2 10h20" stroke="currentColor" stroke-width="2"/><path d="M6 14h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div><span class="faq-q">Какие способы пополнения доступны?</span><div class="faq-ch"><svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="faq-body"><div class="faq-ans">СБП, CryptoBot (криптовалюта) и Telegram Stars — встроенная платёжная система Telegram.</div></div></div>
-      <div class="faq" onclick="toggleFaq(this)"><div class="faq-h"><div class="faq-ico"><svg viewBox="0 0 24 24" fill="none"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="faq-q">Как получить тестовый период?</span><div class="faq-ch"><svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="faq-body"><div class="faq-ans">На главной нажмите «Активировать бесплатно». Доступно 1 раз в 31 день для каждого аккаунта.</div></div></div>
-      <div class="faq" onclick="toggleFaq(this)"><div class="faq-h"><div class="faq-ico"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20" stroke="currentColor" stroke-width="1.5"/></svg></div><span class="faq-q">Сколько серверов и в каких странах?</span><div class="faq-ch"><svg viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="faq-body"><div class="faq-ans">LV, NL, RU, US, PL, KZ, SE, TR, UA. Список постоянно расширяется.</div></div></div>
-    </div>
-  </div>
-
 </div>
 
-<!-- NAV — flat Envy style -->
+<!-- NAV -->
 <nav class="nav">
-  <div class="ni on" onclick="go('home')" id="ni-home">
-    <svg viewBox="0 0 24 24" fill="none"><path d="M3 12L12 3l9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 21V12h6v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <!-- Главная -->
+  <div class="ni on">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M3 12L12 3l9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M9 21V12h6v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
     <span>Главная</span>
   </div>
-  <div class="ni" onclick="go('tariffs')" id="ni-tariffs">
-    <svg viewBox="0 0 24 24" fill="none"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="7" r="1.5" fill="currentColor"/></svg>
+  <!-- Тарифы — price tag -->
+  <div class="ni">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="7" cy="7" r="1.5" fill="currentColor"/>
+    </svg>
     <span>Тарифы</span>
   </div>
-  <div class="ni" onclick="go('referrals')" id="ni-referrals">
-    <svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="7" r="3" stroke="currentColor" stroke-width="2"/><circle cx="17" cy="9" r="2" stroke="currentColor" stroke-width="2"/><path d="M2 20c0-3.314 3.134-6 7-6s7 2.686 7 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M17 14c1.657 0 3 1.343 3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  <!-- Рефералы — three people -->
+  <div class="ni">
+    <svg viewBox="0 0 24 24" fill="none">
+      <circle cx="9" cy="6" r="2.5" stroke="currentColor" stroke-width="2"/>
+      <circle cx="17" cy="6" r="2.5" stroke="currentColor" stroke-width="2"/>
+      <circle cx="13" cy="6" r="2.5" stroke="currentColor" stroke-width="2" fill="#0c0c1e"/>
+      <path d="M2 20c0-3 3-5.5 7-5.5s7 2.5 7 5.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path d="M16 14.5c2.5.5 4 2 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
     <span>Рефералы</span>
   </div>
-  <div class="ni" onclick="go('topup')" id="ni-topup">
-    <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="6" width="20" height="14" rx="3" stroke="currentColor" stroke-width="2"/><path d="M2 10h20" stroke="currentColor" stroke-width="2"/><path d="M6 14h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  <!-- Пополнить — wallet -->
+  <div class="ni">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M20 8H4a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2z" stroke="currentColor" stroke-width="2"/>
+      <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v2" stroke="currentColor" stroke-width="2"/>
+      <circle cx="17" cy="14" r="1.5" fill="currentColor"/>
+    </svg>
     <span>Пополнить</span>
   </div>
-  <div class="ni" onclick="go('support')" id="ni-support">
-    <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17" r=".5" fill="currentColor" stroke="currentColor" stroke-width="1"/></svg>
+  <!-- Поддержка — headset -->
+  <div class="ni">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M3 18v-6a9 9 0 0 1 18 0v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3v5z" stroke="currentColor" stroke-width="2"/>
+      <path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3v5z" stroke="currentColor" stroke-width="2"/>
+    </svg>
     <span>Поддержка</span>
   </div>
 </nav>
 
-<script>
-function go(n){
-  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
-  document.querySelectorAll('.ni').forEach(i=>i.classList.remove('on'));
-  document.getElementById('pg-'+n).classList.add('on');
-  document.getElementById('ni-'+n).classList.add('on');
-  window.scrollTo(0,0);
-}
-function toggleFaq(el){el.classList.toggle('open')}
-function copyRef(btn){
-  navigator.clipboard?.writeText('https://t.me/NVXvpn_bot?start=ref641915862').catch(()=>{});
-  btn.style.background='rgba(61,220,132,0.25)';
-  setTimeout(()=>btn.style.background='',900);
-}
-</script>
 </body>
 </html>
