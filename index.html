@@ -11,9 +11,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-    --bg-dark: #0a0e27;
-    --glass-bg: rgba(15,15,30,0.3);
-    --glass-border: rgba(80,90,120,0.25);
     --accent: #7a6fbf;
     --accent-bright: #9a8fdf;
     --text-primary: #e5e5f0;
@@ -34,11 +31,9 @@ body {
     font-family: var(--font-body);
     background: linear-gradient(135deg, #000000 0%, #0a0e27 50%, #000000 100%);
     color: var(--text-primary);
+    overflow: hidden;
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
-    /* КЛЮЧЕВОЕ: height 100%, overflow hidden только на body */
-    overflow: hidden;
-    height: 100%;
 }
 
 #app {
@@ -58,19 +53,6 @@ body {
     overflow: hidden;
 }
 
-/* GLASS */
-.glass {
-    background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    transition: all 0.3s ease;
-}
-.glass:hover {
-    border-color: rgba(122,111,191,0.4);
-}
-
 /* HEADER */
 .header {
     display: flex;
@@ -80,19 +62,14 @@ body {
     margin-top: max(10px, var(--safe-top));
     margin-bottom: 8px;
     flex-shrink: 0;
-    background: rgba(20,25,45,0.25);
-    border: 1px solid rgba(70,80,110,0.15);
+    background: rgba(20, 25, 45, 0.25);
+    border: 1px solid rgba(70, 80, 110, 0.15);
     border-radius: 20px;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
 }
 
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-width: 0;
-}
+.user-info { display: flex; align-items: center; gap: 10px; min-width: 0; }
 
 .avatar {
     width: 40px; height: 40px;
@@ -120,7 +97,7 @@ body {
 }
 .balance i { font-size: 14px; color: var(--accent-bright); }
 
-/* CONTENT — скроллится */
+/* CONTENT */
 .content {
     flex: 1;
     overflow-y: auto;
@@ -156,11 +133,12 @@ body {
 .subscription-card {
     padding: 18px 16px;
     margin-bottom: 12px;
-    background: rgba(20,25,45,0.2);
-    border: 1px solid rgba(70,80,110,0.15);
+    /* FIX 3: более насыщенный фиолетовый фон как у Envy */
+    background: rgba(15, 18, 40, 0.55);
+    border: 1px solid rgba(80, 90, 130, 0.25);
     border-radius: 20px;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     text-align: center;
 }
 
@@ -171,8 +149,7 @@ body {
     border: 1px solid rgba(122,111,191,0.2);
     display: flex; align-items: center; justify-content: center;
     margin: 0 auto 14px;
-    font-size: 28px;
-    color: var(--accent-bright);
+    font-size: 28px; color: var(--accent-bright);
 }
 
 .no-sub-label {
@@ -182,7 +159,6 @@ body {
     color: var(--accent-bright);
     margin-bottom: 8px;
 }
-.no-sub-label i { font-size: 15px; }
 
 .no-sub-desc {
     font-size: 13px;
@@ -195,11 +171,12 @@ body {
 .trial-card {
     padding: 0;
     margin-bottom: 12px;
-    background: rgba(20,25,45,0.2);
-    border: 1px solid rgba(70,80,110,0.15);
+    /* FIX 3: более насыщенный фиолетовый фон как у Envy */
+    background: rgba(15, 18, 40, 0.55);
+    border: 1px solid rgba(80, 90, 130, 0.25);
     border-radius: 20px;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     overflow: hidden;
     text-align: left;
 }
@@ -230,17 +207,25 @@ body {
     font-size: 13px;
     flex-shrink: 0;
 }
+
+/* FIX 1 & 2: значение и подпись в одну строку справа */
 .detail .value {
-    color: var(--text-primary);
-    font-weight: 600;
     margin-left: auto;
     text-align: right;
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    white-space: nowrap;
+}
+.detail .value .main {
+    font-weight: 700;
+    color: var(--text-primary);
+    font-size: 13px;
 }
 .detail .value .sub {
     font-size: 11px;
     color: var(--text-tertiary);
     font-weight: 400;
-    display: block;
 }
 
 .trial-btn-wrap { padding: 12px 16px 14px; }
@@ -260,7 +245,6 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 .btn:active { transform: scale(0.97); }
-
 .btn.primary {
     background: linear-gradient(135deg, rgba(122,111,191,0.7), rgba(154,143,223,0.5));
     color: white;
@@ -328,9 +312,7 @@ body {
     <!-- HEADER -->
     <header class="header">
       <div class="user-info">
-        <div class="avatar">
-          <i class="fas fa-user"></i>
-        </div>
+        <div class="avatar"><i class="fas fa-user"></i></div>
         <div class="user-details">
           <span class="user-name">ONE_DAY</span>
           <span class="user-id">ID: 641915862</span>
@@ -342,13 +324,13 @@ body {
       </div>
     </header>
 
-    <!-- SCROLLABLE CONTENT -->
+    <!-- CONTENT -->
     <main class="content">
 
       <span class="section-title">Добро пожаловать,</span>
 
       <!-- No subscription -->
-      <div class="subscription-card glass">
+      <div class="subscription-card">
         <div class="no-sub-icon">
           <i class="fas fa-lock-open"></i>
         </div>
@@ -366,36 +348,54 @@ body {
       </div>
 
       <!-- Trial -->
-      <div class="trial-card glass">
+      <div class="trial-card">
         <div class="trial-title">
           <i class="fas fa-flask"></i>
           Тестовый период
         </div>
 
+        <!-- FIX 1: 48 ГБ и подпись в одну строку -->
         <div class="detail">
           <i class="fas fa-coins"></i>
           Трафик
-          <span class="value">48 ГБ<span class="sub">1.5 ГБ на локацию</span></span>
+          <span class="value">
+            <span class="main">48 ГБ</span>
+            <span class="sub">(1.5 ГБ на локацию)</span>
+          </span>
         </div>
+
         <div class="detail">
           <i class="fas fa-hourglass-half"></i>
           Длительность
-          <span class="value">1 день</span>
+          <span class="value">
+            <span class="main">1 день</span>
+          </span>
         </div>
+
+        <!-- FIX 2: 32 и подпись в одну строку -->
         <div class="detail">
           <i class="fas fa-mobile-alt"></i>
           Устройств
-          <span class="value">32<span class="sub">1 на локацию</span></span>
+          <span class="value">
+            <span class="main">32</span>
+            <span class="sub">(1 на локацию)</span>
+          </span>
         </div>
+
         <div class="detail">
           <i class="fas fa-globe"></i>
           Локации
-          <span class="value">Все доступные</span>
+          <span class="value">
+            <span class="main">Все доступные</span>
+          </span>
         </div>
+
         <div class="detail">
           <i class="fas fa-info-circle"></i>
           Условие
-          <span class="value">1 раз в 31 день</span>
+          <span class="value">
+            <span class="main">1 раз в 31 день</span>
+          </span>
         </div>
 
         <div class="trial-btn-wrap">
