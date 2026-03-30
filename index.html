@@ -2,423 +2,516 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0e27">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>NVX VPN</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-html, body { height: 100%; overflow-x: hidden; }
+:root {
+    --bg-dark: #0a0e27;
+    --bg-darker: #060818;
+    --glass-bg: rgba(15, 15, 30, 0.3);
+    --glass-border: rgba(80, 90, 120, 0.25);
+    --gray-bg: rgba(30, 35, 55, 0.4);
+    --gray-border: rgba(70, 80, 110, 0.2);
+    --accent: #7a6fbf;
+    --accent-bright: #9a8fdf;
+    --accent-glow: rgba(122, 111, 191, 0.15);
+    --text-primary: #e5e5f0;
+    --text-secondary: #9a9fb5;
+    --text-tertiary: #6a7080;
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.2);
+    --transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-left: env(safe-area-inset-left, 0px);
+    --safe-right: env(safe-area-inset-right, 0px);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { width: 100%; height: 100%; -webkit-text-size-adjust: 100%; }
+
 body {
-  font-family: 'Inter', sans-serif;
-  background: #0d0d1f;
-  color: #ffffff;
-  min-height: 100vh;
+    width: 100%; height: 100%;
+    font-family: var(--font-body);
+    background: linear-gradient(135deg, #000000 0%, #0a0e27 50%, #000000 100%);
+    color: var(--text-primary);
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
-/* ── HEADER ── */
-.hdr {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 10px 12px;
-  background: #0d0d1f;
-}
-.hdr-inner {
-  display: flex; align-items: center; gap: 10px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.10);
-  border-radius: 16px;
-  padding: 8px 12px;
-}
-.hdr-av {
-  width: 40px; height: 40px; border-radius: 50%;
-  background: #2a2448;
-  border: 2px solid rgba(123,110,246,0.35);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.hdr-av svg { width: 22px; height: 22px; color: rgba(255,255,255,0.4); }
-.hdr-info { flex: 1; }
-.hdr-name {
-  font-size: 14px; font-weight: 700; color: #fff;
-  line-height: 1.2;
-}
-.hdr-id {
-  font-size: 12px; font-weight: 400;
-  color: rgba(255,255,255,0.4);
-  font-family: monospace;
-  margin-top: 1px;
-}
-.hdr-dots {
-  font-size: 15px; letter-spacing: 2px;
-  color: rgba(255,255,255,0.3);
-}
-.hdr-bal {
-  display: flex; align-items: center; gap: 6px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(123,110,246,0.35);
-  border-radius: 20px;
-  padding: 5px 12px;
-  font-size: 13px; font-weight: 700; color: #fff;
-  flex-shrink: 0;
-}
-.hdr-bal svg { width: 18px; height: 18px; }
+#app { position: relative; height: 100%; width: 100%; }
 
-/* ── CONTENT ── */
+.ui-layer {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    padding: 0 12px;
+    padding-left: max(12px, var(--safe-left));
+    padding-right: max(12px, var(--safe-right));
+}
+
+/* GLASS */
+.glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+.glass:hover {
+    border-color: rgba(122, 111, 191, 0.4);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transform: translateY(-1px);
+}
+
+/* HEADER */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    margin: max(10px, var(--safe-top)) 0 8px;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    background: rgba(20, 25, 45, 0.25);
+    border: 1px solid rgba(70, 80, 110, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 1;
+    min-width: 0;
+}
+
+.avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(122,111,191,0.6), rgba(154,143,223,0.4));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+    color: white;
+    box-shadow: 0 2px 8px rgba(122,111,191,0.15);
+    flex-shrink: 0;
+    border: 1px solid rgba(122,111,191,0.3);
+    overflow: hidden;
+}
+.avatar i { font-size: 18px; color: rgba(255,255,255,0.6); }
+
+.user-details { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.user-name { font-weight: 700; font-size: 14px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.user-id { font-size: 11px; color: var(--text-secondary); white-space: nowrap; }
+
+.balance {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: rgba(30,35,55,0.3);
+    border-radius: 28px;
+    font-weight: 600;
+    font-size: 13px;
+    border: 1px solid rgba(70,80,110,0.2);
+    position: relative; z-index: 1;
+    transition: var(--transition);
+    color: var(--text-primary);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.balance i { font-size: 14px; color: var(--accent-bright); }
+
+/* CONTENT */
 .content {
-  padding: 72px 12px 72px;
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 6px 0 10px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+.content::-webkit-scrollbar { display: none; }
+
+/* SECTION TITLE */
+.section-title {
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 700;
+    margin: 14px 0 8px;
+    padding-bottom: 6px;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+    position: relative;
+    display: block;
+}
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 40px; height: 2px;
+    background: linear-gradient(90deg, var(--accent-bright), transparent);
+    border-radius: 2px;
 }
 
-/* ── WELCOME ── */
-.welcome { padding: 14px 0 14px; }
-.welcome-text {
-  font-size: 21px; font-weight: 700;
-  color: #ffffff; letter-spacing: -0.02em;
-}
-.welcome-line {
-  width: 28px; height: 2px;
-  background: #7b6ef6; border-radius: 2px;
-  margin-top: 6px;
-}
-
-/* ── MAIN CARD (status + trial combined) ── */
-.main-card {
-  background: #141430;
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 16px;
-  overflow: hidden;
-  margin-bottom: 10px;
+/* SUBSCRIPTION CARD */
+.subscription-card {
+    padding: 16px;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+    background: rgba(20,25,45,0.2);
+    border: 1px solid rgba(70,80,110,0.15);
+    border-radius: 20px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    text-align: center;
 }
 
-/* STATUS SECTION */
-.status-section {
-  padding: 22px 16px 20px;
-  text-align: center;
-  border-bottom: 1px solid rgba(255,255,255,0.07);
+.no-sub-icon {
+    width: 60px; height: 60px;
+    border-radius: 16px;
+    background: rgba(122,111,191,0.12);
+    border: 1px solid rgba(122,111,191,0.2);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px;
+    font-size: 26px;
+    color: var(--accent-bright);
 }
-.status-lock-box {
-  width: 62px; height: 62px;
-  border-radius: 14px;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.1);
-  display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 16px;
-}
-.status-lock-box svg { width: 28px; height: 28px; color: rgba(255,255,255,0.85); }
-.status-info-row {
-  display: flex; align-items: center; justify-content: center;
-  gap: 6px; margin-bottom: 8px;
-}
-.status-info-row svg { width: 16px; height: 16px; color: #8b80f9; flex-shrink: 0; }
-.status-info-text { font-size: 15px; font-weight: 700; color: #8b80f9; }
-.status-desc {
-  font-size: 13px; color: rgba(255,255,255,0.5);
-  line-height: 1.5; margin-bottom: 18px;
-}
-.btn-subscribe {
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  width: 100%; padding: 14px 16px;
-  border-radius: 26px; border: none; cursor: pointer;
-  background: rgba(107,92,231,0.55);
-  color: #fff; font-family: 'Inter', sans-serif;
-  font-size: 15px; font-weight: 600;
-  transition: opacity .15s;
-}
-.btn-subscribe:active { opacity: .85; }
-.btn-subscribe svg { width: 16px; height: 16px; }
 
-/* TRIAL SECTION */
-.trial-section { padding: 0; }
+.no-sub-label {
+    display: flex; align-items: center; justify-content: center;
+    gap: 6px;
+    font-size: 15px; font-weight: 700;
+    color: var(--accent-bright);
+    margin-bottom: 8px;
+}
+.no-sub-label i { font-size: 15px; }
 
-.trial-header {
-  display: flex; align-items: center; gap: 8px;
-  padding: 14px 16px 12px;
+.no-sub-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 18px;
 }
-.trial-header svg { width: 18px; height: 18px; color: #7b6ef6; flex-shrink: 0; }
-.trial-header-text { font-size: 15px; font-weight: 700; color: #7b6ef6; }
 
-.trial-row {
-  display: flex; align-items: center;
-  padding: 11px 16px;
-  border-top: 1px solid rgba(255,255,255,0.06);
-  min-height: 42px;
+/* BUTTONS */
+.btn {
+    border: none;
+    border-radius: 18px;
+    padding: 10px 18px;
+    font-weight: 600;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    font-family: var(--font-body);
+    white-space: nowrap;
+    min-height: 44px;
+    -webkit-tap-highlight-color: transparent;
+    width: 100%;
 }
-.trial-row-ico {
-  width: 18px; height: 18px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  margin-right: 12px;
+.btn:active { transform: scale(0.97); }
+.btn.primary {
+    background: linear-gradient(135deg, rgba(122,111,191,0.7), rgba(154,143,223,0.5));
+    color: white;
+    box-shadow: 0 4px 12px rgba(122,111,191,0.15);
+    border: 1px solid rgba(122,111,191,0.3);
+    backdrop-filter: blur(8px);
+    border-radius: 26px;
+    font-size: 14px;
+    font-weight: 700;
 }
-.trial-row-ico svg { width: 16px; height: 16px; color: #7b6ef6; }
-.trial-row-key {
-  font-size: 13px; font-weight: 400;
-  color: rgba(255,255,255,0.55); flex: 1;
+.btn.primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(122,111,191,0.2);
 }
-.trial-row-val {
-  display: flex; align-items: baseline; gap: 5px;
-}
-.trial-row-val-main { font-size: 13px; font-weight: 700; color: #fff; }
-.trial-row-val-sub { font-size: 11px; color: rgba(255,255,255,0.3); }
+.btn.primary i { font-size: 14px; }
 
-.trial-footer { padding: 14px 16px; }
-.btn-activate {
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  width: 100%; padding: 14px 16px;
-  border-radius: 26px; border: none; cursor: pointer;
-  background: rgba(107,92,231,0.55);
-  color: #fff; font-family: 'Inter', sans-serif;
-  font-size: 15px; font-weight: 600;
-  transition: opacity .15s;
+/* TRIAL BANNER */
+.trial-banner {
+    position: relative;
+    padding: 0;
+    margin-bottom: 12px;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(70,80,110,0.15);
+    background: rgba(20,25,45,0.2);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
-.btn-activate:active { opacity: .85; }
-.btn-activate svg { width: 15px; height: 15px; }
 
-/* ── NAV ── */
-.nav {
-  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
-  height: 62px;
-  background: #0c0c1e;
-  border-top: 1px solid rgba(255,255,255,0.07);
-  display: flex; align-items: center;
-  padding: 0 6px;
+.subscription-card.trial-card {
+    text-align: left;
+    padding: 0;
 }
-.ni {
-  flex: 1; display: flex; flex-direction: column;
-  align-items: center; gap: 4px;
-  cursor: pointer; padding: 6px 4px; border-radius: 12px;
-  color: rgba(255,255,255,0.35);
+
+.trial-title {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent-bright);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 16px 12px;
+    border-bottom: 1px solid rgba(70,80,110,0.12);
 }
-.ni.on {
-  background: rgba(255,255,255,0.09);
-  color: #7b6ef6;
+.trial-title i { font-size: 16px; }
+
+.detail {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    padding: 10px 16px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid rgba(70,80,110,0.1);
+    transition: var(--transition);
 }
-.ni svg { width: 22px; height: 22px; }
-.ni span { font-size: 10px; font-weight: 500; }
-.ni.on span { color: #7b6ef6; }
+.detail:last-of-type { border-bottom: none; }
+.detail i {
+    width: 16px;
+    color: var(--accent-bright);
+    font-size: 13px;
+    flex-shrink: 0;
+}
+.detail .value {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin-left: auto;
+    text-align: right;
+}
+.detail .value .sub {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    font-weight: 400;
+    display: block;
+}
+
+.trial-btn-wrap { padding: 14px 16px; }
+
+/* BOTTOM NAV */
+.bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    padding: 6px 4px;
+    padding-bottom: max(6px, calc(var(--safe-bottom) + 6px));
+    margin: 8px 0 max(10px, var(--safe-bottom));
+    border-radius: 20px;
+    position: relative;
+    gap: 4px;
+    background: rgba(20,25,45,0.25);
+    border: 1px solid rgba(70,80,110,0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    flex-shrink: 0;
+}
+
+.nav-item {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 8px 6px;
+    border-radius: 16px;
+    transition: var(--transition);
+    cursor: pointer;
+    position: relative;
+    flex: 1;
+    min-height: 44px;
+    justify-content: center;
+    font-family: var(--font-body);
+}
+.nav-item i { font-size: 18px; transition: var(--transition); }
+.nav-item:hover { color: var(--accent-bright); background: rgba(122,111,191,0.08); }
+.nav-item.active {
+    color: var(--accent-bright);
+    background: rgba(122,111,191,0.12);
+    border: 1px solid rgba(122,111,191,0.2);
+}
+.nav-item.active::before {
+    content: '';
+    position: absolute;
+    top: -4px; left: 50%;
+    transform: translateX(-50%);
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent-bright);
+    box-shadow: 0 0 8px rgba(122,111,191,0.4);
+}
+
+@keyframes slideInUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.subscription-card { animation: slideInUp 0.5s ease-out backwards; }
+.trial-banner { animation: slideInUp 0.5s ease-out 0.1s backwards; }
 </style>
 </head>
 <body>
+<div id="app">
+  <div class="ui-layer">
 
-<!-- HEADER -->
-<header class="hdr">
-  <div class="hdr-inner">
-    <div class="hdr-av">
-      <svg viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/>
-        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-      </svg>
-    </div>
-    <div class="hdr-info">
-      <div class="hdr-name">ONE_DAY</div>
-      <div class="hdr-id">ID: 641915862</div>
-    </div>
-    <div class="hdr-dots">···</div>
-    <div class="hdr-bal">
-      <svg viewBox="0 0 24 24" fill="none">
-        <ellipse cx="12" cy="6" rx="8" ry="3" fill="rgba(123,110,246,0.3)" stroke="#7b6ef6" stroke-width="1.5"/>
-        <path d="M4 6v4c0 1.66 3.58 3 8 3s8-1.34 8-3V6" stroke="#7b6ef6" stroke-width="1.5"/>
-        <path d="M4 10v4c0 1.66 3.58 3 8 3s8-1.34 8-3v-4" stroke="#7b6ef6" stroke-width="1.5"/>
-      </svg>
-      0.00₽
-    </div>
-  </div>
-</header>
-
-<!-- CONTENT -->
-<div class="content">
-
-  <!-- WELCOME -->
-  <div class="welcome">
-    <div class="welcome-text">Добро пожаловать,</div>
-    <div class="welcome-line"></div>
-  </div>
-
-  <!-- MAIN CARD -->
-  <div class="main-card">
-
-    <!-- STATUS SECTION -->
-    <div class="status-section">
-      <div class="status-lock-box">
-        <!-- Open lock SVG -->
-        <svg viewBox="0 0 24 24" fill="none">
-          <rect x="3" y="11" width="18" height="11" rx="3" stroke="currentColor" stroke-width="2"/>
-          <path d="M7 11V7a5 5 0 0 1 10 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="12" cy="16.5" r="1.5" fill="currentColor"/>
-        </svg>
-      </div>
-      <div class="status-info-row">
-        <!-- Info circle i SVG -->
-        <svg viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
-          <path d="M12 8v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="12" cy="16" r="1" fill="currentColor"/>
-        </svg>
-        <span class="status-info-text">Нет активной подписки</span>
-      </div>
-      <div class="status-desc">
-        Активируйте подписку чтобы начать<br>пользоваться VPN
-      </div>
-      <button class="btn-subscribe">
-        <!-- Closed lock SVG -->
-        <svg viewBox="0 0 24 24" fill="none">
-          <rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/>
-          <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-        Выбрать подписку
-      </button>
-    </div>
-
-    <!-- TRIAL SECTION -->
-    <div class="trial-section">
-      <div class="trial-header">
-        <!-- Flask SVG -->
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M9 3h6M9 3v7l-5 9a1 1 0 0 0 .9 1.5h14.2A1 1 0 0 0 20 19l-5-9V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M7.5 15h9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-        <span class="trial-header-text">Тестовый период</span>
-      </div>
-
-      <!-- Трафик -->
-      <div class="trial-row">
-        <div class="trial-row-ico">
-          <!-- Coins/DB stack SVG -->
-          <svg viewBox="0 0 24 24" fill="none">
-            <ellipse cx="12" cy="5" rx="9" ry="3" stroke="currentColor" stroke-width="2"/>
-            <path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" stroke="currentColor" stroke-width="2"/>
-            <path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3" stroke="currentColor" stroke-width="2"/>
-          </svg>
+    <!-- HEADER -->
+    <header class="header glass">
+      <div class="user-info">
+        <div class="avatar" id="avatarContainer">
+          <i class="fas fa-user"></i>
         </div>
-        <span class="trial-row-key">Трафик</span>
-        <div class="trial-row-val">
-          <span class="trial-row-val-main">48 ГБ</span>
-          <span class="trial-row-val-sub">(1.5 ГБ на локацию)</span>
+        <div class="user-details">
+          <span class="user-name" id="userName">ONE_DAY</span>
+          <span class="user-id" id="userId">ID: 641915862</span>
         </div>
       </div>
-
-      <!-- Длительность -->
-      <div class="trial-row">
-        <div class="trial-row-ico">
-          <!-- Hourglass SVG -->
-          <svg viewBox="0 0 24 24" fill="none">
-            <path d="M5 3h14M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M6 3v5l6 4-6 4v5M18 3v5l-6 4 6 4v5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <span class="trial-row-key">Длительность</span>
-        <div class="trial-row-val">
-          <span class="trial-row-val-main">1 день</span>
-        </div>
+      <div class="balance" id="balanceDisplay">
+        <i class="fas fa-coins"></i>
+        <span id="userBalance">0.00₽</span>
       </div>
+    </header>
 
-      <!-- Устройств -->
-      <div class="trial-row">
-        <div class="trial-row-ico">
-          <!-- Phone SVG -->
-          <svg viewBox="0 0 24 24" fill="none">
-            <rect x="5" y="2" width="14" height="20" rx="2" stroke="currentColor" stroke-width="2"/>
-            <circle cx="12" cy="17" r="1" fill="currentColor"/>
-          </svg>
-        </div>
-        <span class="trial-row-key">Устройств</span>
-        <div class="trial-row-val">
-          <span class="trial-row-val-main">32</span>
-          <span class="trial-row-val-sub">(1 на локацию)</span>
-        </div>
-      </div>
+    <!-- CONTENT -->
+    <main class="content">
 
-      <!-- Локации -->
-      <div class="trial-row">
-        <div class="trial-row-ico">
-          <!-- Globe SVG -->
-          <svg viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
-            <path d="M2 12h20" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M12 2a15 15 0 0 1 0 20" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M12 2a15 15 0 0 0 0 20" stroke="currentColor" stroke-width="1.5"/>
-          </svg>
-        </div>
-        <span class="trial-row-key">Локации</span>
-        <div class="trial-row-val">
-          <span class="trial-row-val-main">Все доступные</span>
-        </div>
-      </div>
+      <!-- Page title -->
+      <span class="section-title">Добро пожаловать,</span>
 
-      <!-- Условие -->
-      <div class="trial-row">
-        <div class="trial-row-ico">
-          <!-- Info circle SVG -->
-          <svg viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
-            <path d="M12 8v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <circle cx="12" cy="16" r="1" fill="currentColor"/>
-          </svg>
+      <!-- No subscription card -->
+      <div class="subscription-card glass">
+        <div class="no-sub-icon">
+          <i class="fas fa-lock-open"></i>
         </div>
-        <span class="trial-row-key">Условие</span>
-        <div class="trial-row-val">
-          <span class="trial-row-val-main">1 раз в 31 день</span>
+        <div class="no-sub-label">
+          <i class="fas fa-info-circle"></i>
+          Нет активной подписки
         </div>
-      </div>
-
-      <div class="trial-footer">
-        <button class="btn-activate">
-          <!-- Lightning SVG -->
-          <svg viewBox="0 0 24 24" fill="none">
-            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Активировать бесплатно
+        <div class="no-sub-desc">
+          Активируйте подписку чтобы начать<br>пользоваться VPN
+        </div>
+        <button class="btn primary">
+          <i class="fas fa-lock"></i>
+          Выбрать подписку
         </button>
       </div>
-    </div>
+
+      <!-- Trial card -->
+      <div class="subscription-card trial-card glass">
+        <div class="trial-title">
+          <i class="fas fa-flask"></i>
+          Тестовый период
+        </div>
+
+        <div class="detail">
+          <i class="fas fa-coins"></i>
+          Трафик
+          <span class="value">
+            48 ГБ
+            <span class="sub">1.5 ГБ на локацию</span>
+          </span>
+        </div>
+
+        <div class="detail">
+          <i class="fas fa-hourglass-half"></i>
+          Длительность
+          <span class="value">1 день</span>
+        </div>
+
+        <div class="detail">
+          <i class="fas fa-mobile-alt"></i>
+          Устройств
+          <span class="value">
+            32
+            <span class="sub">1 на локацию</span>
+          </span>
+        </div>
+
+        <div class="detail">
+          <i class="fas fa-globe"></i>
+          Локации
+          <span class="value">Все доступные</span>
+        </div>
+
+        <div class="detail">
+          <i class="fas fa-info-circle"></i>
+          Условие
+          <span class="value">1 раз в 31 день</span>
+        </div>
+
+        <div class="trial-btn-wrap">
+          <button class="btn primary">
+            <i class="fas fa-bolt"></i>
+            Активировать бесплатно
+          </button>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav glass">
+      <button class="nav-item active" data-tab="home">
+        <i class="fas fa-home"></i>
+        <span>Главная</span>
+      </button>
+      <button class="nav-item" data-tab="tariffs">
+        <i class="fas fa-tags"></i>
+        <span>Тарифы</span>
+      </button>
+      <button class="nav-item" data-tab="referral">
+        <i class="fas fa-users"></i>
+        <span>Рефералы</span>
+      </button>
+      <button class="nav-item" data-tab="topup">
+        <i class="fas fa-wallet"></i>
+        <span>Пополнить</span>
+      </button>
+      <button class="nav-item" data-tab="support">
+        <i class="fas fa-headset"></i>
+        <span>Поддержка</span>
+      </button>
+    </nav>
 
   </div>
 </div>
 
-<!-- NAV -->
-<nav class="nav">
-  <!-- Главная -->
-  <div class="ni on">
-    <svg viewBox="0 0 24 24" fill="none">
-      <path d="M3 12L12 3l9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M9 21V12h6v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    <span>Главная</span>
-  </div>
-  <!-- Тарифы — price tag -->
-  <div class="ni">
-    <svg viewBox="0 0 24 24" fill="none">
-      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      <circle cx="7" cy="7" r="1.5" fill="currentColor"/>
-    </svg>
-    <span>Тарифы</span>
-  </div>
-  <!-- Рефералы — three people -->
-  <div class="ni">
-    <svg viewBox="0 0 24 24" fill="none">
-      <circle cx="9" cy="6" r="2.5" stroke="currentColor" stroke-width="2"/>
-      <circle cx="17" cy="6" r="2.5" stroke="currentColor" stroke-width="2"/>
-      <circle cx="13" cy="6" r="2.5" stroke="currentColor" stroke-width="2" fill="#0c0c1e"/>
-      <path d="M2 20c0-3 3-5.5 7-5.5s7 2.5 7 5.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      <path d="M16 14.5c2.5.5 4 2 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-    </svg>
-    <span>Рефералы</span>
-  </div>
-  <!-- Пополнить — wallet -->
-  <div class="ni">
-    <svg viewBox="0 0 24 24" fill="none">
-      <path d="M20 8H4a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2z" stroke="currentColor" stroke-width="2"/>
-      <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v2" stroke="currentColor" stroke-width="2"/>
-      <circle cx="17" cy="14" r="1.5" fill="currentColor"/>
-    </svg>
-    <span>Пополнить</span>
-  </div>
-  <!-- Поддержка — headset -->
-  <div class="ni">
-    <svg viewBox="0 0 24 24" fill="none">
-      <path d="M3 18v-6a9 9 0 0 1 18 0v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3v5z" stroke="currentColor" stroke-width="2"/>
-      <path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3v5z" stroke="currentColor" stroke-width="2"/>
-    </svg>
-    <span>Поддержка</span>
-  </div>
-</nav>
-
+<script>
+document.querySelectorAll('.nav-item').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+    });
+});
+</script>
 </body>
 </html>
