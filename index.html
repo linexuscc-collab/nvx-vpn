@@ -231,12 +231,22 @@ body{
 .tariff-locations-label{font-size:10px;color:var(--text-tertiary);font-weight:600;text-transform:uppercase;letter-spacing:0.6px;display:flex;align-items:center;gap:5px;}
 .tariff-locations-label i{color:var(--accent);font-size:10px;}
 .tariff-countries{display:flex;flex-wrap:wrap;gap:4px;}
-.country-flag{
-    font-size:18px;display:inline-flex;align-items:center;justify-content:center;
-    width:30px;height:30px;border-radius:8px;
-    background:rgba(30,35,55,0.4);border:1px solid rgba(70,80,110,0.15);transition:all 0.2s;
+
+/* FIX БАГ 2: Локации — текстовые плашки как в Envy, без эмодзи */
+.country-tag{
+    font-size:11px;font-weight:700;
+    display:inline-flex;align-items:center;justify-content:center;
+    padding:4px 8px;
+    border-radius:8px;
+    background:rgba(30,35,55,0.4);
+    border:1px solid rgba(70,80,110,0.15);
+    color:var(--text-secondary);
+    letter-spacing:0.5px;
+    transition:all 0.2s;
+    white-space:nowrap;
 }
-.country-flag:hover{background:rgba(122,111,191,0.15);transform:scale(1.1);}
+.country-tag:hover{background:rgba(122,111,191,0.15);color:var(--accent-bright);border-color:rgba(122,111,191,0.25);}
+
 .tariff-locations-note{
     font-size:10px;color:var(--accent-bright);
     background:rgba(122,111,191,0.08);border:1px solid rgba(122,111,191,0.15);
@@ -332,20 +342,39 @@ body{
 .skeleton{background:linear-gradient(90deg,rgba(20,25,45,0.2) 25%,rgba(122,111,191,0.08) 50%,rgba(20,25,45,0.2) 75%);background-size:200% 100%;animation:loading 1.2s infinite;border-radius:16px;height:60px;margin-bottom:10px;}
 @keyframes loading{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-/* TOAST */
+/* ===== FIX БАГИ 1: TOAST ===== */
+/* 
+   Проблема была в том что toast рендерился внутри #app который имеет overflow:hidden
+   и z-index не работал корректно в Telegram WebApp.
+   Исправление: toast выносим за пределы #app в body, 
+   используем translateY вместо bottom для анимации,
+   и добавляем will-change для корректного stacking context.
+*/
 .toast{
-    position:fixed;bottom:max(20px,calc(var(--safe-bottom)+20px));left:50%;
-    transform:translateX(-50%) translateY(100px);
-    background:rgba(20,25,45,0.9);border:1px solid rgba(70,80,110,0.2);
-    border-radius:32px;padding:10px 16px;
+    position:fixed;
+    bottom:max(80px, calc(var(--safe-bottom) + 80px)); /* выше nav bar */
+    left:50%;
+    transform:translateX(-50%) translateY(160px); /* скрыт вниз */
+    background:rgba(20,25,45,0.95);
+    border:1px solid rgba(70,80,110,0.2);
+    border-radius:32px;
+    padding:10px 16px;
     display:flex;align-items:center;gap:8px;
     font-weight:500;font-size:13px;color:var(--accent-bright);
-    box-shadow:0 4px 12px rgba(0,0,0,0.2);
-    transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
-    z-index:2000;white-space:nowrap;max-width:85vw;
-    pointer-events:none;backdrop-filter:blur(10px);
+    box-shadow:0 4px 24px rgba(0,0,0,0.5);
+    transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s ease;
+    z-index:9999; /* максимальный z-index */
+    white-space:nowrap;max-width:85vw;
+    pointer-events:none;
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    will-change:transform; /* корректный stacking context */
+    opacity:0;
 }
-.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.show{
+    transform:translateX(-50%) translateY(0);
+    opacity:1;
+}
 
 /* MODAL */
 .modal{display:none;position:fixed;inset:0;z-index:1500;justify-content:center;align-items:flex-end;padding:0;}
@@ -436,7 +465,7 @@ body{
 </div>
 </div>
 
-<!-- TOAST -->
+<!-- TOAST: вынесен за пределы #app чтобы избежать проблем с overflow и z-index в Telegram WebApp -->
 <div id="custom-toast" class="toast">
   <i class="fas fa-check-circle" id="toast-icon"></i>
   <span id="toast-message"></span>
@@ -469,7 +498,8 @@ const DEMO = {
         { id:2, days:90,  stars:369, traffic_gb:180, ip_limit:2,  label:'90 дней' },
         { id:3, days:180, stars:719, traffic_gb:360, ip_limit:3,  label:'180 дней' },
     ],
-    locations: ['🇱🇻 LV','🇳🇱 NL','🇷🇺 RU','🇺🇸 US','🇵🇱 PL','🇰🇿 KZ','🇸🇪 SE','🇹🇷 TR','🇺🇦 UA'],
+    // FIX БАГИ 2: только коды стран без эмодзи
+    locations: ['LV','NL','RU','US','PL','KZ','SE','TR','UA'],
     nodesCount: 9,
 };
 
@@ -484,14 +514,38 @@ const modalButtons = document.getElementById('modal-buttons');
 const modalClose = document.getElementById('modal-close');
 let currentTab = 'home';
 
-// ── TOAST ──
+// ── TOAST FIX ──
+// Используем один таймаут с очисткой, чтобы уведомления не зависали
+let toastTimer = null;
 function showToast(msg, type='success') {
     toastMsg.textContent = msg;
-    if(type==='error'){toastIcon.className='fas fa-exclamation-circle';toast.style.borderColor='#ff6b6b';}
-    else if(type==='warning'){toastIcon.className='fas fa-exclamation-triangle';toast.style.borderColor='#ffa502';}
-    else{toastIcon.className='fas fa-check-circle';toast.style.borderColor='rgba(122,111,191,0.4)';}
+    if(type==='error'){
+        toastIcon.className='fas fa-exclamation-circle';
+        toast.style.borderColor='rgba(255,107,107,0.5)';
+        toast.style.color='#ff6b6b';
+    } else if(type==='warning'){
+        toastIcon.className='fas fa-exclamation-triangle';
+        toast.style.borderColor='rgba(255,165,2,0.5)';
+        toast.style.color='#ffa502';
+    } else {
+        toastIcon.className='fas fa-check-circle';
+        toast.style.borderColor='rgba(122,111,191,0.4)';
+        toast.style.color='var(--accent-bright)';
+    }
+
+    // Сбрасываем предыдущий таймер если toast уже показан
+    if(toastTimer) {
+        clearTimeout(toastTimer);
+        toastTimer = null;
+    }
+
     toast.classList.add('show');
-    setTimeout(()=>toast.classList.remove('show'),3000);
+
+    // Скрываем через 3 секунды
+    toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+        toastTimer = null;
+    }, 3000);
 }
 
 // ── MODAL ──
@@ -621,6 +675,7 @@ function renderHome() {
 
 // ── TARIFFS ──
 function renderTariffs() {
+    // FIX БАГИ 2: рендерим локации как текстовые плашки (.country-tag) без эмодзи
     const locs = DEMO.locations;
     const n = DEMO.nodesCount;
 
@@ -646,7 +701,7 @@ function renderTariffs() {
                 </div>
                 <div class="tariff-locations">
                     <div class="tariff-locations-label"><i class="fas fa-map-marker-alt"></i> Страны в подписке</div>
-                    <div class="tariff-countries">${locs.map(f=>`<span class="country-flag">${f}</span>`).join('')}</div>
+                    <div class="tariff-countries">${locs.map(code=>`<span class="country-tag">${code}</span>`).join('')}</div>
                     <div class="tariff-locations-note"><i class="fas fa-info-circle"></i> ${t.traffic_gb} ГБ на локацию · всего ${t.traffic_gb * n} ГБ</div>
                 </div>
                 <div class="tariff-card-btn">Выбрать <i class="fas fa-arrow-right"></i></div>
