@@ -7,6 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>NVX VPN</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔒</text></svg>">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -200,6 +201,13 @@ body{
     transition:var(--transition);
 }
 .glass:hover{border-color:rgba(122,111,191,0.4);}
+
+/* Connect Help Card */
+.connect-help-card:hover{
+    border-color:rgba(122,111,191,0.3) !important;
+    transform:translateY(-1px) !important;
+    background:rgba(25,32,58,0.4) !important;
+}
 
 /* ═══════════════════════════════════════
    SUBSCRIPTION CARD
@@ -817,6 +825,24 @@ function updateHeader() {
 updateHeader();
 document.getElementById('balanceDisplay').addEventListener('click',()=>switchTab('topup'));
 
+// ── ACTION ROW BUTTONS ──
+function setupActionButtons() {
+    document.querySelectorAll('.btn.action-row[data-action]').forEach(btn=>{
+        btn.addEventListener('click',()=>{
+            const action = btn.dataset.action;
+            if(action==='renew' || action==='devices'){
+                showToast('Доступно после подключения backend','warning');
+            }
+        });
+    });
+    const connectCard = document.getElementById('connectHelpCard');
+    if(connectCard){
+        connectCard.addEventListener('click',()=>{
+            showToast('Функция подключится после настройки backend');
+        });
+    }
+}
+
 // ── NAV ──
 function switchTab(tab) {
     document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
@@ -903,7 +929,7 @@ function renderHome() {
             <div class="progress-bar"><div class="progress-fill" style="width:5%"></div></div>
             <div class="detail"><i class="fas fa-mobile-alt"></i> Устройств <span class="value">32 <span style="font-size:10px;color:var(--text-tertiary);">(1 на локацию)</span></span></div>
             <div style="margin-top:12px;">
-                <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:rgba(20,25,45,0.3);border:1px solid rgba(70,80,110,0.15);border-radius:14px;cursor:pointer;transition:all 0.25s;" onclick="showToast('Функция подключится после настройки backend')" onmouseover="this.style.borderColor='rgba(122,111,191,0.3)';this.style.transform='translateY(-1px)'" onmouseout="this.style.borderColor='rgba(70,80,110,0.15)';this.style.transform=''">
+                <div class="connect-help-card" id="connectHelpCard" style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:rgba(20,25,45,0.3);border:1px solid rgba(70,80,110,0.15);border-radius:14px;cursor:pointer;transition:all 0.25s;">
                     <div style="width:36px;height:36px;border-radius:10px;background:rgba(122,111,191,0.1);border:1px solid rgba(122,111,191,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                         <i class="fas fa-rocket" style="font-size:15px;color:var(--accent-bright);"></i>
                     </div>
@@ -916,12 +942,12 @@ function renderHome() {
             </div>
             <div class="section-subtitle" style="margin-top:16px;">Быстрые действия</div>
             <div class="action-buttons">
-                <button class="btn primary action-row" onclick="showToast('Доступно после подключения backend')">
+                <button class="btn primary action-row" data-action="renew">
                     <div class="action-icon-wrap"><i class="fas fa-rotate-right"></i></div>
                     <div class="action-text-wrap"><span class="action-label">Продлить</span><span class="action-desc">Добавить дни к подписке</span></div>
                     <i class="fas fa-chevron-right action-arrow"></i>
                 </button>
-                <button class="btn primary action-row" onclick="showToast('Доступно после подключения backend')">
+                <button class="btn primary action-row" data-action="devices">
                     <div class="action-icon-wrap"><i class="fas fa-mobile-alt"></i></div>
                     <div class="action-text-wrap"><span class="action-label">Устройства</span><span class="action-desc">Подключить больше девайсов</span></div>
                     <i class="fas fa-chevron-right action-arrow"></i>
@@ -1120,16 +1146,16 @@ function renderTopUp() {
             <span style="font-size:12px;color:var(--text-secondary);line-height:1.5;">Выберите удобный способ оплаты и желаемую сумму. Средства зачисляются мгновенно.</span>
         </div>
         <div class="section-subtitle anim-up anim-up-d3">Доступные способы</div>
-        <div class="topup-method anim-up anim-up-d3" onclick="showToast('Переход к оплате через СБП')">
+        <div class="topup-method anim-up anim-up-d3" data-method="sbp">
             <i class="fas fa-university"></i><span>СБП</span><i class="fas fa-chevron-right"></i>
         </div>
-        <div class="topup-method anim-up anim-up-d4" onclick="showToast('Переход к CryptoBot')">
+        <div class="topup-method anim-up anim-up-d4" data-method="crypto">
             <i class="fas fa-coins"></i><span>CryptoBot</span><i class="fas fa-chevron-right"></i>
         </div>
-        <div class="topup-method anim-up anim-up-d5" onclick="showToast('Переход к Telegram Stars')">
+        <div class="topup-method anim-up anim-up-d5" data-method="stars">
             <i class="fas fa-star"></i><span>Telegram Stars</span><i class="fas fa-chevron-right"></i>
         </div>
-        <div class="topup-method anim-up anim-up-d6" onclick="showToast('Переход к Lolz Market')">
+        <div class="topup-method anim-up anim-up-d6" data-method="lolz">
             <i class="fas fa-shopping-cart"></i><span>Lolz Market</span><i class="fas fa-chevron-right"></i>
         </div>
     `;
@@ -1137,6 +1163,14 @@ function renderTopUp() {
         const v = document.getElementById('promoInput').value.trim();
         if(!v){showToast('Введите промокод','warning');return;}
         showToast('Промокод не найден','error');
+    });
+    // Обработчики для способов оплаты
+    document.querySelectorAll('.topup-method').forEach(method=>{
+        method.addEventListener('click',()=>{
+            const m = method.dataset.method;
+            const names = {sbp:'СБП',crypto:'CryptoBot',stars:'Telegram Stars',lolz:'Lolz Market'};
+            showToast('Переход к оплате через '+names[m]);
+        });
     });
     registerAnimCleanup();
 }
@@ -1148,7 +1182,7 @@ function renderSupport() {
         <div class="support-card glass anim-fade anim-fade-d1">
             <i class="fas fa-headset support-icon"></i>
             <p>Есть вопросы? Свяжитесь с нами 24/7</p>
-            <button class="btn primary" onclick="showToast('Открываем чат поддержки')">
+            <button class="btn primary" id="supportChatBtn">
                 <i class="fab fa-telegram"></i> Открыть чат
             </button>
         </div>
@@ -1174,6 +1208,10 @@ function renderSupport() {
             </div>
         </div>
     `;
+    // Обработчик для кнопки поддержки
+    document.getElementById('supportChatBtn')?.addEventListener('click',()=>{
+        showToast('Открываем чат поддержки');
+    });
     registerAnimCleanup();
 }
 
