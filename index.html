@@ -574,7 +574,7 @@ body{
     color:var(--text-primary);font-weight:700;margin:0;
 }
 #modal-body{padding:20px 20px 0 20px;}
-#modal-buttons.modal-buttons{padding:0 20px max(16px,calc(var(--safe-bottom)+12px)) 20px;}
+#modal-buttons.modal-buttons{padding:0 20px max(24px,calc(var(--safe-bottom)+16px)) 20px;}
 .modal-close{
     background:rgba(30,35,55,0.5);border:1px solid rgba(70,80,110,0.2);
     border-radius:50%;width:32px;height:32px;
@@ -583,6 +583,7 @@ body{
 }
 .modal-close:hover{background:rgba(122,111,191,0.25);color:var(--accent-bright);}
 
+/* FIX: название тарифа в модалке — минималистичный Inter Light как у Envy */
 .modal-tariff-name{
     font-family:var(--font-body);
     font-size:22px;font-weight:300;
@@ -591,6 +592,8 @@ body{
     letter-spacing:0.5px;
     padding:0 0 16px;
 }
+
+/* строки данных — две колонки */
 .modal-detail-row{
     display:flex;justify-content:space-between;align-items:center;
     padding:7px 0;border-bottom:1px solid rgba(70,80,110,0.1);font-size:13px;
@@ -599,6 +602,8 @@ body{
 .modal-detail-label{color:var(--text-secondary);}
 .modal-detail-value{color:var(--text-primary);font-weight:600;}
 .modal-detail-value.accent{color:var(--accent-bright);font-size:17px;font-weight:700;}
+
+/* FIX: строка баланса — иконка кошелька + белые цифры + правильные отступы */
 .modal-balance-warn{
     display:flex;align-items:center;gap:10px;
     padding:11px 14px;
@@ -612,8 +617,9 @@ body{
 .modal-balance-warn i{font-size:15px;color:#ff6b6b;flex-shrink:0;}
 .modal-balance-warn .warn-balance{color:var(--text-primary);font-weight:600;}
 .modal-balance-warn .warn-short{color:#ff6b6b;font-weight:700;}
+
 .modal-buttons{display:flex;flex-direction:column;gap:8px;margin-top:16px;}
-/* Кнопка оплаты как в Envy VPN */
+/* FIX: кнопка оплаты — компактнее, стиль как у Envy */
 .modal-btn{
     border-radius:14px;padding:12px 16px;font-size:14px;font-weight:600;
     color:var(--text-primary);cursor:pointer;transition:all 0.25s;
@@ -629,22 +635,22 @@ body{
     color:var(--accent-bright);transform:translateY(-1px);
 }
 .modal-btn-primary{
-    background:linear-gradient(135deg,rgba(122,111,191,0.75),rgba(154,143,223,0.55)) !important;
-    border:1px solid rgba(122,111,191,0.4) !important;
+    background:linear-gradient(135deg,rgba(122,111,191,0.8),rgba(154,143,223,0.6)) !important;
+    border:1px solid rgba(122,111,191,0.5) !important;
     color:white !important;
-    font-size:15px !important;
-    font-weight:600 !important;
-    height:52px !important;
-    min-height:52px !important;
-    border-radius:16px !important;
-    padding:0 18px !important;
-    letter-spacing:0.2px !important;
-    box-shadow:0 4px 14px rgba(122,111,191,0.25) !important;
+    font-size:16px !important;
+    font-weight:700 !important;
+    min-height:56px !important;
+    height:56px !important;
+    border-radius:20px !important;
+    padding:0 20px !important;
+    letter-spacing:0.3px !important;
+    box-shadow:0 4px 16px rgba(122,111,191,0.2) !important;
 }
 .modal-btn-primary:hover{
-    background:linear-gradient(135deg,rgba(135,123,205,0.85),rgba(165,153,235,0.65)) !important;
-    box-shadow:0 6px 18px rgba(122,111,191,0.35) !important;
-    transform:translateY(-1px) !important;
+    background:linear-gradient(135deg,rgba(140,128,210,0.95),rgba(170,158,240,0.75)) !important;
+    box-shadow:0 8px 24px rgba(122,111,191,0.4) !important;
+    transform:translateY(-2px) !important;
 }
 
 @keyframes modalSlideUp{0%{transform:translateY(100%);opacity:0}100%{transform:translateY(0);opacity:1}}
@@ -997,16 +1003,17 @@ function renderTariffs() {
 
             modalTitle.textContent = 'Подтверждение покупки';
 
+            // FIX: "30 дней доступа" + минималистичный шрифт Inter Light
             modalBody.innerHTML = `
                 <div class="modal-tariff-name">${t.days} дней доступа</div>
                 <div style="background:rgba(0,0,0,0.15);border:1px solid rgba(70,80,110,0.12);border-radius:14px;padding:4px 14px;margin-bottom:4px;">
                     <div class="modal-detail-row">
                         <span class="modal-detail-label">Трафик</span>
-                        <span class="modal-detail-value">${t.traffic_gb * n} ГБ <span class="modal-detail-sub">(${t.traffic_gb} ГБ на лок.)</span></span>
+                        <span class="modal-detail-value">${t.traffic_gb * n} ГБ <span style="font-size:10px;color:var(--text-tertiary);">(${t.traffic_gb} ГБ на лок.)</span></span>
                     </div>
                     <div class="modal-detail-row">
                         <span class="modal-detail-label">Устройства</span>
-                        <span class="modal-detail-value">${t.ip_limit * n} <span class="modal-detail-sub">(${t.ip_limit} на лок.)</span></span>
+                        <span class="modal-detail-value">${t.ip_limit * n} <span style="font-size:10px;color:var(--text-tertiary);">(${t.ip_limit} на лок.)</span></span>
                     </div>
                     <div class="modal-detail-row">
                         <span class="modal-detail-label">Стоимость</span>
@@ -1023,7 +1030,37 @@ function renderTariffs() {
             modalButtons.innerHTML = '';
             const btn = document.createElement('button');
             btn.innerHTML = `<i class="fas fa-credit-card"></i> Оплатить ${t.stars}₽`;
-            btn.className = 'modal-btn modal-btn-primary';
+            // Задаём стили через setProperty с 'important' — это единственный надёжный способ
+            const btnStyles = {
+                'min-height': '54px',
+                'height': '54px',
+                'border-radius': '18px',
+                'font-size': '15px',
+                'font-weight': '700',
+                'padding': '0 20px',
+                'width': '100%',
+                'display': 'flex',
+                'align-items': 'center',
+                'justify-content': 'center',
+                'gap': '8px',
+                'background': 'linear-gradient(135deg,rgba(122,111,191,0.85),rgba(154,143,223,0.65))',
+                'border': '1px solid rgba(122,111,191,0.5)',
+                'color': 'white',
+                'cursor': 'pointer',
+                'font-family': 'Inter, sans-serif',
+                'letter-spacing': '0.2px',
+                'box-shadow': '0 4px 16px rgba(122,111,191,0.25)',
+                'transition': 'transform 0.25s ease, box-shadow 0.25s ease',
+            };
+            Object.entries(btnStyles).forEach(([k,v]) => btn.style.setProperty(k, v, 'important'));
+            btn.addEventListener('mouseenter',()=>{
+                btn.style.setProperty('transform','translateY(-2px)','important');
+                btn.style.setProperty('box-shadow','0 8px 24px rgba(122,111,191,0.4)','important');
+            });
+            btn.addEventListener('mouseleave',()=>{
+                btn.style.setProperty('transform','none','important');
+                btn.style.setProperty('box-shadow','0 4px 16px rgba(122,111,191,0.25)','important');
+            });
             btn.addEventListener('click',()=>{
                 hideModal();
                 if(notEnough){ switchTab('topup'); }
