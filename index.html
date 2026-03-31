@@ -65,7 +65,7 @@ body{
 }
 
 @keyframes fadeDown{
-    from{opacity:0;transform:translateY(-7px);}
+    from{opacity:0;transform:translateY(-8px);}
     to{opacity:1;transform:translateY(0);}
 }
 @keyframes slideInLeft{
@@ -77,63 +77,62 @@ body{
     to{opacity:1;transform:translateY(0);}
 }
 @keyframes fadeIn{
-    from{opacity:0;transform:scale(0.99);}
-    to{opacity:1;transform:scale(1);}
+    from{opacity:0;}
+    to{opacity:1;}
 }
 
-/* Title всегда сверху */
+/* Title */
 .anim-title{
-    animation:fadeDown 0.85s cubic-bezier(0.16,1,0.3,1) forwards;
+    animation:fadeDown 0.55s cubic-bezier(0.16,1,0.3,1) forwards;
     opacity:0;
 }
 
-/* Главная — блоки слева */
+/* Главная — слева */
 .anim-left{
-    animation:slideInLeft 0.85s cubic-bezier(0.16,1,0.3,1) forwards;
+    animation:slideInLeft 0.55s cubic-bezier(0.16,1,0.3,1) forwards;
     opacity:0;
 }
-.anim-left-d1{animation-delay:0.10s;}
-.anim-left-d2{animation-delay:0.22s;}
-.anim-left-d3{animation-delay:0.34s;}
+.anim-left-d1{animation-delay:0.07s;}
+.anim-left-d2{animation-delay:0.15s;}
+.anim-left-d3{animation-delay:0.23s;}
 
-/* Тарифы — снизу вверх stagger */
+/* Снизу вверх stagger */
 .anim-up{
-    animation:fadeUp 0.80s cubic-bezier(0.16,1,0.3,1) forwards;
+    animation:fadeUp 0.55s cubic-bezier(0.16,1,0.3,1) forwards;
     opacity:0;
 }
-.anim-up-d1{animation-delay:0.08s;}
-.anim-up-d2{animation-delay:0.20s;}
-.anim-up-d3{animation-delay:0.32s;}
-.anim-up-d4{animation-delay:0.44s;}
-.anim-up-d5{animation-delay:0.56s;}
-.anim-up-d6{animation-delay:0.68s;}
+.anim-up-d1{animation-delay:0.07s;}
+.anim-up-d2{animation-delay:0.14s;}
+.anim-up-d3{animation-delay:0.21s;}
+.anim-up-d4{animation-delay:0.28s;}
+.anim-up-d5{animation-delay:0.35s;}
+.anim-up-d6{animation-delay:0.42s;}
 
-/* Рефералы — сверху/снизу */
+/* Сверху вниз */
 .anim-down{
-    animation:fadeDown 0.85s cubic-bezier(0.16,1,0.3,1) forwards;
+    animation:fadeDown 0.55s cubic-bezier(0.16,1,0.3,1) forwards;
     opacity:0;
 }
-.anim-down-d1{animation-delay:0.10s;}
-.anim-down-d2{animation-delay:0.22s;}
-.anim-down-d3{animation-delay:0.34s;}
+.anim-down-d1{animation-delay:0.07s;}
+.anim-down-d2{animation-delay:0.14s;}
+.anim-down-d3{animation-delay:0.21s;}
 
-/* Поддержка — плавный fadeIn */
+/* Плавный fadeIn */
 .anim-fade{
-    animation:fadeIn 0.88s cubic-bezier(0.16,1,0.3,1) forwards;
+    animation:fadeIn 0.5s ease-out forwards;
     opacity:0;
 }
-.anim-fade-d1{animation-delay:0.12s;}
-.anim-fade-d2{animation-delay:0.26s;}
-.anim-fade-d3{animation-delay:0.40s;}
-.anim-fade-d4{animation-delay:0.54s;}
-.anim-fade-d5{animation-delay:0.68s;}
-.anim-fade-d6{animation-delay:0.82s;}
+.anim-fade-d1{animation-delay:0.07s;}
+.anim-fade-d2{animation-delay:0.14s;}
+.anim-fade-d3{animation-delay:0.21s;}
+.anim-fade-d4{animation-delay:0.28s;}
+.anim-fade-d5{animation-delay:0.35s;}
+.anim-fade-d6{animation-delay:0.42s;}
 
-/* После анимации — снимаем animation чтобы hover:transform работал */
+/* После анимации — снимаем чтобы hover работал */
 .anim-done{
     animation:none !important;
     opacity:1 !important;
-    /* transform НЕ фиксируем — hover должен свободно работать */
 }
 
 /* ═══════════════════════════════════════
@@ -634,30 +633,36 @@ body{
 .modal-buttons{display:flex;flex-direction:column;gap:8px;margin-top:16px;}
 /* FIX: кнопка оплаты — компактнее, стиль как у Envy */
 .modal-btn{
-    background:rgba(25,30,52,0.8);border:1px solid rgba(70,80,110,0.2);
     border-radius:14px;padding:12px 16px;font-size:14px;font-weight:600;
     color:var(--text-primary);cursor:pointer;transition:all 0.25s;
-    width:100%;text-align:center;font-family:var(--font-body);
-    display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;
+    width:100%;font-family:var(--font-body);
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    min-height:46px;
+    background:rgba(25,30,52,0.8);
+    border:1px solid rgba(70,80,110,0.2);
+    text-align:center;
 }
 .modal-btn:hover{
     background:rgba(122,111,191,0.2);border-color:rgba(122,111,191,0.3);
     color:var(--accent-bright);transform:translateY(-1px);
 }
 .modal-btn-primary{
-    background:linear-gradient(135deg,rgba(122,111,191,0.75),rgba(154,143,223,0.55))!important;
-    border-color:rgba(122,111,191,0.4)!important;
-    color:white!important;
-    font-size:16px!important;
-    font-weight:700!important;
-    min-height:54px!important;
-    border-radius:18px!important;
-    letter-spacing:0.2px;
+    background:linear-gradient(135deg,rgba(122,111,191,0.8),rgba(154,143,223,0.6)) !important;
+    border:1px solid rgba(122,111,191,0.5) !important;
+    color:white !important;
+    font-size:16px !important;
+    font-weight:700 !important;
+    min-height:56px !important;
+    height:56px !important;
+    border-radius:20px !important;
+    padding:0 20px !important;
+    letter-spacing:0.3px !important;
+    box-shadow:0 4px 16px rgba(122,111,191,0.2) !important;
 }
 .modal-btn-primary:hover{
-    background:linear-gradient(135deg,rgba(122,111,191,0.9),rgba(154,143,223,0.7))!important;
-    box-shadow:0 6px 22px rgba(122,111,191,0.35)!important;
-    transform:translateY(-1px)!important;
+    background:linear-gradient(135deg,rgba(140,128,210,0.95),rgba(170,158,240,0.75)) !important;
+    box-shadow:0 8px 24px rgba(122,111,191,0.4) !important;
+    transform:translateY(-2px) !important;
 }
 
 @keyframes modalSlideUp{0%{transform:translateY(100%);opacity:0}100%{transform:translateY(0);opacity:1}}
@@ -743,28 +748,13 @@ body{
 </div>
 
 <script>
-// ── АНИМАЦИИ: после завершения снимаем animation чтобы hover:transform работал ──
+// ── АНИМАЦИИ: через 1.2s гарантированно снимаем классы ──
 function registerAnimCleanup() {
-    requestAnimationFrame(() => {
-        const els = document.querySelectorAll('.anim-title,.anim-left,.anim-up,.anim-down,.anim-fade');
-        els.forEach(el => {
-            // Вычисляем максимальную задержку + длительность для fallback
-            const style = getComputedStyle(el);
-            const dur = (parseFloat(style.animationDuration) || 0.6) * 1000;
-            const del = (parseFloat(style.animationDelay) || 0) * 1000;
-            const total = dur + del + 50; // +50ms запас
-
-            // Слушаем событие окончания
-            el.addEventListener('animationend', () => {
-                el.classList.add('anim-done');
-            }, { once: true });
-
-            // Fallback — принудительно через таймер
-            setTimeout(() => {
-                el.classList.add('anim-done');
-            }, total);
+    setTimeout(() => {
+        document.querySelectorAll('.anim-title,.anim-left,.anim-up,.anim-down,.anim-fade').forEach(el => {
+            el.classList.add('anim-done');
         });
-    });
+    }, 1200);
 }
 
 const DEMO = {
