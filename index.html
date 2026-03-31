@@ -634,23 +634,24 @@ body{
     background:rgba(122,111,191,0.2);border-color:rgba(122,111,191,0.3);
     color:var(--accent-bright);transform:translateY(-1px);
 }
+/* Кнопка оплаты как в Envy VPN - компактная, с иконкой */
 .modal-btn-primary{
-    background:linear-gradient(135deg,rgba(122,111,191,0.8),rgba(154,143,223,0.6)) !important;
-    border:1px solid rgba(122,111,191,0.5) !important;
+    background:linear-gradient(135deg,rgba(122,111,191,0.75),rgba(154,143,223,0.55)) !important;
+    border:1px solid rgba(122,111,191,0.4) !important;
     color:white !important;
-    font-size:16px !important;
-    font-weight:700 !important;
-    min-height:56px !important;
-    height:56px !important;
-    border-radius:20px !important;
-    padding:0 20px !important;
-    letter-spacing:0.3px !important;
-    box-shadow:0 4px 16px rgba(122,111,191,0.2) !important;
+    font-size:15px !important;
+    font-weight:600 !important;
+    height:52px !important;
+    min-height:52px !important;
+    border-radius:16px !important;
+    padding:0 18px !important;
+    letter-spacing:0.2px !important;
+    box-shadow:0 4px 14px rgba(122,111,191,0.25) !important;
 }
 .modal-btn-primary:hover{
-    background:linear-gradient(135deg,rgba(140,128,210,0.95),rgba(170,158,240,0.75)) !important;
-    box-shadow:0 8px 24px rgba(122,111,191,0.4) !important;
-    transform:translateY(-2px) !important;
+    background:linear-gradient(135deg,rgba(135,123,205,0.85),rgba(165,153,235,0.65)) !important;
+    box-shadow:0 6px 18px rgba(122,111,191,0.35) !important;
+    transform:translateY(-1px) !important;
 }
 
 @keyframes modalSlideUp{0%{transform:translateY(100%);opacity:0}100%{transform:translateY(0);opacity:1}}
@@ -1030,37 +1031,7 @@ function renderTariffs() {
             modalButtons.innerHTML = '';
             const btn = document.createElement('button');
             btn.innerHTML = `<i class="fas fa-credit-card"></i> Оплатить ${t.stars}₽`;
-            // Задаём стили через setProperty с 'important' — это единственный надёжный способ
-            const btnStyles = {
-                'min-height': '54px',
-                'height': '54px',
-                'border-radius': '18px',
-                'font-size': '15px',
-                'font-weight': '700',
-                'padding': '0 20px',
-                'width': '100%',
-                'display': 'flex',
-                'align-items': 'center',
-                'justify-content': 'center',
-                'gap': '8px',
-                'background': 'linear-gradient(135deg,rgba(122,111,191,0.85),rgba(154,143,223,0.65))',
-                'border': '1px solid rgba(122,111,191,0.5)',
-                'color': 'white',
-                'cursor': 'pointer',
-                'font-family': 'Inter, sans-serif',
-                'letter-spacing': '0.2px',
-                'box-shadow': '0 4px 16px rgba(122,111,191,0.25)',
-                'transition': 'transform 0.25s ease, box-shadow 0.25s ease',
-            };
-            Object.entries(btnStyles).forEach(([k,v]) => btn.style.setProperty(k, v, 'important'));
-            btn.addEventListener('mouseenter',()=>{
-                btn.style.setProperty('transform','translateY(-2px)','important');
-                btn.style.setProperty('box-shadow','0 8px 24px rgba(122,111,191,0.4)','important');
-            });
-            btn.addEventListener('mouseleave',()=>{
-                btn.style.setProperty('transform','none','important');
-                btn.style.setProperty('box-shadow','0 4px 16px rgba(122,111,191,0.25)','important');
-            });
+            btn.className = 'modal-btn modal-btn-primary';
             btn.addEventListener('click',()=>{
                 hideModal();
                 if(notEnough){ switchTab('topup'); }
