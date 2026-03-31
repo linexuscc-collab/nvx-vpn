@@ -221,8 +221,15 @@ body{
     border-radius:18px;backdrop-filter:blur(10px);
     -webkit-backdrop-filter:blur(10px);
     display:flex;flex-direction:column;gap:9px;
+    will-change:transform;
 }
-.tariff-card:hover{background:rgba(30,40,65,0.35);border-color:rgba(122,111,191,0.35);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.25);}
+.tariff-card:hover{
+    background:rgba(30,40,65,0.35);
+    border-color:rgba(122,111,191,0.35);
+    transform:translateY(-2px);
+    box-shadow:0 6px 20px rgba(0,0,0,0.25);
+}
+.tariff-card:active{transform:translateY(0);}
 .tariff-card-header{display:flex;align-items:center;justify-content:space-between;gap:8px;}
 .tariff-card-days{display:flex;align-items:baseline;gap:4px;}
 /* FIX: уменьшен размер шрифта дней как у Envy */
@@ -512,23 +519,81 @@ body{
 }
 .modal-balance-warn i{font-size:14px;flex-shrink:0;}
 
-/* FIX: строки данных в модалке — две колонки как у Envy */
+/* MODAL DETAIL ROWS - как у Envy */
 .modal-detail-row{
     display:flex;justify-content:space-between;align-items:center;
-    padding:7px 0;
-    border-bottom:1px solid rgba(70,80,110,0.1);
+    padding:8px 0;
+    border-bottom:1px solid rgba(70,80,110,0.12);
     font-size:13px;
 }
 .modal-detail-row:last-of-type{border-bottom:none;}
-.modal-detail-label{color:var(--text-secondary);}
-.modal-detail-value{color:var(--text-primary);font-weight:600;}
-.modal-detail-value.accent{color:var(--accent-bright);font-size:17px;font-weight:800;}
+.modal-detail-label{color:var(--text-secondary);font-weight:500;}
+.modal-detail-value{color:var(--text-primary);font-weight:600;text-align:right;}
+.modal-detail-value.accent{color:var(--accent-bright);font-size:20px;font-weight:800;}
+.modal-detail-sub{font-size:10px;color:var(--text-tertiary);font-weight:500;}
+
+/* MODAL TARIFF NAME - как у Envy */
+.modal-tariff-section{
+    text-align:center;
+    padding:4px 0 16px;
+}
+.modal-tariff-label{
+    font-size:12px;color:var(--text-secondary);
+    font-weight:500;margin-bottom:4px;
+}
 .modal-tariff-name{
     font-family:var(--font-display);
-    font-size:20px;font-weight:800;
+    font-size:22px;font-weight:800;
     color:var(--accent-bright);
+    line-height:1.2;
+}
+
+/* MODAL TOTAL SECTION */
+.modal-total-section{
     text-align:center;
-    padding:4px 0 14px;
+    padding:14px 0 8px;
+    border-top:1px solid rgba(70,80,110,0.12);
+    margin-top:8px;
+}
+.modal-total-label{
+    font-size:12px;color:var(--text-secondary);
+    font-weight:500;margin-bottom:4px;
+}
+.modal-total-value{
+    font-family:var(--font-display);
+    font-size:24px;font-weight:800;
+    color:var(--accent-bright);
+}
+
+/* MODAL BALANCE WARN - компактнее как у Envy */
+.modal-balance-warn{
+    display:flex;align-items:center;gap:8px;
+    padding:10px 12px;
+    background:rgba(255,80,80,0.06);
+    border:1px solid rgba(255,80,80,0.15);
+    border-radius:10px;
+    font-size:12px;font-weight:600;
+    color:#ff6b6b;
+    margin-top:12px;
+}
+.modal-balance-warn i{font-size:13px;flex-shrink:0;}
+.modal-balance-warn .balance-amount{font-weight:800;}
+.modal-balance-warn .missing-amount{color:#ff6b6b;font-weight:800;}
+
+/* MODAL BUTTON - с суммой как у Envy */
+.modal-btn-price{
+    background:linear-gradient(135deg,rgba(122,111,191,0.7),rgba(154,143,223,0.5))!important;
+    border-color:rgba(122,111,191,0.4)!important;
+    color:white!important;
+    font-size:14px!important;
+    font-weight:700!important;
+    padding:14px 20px!important;
+    min-height:52px!important;
+}
+.modal-btn-price:hover{
+    background:linear-gradient(135deg,rgba(122,111,191,0.85),rgba(154,143,223,0.65))!important;
+    box-shadow:0 4px 16px rgba(122,111,191,0.3)!important;
+    transform:translateY(-1px)!important;
 }
 
 @keyframes modalSlideUp{0%{transform:translateY(100%);opacity:0}100%{transform:translateY(0);opacity:1}}
@@ -852,36 +917,37 @@ function renderTariffs() {
 
             modalTitle.textContent = 'Подтверждение покупки';
 
-            // FIX: данные в две колонки как у Envy
+            // Дизайн модалки как у Envy - компактный
             modalBody.innerHTML = `
-                <div class="modal-tariff-name">${t.days} дней</div>
-                <div style="background:rgba(0,0,0,0.15);border:1px solid rgba(70,80,110,0.12);border-radius:14px;padding:4px 14px;margin-bottom:12px;">
-                    <div class="modal-detail-row">
-                        <span class="modal-detail-label">Трафик</span>
-                        <span class="modal-detail-value">${t.traffic_gb * n} ГБ <span style="font-size:10px;color:var(--text-tertiary);">(${t.traffic_gb} ГБ на лок.)</span></span>
-                    </div>
-                    <div class="modal-detail-row">
-                        <span class="modal-detail-label">Устройства</span>
-                        <span class="modal-detail-value">${t.ip_limit * n} <span style="font-size:10px;color:var(--text-tertiary);">(${t.ip_limit} на лок.)</span></span>
-                    </div>
-                    <div class="modal-detail-row">
-                        <span class="modal-detail-label">Стоимость</span>
-                        <span class="modal-detail-value accent">${t.stars}₽</span>
-                    </div>
+                <div class="modal-tariff-section">
+                    <div class="modal-tariff-label">Тариф</div>
+                    <div class="modal-tariff-name">${t.days} дней</div>
+                </div>
+                <div class="modal-detail-row">
+                    <span class="modal-detail-label">Трафик</span>
+                    <span class="modal-detail-value">${t.traffic_gb * n} ГБ <span class="modal-detail-sub">(${t.traffic_gb} ГБ на локацию)</span></span>
+                </div>
+                <div class="modal-detail-row">
+                    <span class="modal-detail-label">Устройства</span>
+                    <span class="modal-detail-value">${t.ip_limit * n} <span class="modal-detail-sub">(${t.ip_limit} на локацию)</span></span>
+                </div>
+                <div class="modal-total-section">
+                    <div class="modal-total-label">Стоимость</div>
+                    <div class="modal-total-value">${t.stars}₽</div>
                 </div>
                 ${notEnough ? `
                 <div class="modal-balance-warn">
                     <i class="fas fa-exclamation-circle"></i>
-                    На балансе ${bal.toFixed(2)}₽ — не хватает ${diff}₽
+                    <span>На балансе <span class="balance-amount">${bal.toFixed(2)}₽</span> — не хватает <span class="missing-amount">${diff}₽</span></span>
                 </div>` : ''}
             `;
 
             modalButtons.innerHTML = '';
             const btn = document.createElement('button');
-            btn.className = 'modal-btn modal-btn-primary';
+            btn.className = 'modal-btn modal-btn-price';
 
             if(notEnough) {
-                btn.innerHTML = '<i class="fas fa-wallet"></i> Пополнить баланс и оплатить';
+                btn.innerHTML = `<i class="fas fa-wallet"></i> Оплатить ${t.stars}₽`;
                 btn.addEventListener('click',()=>{ hideModal(); switchTab('topup'); });
             } else {
                 btn.innerHTML = `<i class="fas fa-credit-card"></i> Оплатить ${t.stars}₽`;
