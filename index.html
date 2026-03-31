@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#0a0e27">
+<meta name="theme-color" content="#1a1635">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>NVX VPN</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔒</text></svg>">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -30,7 +31,7 @@
 html,body{width:100%;height:100%;}
 body{
     font-family:var(--font-body);
-    background:#000;
+    background:#1a1635;
     color:var(--text-primary);
     overflow:hidden;
     -webkit-font-smoothing:antialiased;
@@ -441,17 +442,18 @@ body{
 .tariff-locations-label i{color:var(--accent);font-size:10px;}
 .tariff-countries{display:flex;flex-wrap:wrap;gap:5px;}
 .country-flag{
-    font-size:22px;
     display:inline-flex;align-items:center;justify-content:center;
-    width:32px;height:32px;
-    border-radius:8px;
-    background:rgba(30,35,55,0.4);
+    width:28px;height:28px;
+    border-radius:6px;
+    background:rgba(30,35,55,0.5);
     border:1px solid rgba(70,80,110,0.15);
-    transition:all 0.22s;
+    transition:all 0.2s;
     cursor:default;
-    line-height:1;
+    overflow:hidden;
+    padding:0;
 }
-.country-flag:hover{background:rgba(122,111,191,0.15);border-color:rgba(122,111,191,0.3);transform:scale(1.12);}
+.country-flag img{width:100%;height:100%;object-fit:cover;}
+.country-flag:hover{background:rgba(122,111,191,0.15);border-color:rgba(122,111,191,0.3);transform:scale(1.1);}
 .tariff-locations-note{
     font-size:10px;color:var(--accent-bright);
     background:rgba(122,111,191,0.08);border:1px solid rgba(122,111,191,0.15);
@@ -879,15 +881,15 @@ const DEMO = {
         { id:3, days:180, stars:719, traffic_gb:360, ip_limit:3 },
     ],
     locations: [
-        {code:'LV', flag:'🇱🇻'},
-        {code:'NL', flag:'🇳🇱'},
-        {code:'RU', flag:'🇷🇺'},
-        {code:'US', flag:'🇺🇸'},
-        {code:'PL', flag:'🇵🇱'},
-        {code:'KZ', flag:'🇰🇿'},
-        {code:'SE', flag:'🇸🇪'},
-        {code:'TR', flag:'🇹🇷'},
-        {code:'UA', flag:'🇺🇦'},
+        {code:'LV', flag:'https://flagcdn.com/w40/lv.png'},
+        {code:'NL', flag:'https://flagcdn.com/w40/nl.png'},
+        {code:'RU', flag:'https://flagcdn.com/w40/ru.png'},
+        {code:'US', flag:'https://flagcdn.com/w40/us.png'},
+        {code:'PL', flag:'https://flagcdn.com/w40/pl.png'},
+        {code:'KZ', flag:'https://flagcdn.com/w40/kz.png'},
+        {code:'SE', flag:'https://flagcdn.com/w40/se.png'},
+        {code:'TR', flag:'https://flagcdn.com/w40/tr.png'},
+        {code:'UA', flag:'https://flagcdn.com/w40/ua.png'},
     ],
     nodesCount: 9,
 };
@@ -1100,7 +1102,7 @@ function renderTariffs() {
                 </div>
                 <div class="tariff-locations">
                     <div class="tariff-locations-label"><i class="fas fa-map-marker-alt"></i> Страны в подписке</div>
-                    <div class="tariff-countries">${locs.map(l=>`<span class="country-flag" title="${l.code}">${l.flag}</span>`).join('')}</div>
+                    <div class="tariff-countries">${locs.map(l=>`<span class="country-flag" title="${l.code}"><img src="${l.flag}" alt="${l.code}"></span>`).join('')}</div>
                     <div class="tariff-locations-note"><i class="fas fa-info-circle"></i> ${t.traffic_gb} ГБ на локацию · всего ${t.traffic_gb * n} ГБ</div>
                 </div>
                 <div class="tariff-card-btn">Выбрать <i class="fas fa-arrow-right"></i></div>
