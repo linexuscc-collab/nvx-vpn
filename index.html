@@ -38,22 +38,36 @@ body{
 }
 /* ═══════════════════════════════════════
    3D SPACE BACKGROUND — как у EnvyVPN
+   УСИЛЕННОЕ СВЕЧЕНИЕ И ИНТЕНСИВНОСТЬ
 ═══════════════════════════════════════ */
 #space-bg{
     position:fixed;inset:0;z-index:-1;
-    background:radial-gradient(ellipse at 50% 50%,#0d0a1f 0%,#000 70%);
+    background:radial-gradient(ellipse at 50% 50%,#1a1635 0%,#0a0a1a 50%,#000 100%);
     overflow:hidden;
+}
+/* Дополнительный слой свечения */
+#space-bg::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(circle at 50% 50%,rgba(122,111,191,0.15) 0%,transparent 60%);
+    filter:blur(60px);
+    animation:pulseGlow 8s ease-in-out infinite;
+}
+@keyframes pulseGlow{
+    0%,100%{opacity:0.6;transform:scale(1);}
+    50%{opacity:1;transform:scale(1.1);}
 }
 .space-orb{
     position:absolute;border-radius:50%;
     background:radial-gradient(circle at 30% 30%,
-        rgba(122,111,191,0.4) 0%,
-        rgba(76,66,141,0.2) 40%,
+        rgba(122,111,191,0.6) 0%,
+        rgba(154,143,223,0.4) 30%,
+        rgba(76,66,141,0.25) 50%,
         rgba(30,25,65,0.1) 70%,
         transparent 100%);
-    filter:blur(40px);
+    filter:blur(50px);
     animation:orbFloat 20s ease-in-out infinite;
     will-change:transform;
+    box-shadow:0 0 100px rgba(122,111,191,0.3), inset 0 0 60px rgba(154,143,223,0.2);
 }
 .space-orb-1{
     width:600px;height:600px;
