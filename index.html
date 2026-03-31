@@ -844,6 +844,13 @@ body{
 </div>
 
 <script>
+// ── TELEGRAM WEB APP: настраиваем цвета фона ──
+if(window.Telegram && window.Telegram.WebApp){
+    Telegram.WebApp.setHeaderColor('#1a1635');
+    Telegram.WebApp.setBackgroundColor('#1a1635');
+    Telegram.WebApp.expand();
+}
+
 // ── АНИМАЦИИ: после завершения снимаем классы → hover свободен ──
 let cleanupTimer = null;
 function registerAnimCleanup() {
