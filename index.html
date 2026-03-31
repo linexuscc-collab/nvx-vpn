@@ -1029,6 +1029,7 @@ function renderTariffs() {
 
             modalButtons.innerHTML = '';
             const btn = document.createElement('button');
+            btn.className = 'modal-btn modal-btn-primary';
             btn.innerHTML = `<i class="fas fa-credit-card"></i> Оплатить ${t.stars}₽`;
             // Задаём стили через setProperty с 'important' — это единственный надёжный способ
             const btnStyles = {
