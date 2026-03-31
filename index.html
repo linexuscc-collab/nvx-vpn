@@ -46,7 +46,7 @@ body{
     overflow:hidden;
 }
 
-/* HEADER */
+/* HEADER — hover lift */
 .header{
     display:flex;justify-content:space-between;align-items:center;
     padding:10px 14px;
@@ -58,6 +58,14 @@ body{
     border-radius:20px;
     backdrop-filter:blur(10px);
     -webkit-backdrop-filter:blur(10px);
+    transition:var(--transition);
+    cursor:default;
+}
+.header:hover{
+    transform:translateY(-2px);
+    border-color:rgba(122,111,191,0.35);
+    background:rgba(25,32,58,0.35);
+    box-shadow:0 6px 20px rgba(0,0,0,0.25);
 }
 .user-info{display:flex;align-items:center;gap:10px;min-width:0;}
 .avatar{
@@ -122,7 +130,7 @@ body{
 }
 .glass:hover{border-color:rgba(122,111,191,0.4);}
 
-/* SUBSCRIPTION CARD */
+/* SUBSCRIPTION CARD — hover lift */
 .subscription-card{
     padding:16px;margin-bottom:12px;
     position:relative;overflow:hidden;
@@ -130,6 +138,12 @@ body{
     border:1px solid rgba(80,90,130,0.25);
     border-radius:20px;
     backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    transition:var(--transition);
+}
+.subscription-card:hover{
+    transform:translateY(-2px);
+    border-color:rgba(122,111,191,0.4);
+    box-shadow:0 6px 20px rgba(0,0,0,0.25);
 }
 .subscription-card .title{
     font-family:var(--font-display);font-size:16px;font-weight:700;
@@ -184,7 +198,7 @@ body{
     border:1px solid rgba(70,80,110,0.2);
     box-shadow:none!important;color:var(--text-primary);
 }
-.btn.action-row:hover{background:rgba(122,111,191,0.1)!important;border-color:rgba(122,111,191,0.25);transform:translateY(-1px);}
+.btn.action-row:hover{background:rgba(122,111,191,0.1)!important;border-color:rgba(122,111,191,0.25);transform:translateY(-2px);}
 .action-icon-wrap{
     width:42px;height:42px;border-radius:12px;
     background:rgba(70,80,110,0.15);
@@ -197,47 +211,48 @@ body{
 .action-desc{font-size:11px;color:rgba(255,255,255,0.5);}
 .action-arrow{font-size:11px;color:rgba(255,255,255,0.35);flex-shrink:0;}
 
-/* TARIFF CARDS */
-.tariffs-list{display:flex;flex-direction:column;gap:12px;}
+/* TARIFF CARDS — компактнее как у Envy */
+.tariffs-list{display:flex;flex-direction:column;gap:10px;}
 .tariff-card{
-    padding:16px;cursor:pointer;transition:var(--transition);
+    padding:13px 14px;cursor:pointer;transition:var(--transition);
     position:relative;overflow:hidden;
     background:rgba(20,25,45,0.25);
     border:1px solid rgba(70,80,110,0.18);
-    border-radius:20px;backdrop-filter:blur(10px);
+    border-radius:18px;backdrop-filter:blur(10px);
     -webkit-backdrop-filter:blur(10px);
-    display:flex;flex-direction:column;gap:12px;
+    display:flex;flex-direction:column;gap:9px;
 }
-.tariff-card:hover{background:rgba(30,40,65,0.35);border-color:rgba(122,111,191,0.35);transform:translateY(-2px);}
+.tariff-card:hover{background:rgba(30,40,65,0.35);border-color:rgba(122,111,191,0.35);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.25);}
 .tariff-card-header{display:flex;align-items:center;justify-content:space-between;gap:8px;}
-.tariff-card-days{display:flex;align-items:baseline;gap:5px;}
-.tariff-days-num{font-family:var(--font-display);font-size:28px;font-weight:800;color:var(--text-primary);line-height:1;}
-.tariff-days-label{font-size:13px;color:var(--text-secondary);font-weight:500;}
+.tariff-card-days{display:flex;align-items:baseline;gap:4px;}
+/* FIX: уменьшен размер шрифта дней как у Envy */
+.tariff-days-num{font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--text-primary);line-height:1;}
+.tariff-days-label{font-size:12px;color:var(--text-secondary);font-weight:500;}
 .tariff-card-price{
-    display:flex;align-items:baseline;gap:3px;
+    display:flex;align-items:baseline;gap:2px;
     background:rgba(122,111,191,0.12);border:1px solid rgba(122,111,191,0.2);
-    border-radius:12px;padding:6px 14px;flex-shrink:0;
+    border-radius:10px;padding:4px 12px;flex-shrink:0;
 }
-.tariff-price-num{font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--accent-bright);line-height:1;}
-.tariff-price-cur{font-size:13px;color:var(--accent);font-weight:600;}
-.tariff-card-features{display:flex;gap:8px;flex-wrap:wrap;}
+/* FIX: уменьшен размер цены как у Envy */
+.tariff-price-num{font-family:var(--font-display);font-size:17px;font-weight:800;color:var(--accent-bright);line-height:1;}
+.tariff-price-cur{font-size:12px;color:var(--accent);font-weight:600;}
+.tariff-card-features{display:flex;gap:6px;flex-wrap:wrap;}
 .tariff-feature{
-    display:flex;align-items:center;gap:5px;font-size:11px;
+    display:flex;align-items:center;gap:4px;font-size:11px;
     color:var(--text-secondary);background:rgba(30,35,55,0.4);
-    border:1px solid rgba(70,80,110,0.15);border-radius:8px;padding:4px 9px;font-weight:500;
+    border:1px solid rgba(70,80,110,0.15);border-radius:7px;padding:3px 8px;font-weight:500;
 }
 .tariff-feature i{color:var(--accent-bright);font-size:10px;width:12px;text-align:center;}
-.tariff-locations{border-top:1px solid rgba(70,80,110,0.12);padding-top:10px;display:flex;flex-direction:column;gap:6px;}
+.tariff-locations{border-top:1px solid rgba(70,80,110,0.12);padding-top:8px;display:flex;flex-direction:column;gap:5px;}
 .tariff-locations-label{font-size:10px;color:var(--text-tertiary);font-weight:600;text-transform:uppercase;letter-spacing:0.6px;display:flex;align-items:center;gap:5px;}
 .tariff-locations-label i{color:var(--accent);font-size:10px;}
 .tariff-countries{display:flex;flex-wrap:wrap;gap:4px;}
 
-/* FIX БАГ 2: Локации — текстовые плашки как в Envy, без эмодзи */
 .country-tag{
     font-size:11px;font-weight:700;
     display:inline-flex;align-items:center;justify-content:center;
-    padding:4px 8px;
-    border-radius:8px;
+    padding:3px 8px;
+    border-radius:7px;
     background:rgba(30,35,55,0.4);
     border:1px solid rgba(70,80,110,0.15);
     color:var(--text-secondary);
@@ -250,29 +265,46 @@ body{
 .tariff-locations-note{
     font-size:10px;color:var(--accent-bright);
     background:rgba(122,111,191,0.08);border:1px solid rgba(122,111,191,0.15);
-    border-radius:8px;padding:5px 9px;display:flex;align-items:center;gap:5px;font-weight:500;
+    border-radius:7px;padding:4px 8px;display:flex;align-items:center;gap:5px;font-weight:500;
 }
 .tariff-card-btn{
     display:flex;align-items:center;justify-content:center;gap:6px;
-    padding:10px;background:linear-gradient(135deg,rgba(122,111,191,0.5),rgba(154,143,223,0.3));
-    border:1px solid rgba(122,111,191,0.3);border-radius:12px;
+    padding:9px;background:linear-gradient(135deg,rgba(122,111,191,0.5),rgba(154,143,223,0.3));
+    border:1px solid rgba(122,111,191,0.3);border-radius:11px;
     font-size:13px;font-weight:700;color:white;transition:all 0.2s;
 }
 .tariff-card:hover .tariff-card-btn{background:linear-gradient(135deg,rgba(122,111,191,0.7),rgba(154,143,223,0.5));}
 
-/* STATS GRID */
+/* STATS GRID — hover lift */
 .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
 .stat-card{
     padding:12px 8px;text-align:center;border-radius:16px;
     background:rgba(20,25,45,0.2);border:1px solid rgba(70,80,110,0.15);
     backdrop-filter:blur(8px);display:flex;flex-direction:column;align-items:center;gap:4px;
+    transition:var(--transition);cursor:default;
+}
+.stat-card:hover{
+    transform:translateY(-2px);
+    border-color:rgba(122,111,191,0.35);
+    background:rgba(25,32,58,0.35);
+    box-shadow:0 4px 14px rgba(0,0,0,0.2);
 }
 .stat-icon{font-size:20px;color:var(--accent-bright);}
 .stat-label{font-size:9px;color:var(--text-secondary);font-weight:600;text-transform:uppercase;letter-spacing:0.4px;}
 .stat-value{font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--accent-bright);}
 
-/* REF LINK */
-.ref-link{padding:14px;margin-bottom:14px;background:rgba(20,25,45,0.2);border:1px solid rgba(70,80,110,0.15);border-radius:18px;backdrop-filter:blur(8px);}
+/* REF LINK — hover lift */
+.ref-link{
+    padding:14px;margin-bottom:14px;
+    background:rgba(20,25,45,0.2);border:1px solid rgba(70,80,110,0.15);
+    border-radius:18px;backdrop-filter:blur(8px);
+    transition:var(--transition);cursor:default;
+}
+.ref-link:hover{
+    transform:translateY(-2px);
+    border-color:rgba(122,111,191,0.35);
+    box-shadow:0 4px 14px rgba(0,0,0,0.2);
+}
 .ref-link p{font-size:12px;color:var(--text-secondary);margin-bottom:8px;display:flex;align-items:center;gap:6px;font-weight:600;}
 .copy-btn{
     width:44px;height:44px;border-radius:28px;
@@ -295,9 +327,59 @@ body{
 .topup-method span{flex:1;font-weight:600;color:var(--text-primary);font-size:13px;}
 .topup-method i:last-child{font-size:12px;color:var(--text-secondary);}
 
-/* SUPPORT */
-.support-card{padding:20px 16px;text-align:center;margin-bottom:16px;background:rgba(20,25,45,0.2);border:1px solid rgba(70,80,110,0.15);border-radius:18px;backdrop-filter:blur(8px);}
-.support-icon{font-size:40px;color:var(--accent-bright);margin-bottom:10px;display:block;}
+/* PROMO — hover lift */
+.promo-section{
+    background:rgba(122,111,191,0.08);border:1px solid rgba(122,111,191,0.18);
+    border-radius:18px;padding:14px;margin-bottom:14px;
+    transition:var(--transition);cursor:default;
+}
+.promo-section:hover{
+    transform:translateY(-2px);
+    border-color:rgba(122,111,191,0.35);
+    background:rgba(122,111,191,0.12);
+    box-shadow:0 4px 14px rgba(0,0,0,0.2);
+}
+.promo-section p{font-size:12px;color:var(--text-secondary);margin-bottom:8px;display:flex;align-items:center;gap:6px;font-weight:600;}
+.promo-section p i{color:var(--accent-bright);}
+.promo-row{display:flex;gap:8px;}
+.promo-input{
+    flex:1;background:rgba(0,0,0,0.2);border:1px solid rgba(70,80,110,0.2);
+    border-radius:12px;padding:11px 14px;color:var(--text-primary);
+    font-size:13px;outline:none;font-family:var(--font-body);
+    transition:border-color 0.2s;
+}
+.promo-input::placeholder{color:var(--text-tertiary);}
+.promo-input:focus{border-color:rgba(122,111,191,0.4);}
+.promo-btn{
+    padding:11px 16px;background:linear-gradient(135deg,rgba(122,111,191,0.7),rgba(154,143,223,0.5));
+    border:none;border-radius:12px;color:white;font-size:13px;font-weight:600;
+    cursor:pointer;white-space:nowrap;font-family:var(--font-body);
+    transition:var(--transition);
+}
+.promo-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(122,111,191,0.2);}
+
+/* SUPPORT — hover lift + float animation */
+.support-card{
+    padding:20px 16px;text-align:center;margin-bottom:16px;
+    background:rgba(20,25,45,0.2);border:1px solid rgba(70,80,110,0.15);
+    border-radius:18px;backdrop-filter:blur(8px);
+    transition:var(--transition);cursor:default;
+}
+.support-card:hover{
+    transform:translateY(-2px);
+    border-color:rgba(122,111,191,0.35);
+    background:rgba(25,32,58,0.3);
+    box-shadow:0 6px 20px rgba(0,0,0,0.25);
+}
+/* Float animation для иконки поддержки как у Envy */
+@keyframes float{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-6px);}
+}
+.support-icon{
+    font-size:40px;color:var(--accent-bright);margin-bottom:10px;display:block;
+    animation:float 2.8s ease-in-out infinite;
+}
 .support-card p{color:var(--text-secondary);margin-bottom:12px;font-size:13px;}
 
 /* FAQ */
@@ -319,42 +401,16 @@ body{
 .faq-answer p{font-size:12px;line-height:1.65;color:var(--text-secondary);}
 .faq-answer strong{color:var(--text-primary);font-weight:600;}
 
-/* PROMO */
-.promo-section{background:rgba(122,111,191,0.08);border:1px solid rgba(122,111,191,0.18);border-radius:18px;padding:14px;margin-bottom:14px;}
-.promo-section p{font-size:12px;color:var(--text-secondary);margin-bottom:8px;display:flex;align-items:center;gap:6px;font-weight:600;}
-.promo-section p i{color:var(--accent-bright);}
-.promo-row{display:flex;gap:8px;}
-.promo-input{
-    flex:1;background:rgba(0,0,0,0.2);border:1px solid rgba(70,80,110,0.2);
-    border-radius:12px;padding:11px 14px;color:var(--text-primary);
-    font-size:13px;outline:none;font-family:var(--font-body);
-    transition:border-color 0.2s;
-}
-.promo-input::placeholder{color:var(--text-tertiary);}
-.promo-input:focus{border-color:rgba(122,111,191,0.4);}
-.promo-btn{
-    padding:11px 16px;background:linear-gradient(135deg,rgba(122,111,191,0.7),rgba(154,143,223,0.5));
-    border:none;border-radius:12px;color:white;font-size:13px;font-weight:600;
-    cursor:pointer;white-space:nowrap;font-family:var(--font-body);
-}
-
 /* SKELETON */
 .skeleton{background:linear-gradient(90deg,rgba(20,25,45,0.2) 25%,rgba(122,111,191,0.08) 50%,rgba(20,25,45,0.2) 75%);background-size:200% 100%;animation:loading 1.2s infinite;border-radius:16px;height:60px;margin-bottom:10px;}
 @keyframes loading{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-/* ===== FIX БАГИ 1: TOAST ===== */
-/* 
-   Проблема была в том что toast рендерился внутри #app который имеет overflow:hidden
-   и z-index не работал корректно в Telegram WebApp.
-   Исправление: toast выносим за пределы #app в body, 
-   используем translateY вместо bottom для анимации,
-   и добавляем will-change для корректного stacking context.
-*/
+/* TOAST */
 .toast{
     position:fixed;
-    bottom:max(80px, calc(var(--safe-bottom) + 80px)); /* выше nav bar */
+    bottom:max(80px, calc(var(--safe-bottom) + 80px));
     left:50%;
-    transform:translateX(-50%) translateY(160px); /* скрыт вниз */
+    transform:translateX(-50%) translateY(160px);
     background:rgba(20,25,45,0.95);
     border:1px solid rgba(70,80,110,0.2);
     border-radius:32px;
@@ -363,12 +419,12 @@ body{
     font-weight:500;font-size:13px;color:var(--accent-bright);
     box-shadow:0 4px 24px rgba(0,0,0,0.5);
     transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s ease;
-    z-index:9999; /* максимальный z-index */
+    z-index:9999;
     white-space:nowrap;max-width:85vw;
     pointer-events:none;
     backdrop-filter:blur(10px);
     -webkit-backdrop-filter:blur(10px);
-    will-change:transform; /* корректный stacking context */
+    will-change:transform;
     opacity:0;
 }
 .toast.show{
@@ -376,36 +432,108 @@ body{
     opacity:1;
 }
 
-/* MODAL */
+/* MODAL — drag indicator + исправленный заголовок */
 .modal{display:none;position:fixed;inset:0;z-index:1500;justify-content:center;align-items:flex-end;padding:0;}
 .modal.show{display:flex;}
 .modal-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);}
 .modal-content{
     max-width:100%;width:100%;
-    padding:24px 20px max(28px,calc(var(--safe-bottom)+20px));
+    padding:0 20px max(28px,calc(var(--safe-bottom)+20px));
     border-radius:24px 24px 0 0;position:relative;z-index:1;
     background:rgba(14,18,38,0.97);border:1px solid rgba(80,90,130,0.25);
     border-bottom:none;backdrop-filter:blur(20px);
     box-shadow:0 -8px 40px rgba(0,0,0,0.5);
-    max-height:92vh;overflow-y:auto;animation:modalSlideUp 0.35s cubic-bezier(0.22,1,0.36,1);
+    max-height:92vh;overflow-y:auto;
+    animation:modalSlideUp 0.35s cubic-bezier(0.22,1,0.36,1);
 }
-.modal-content::before{content:'';display:block;width:40px;height:4px;background:rgba(120,130,160,0.3);border-radius:2px;margin:0 auto 20px;}
-.modal h3{font-family:var(--font-display);font-size:17px;margin-bottom:18px;color:var(--text-primary);font-weight:700;padding-bottom:14px;border-bottom:1px solid rgba(70,80,110,0.15);}
+/* FIX: drag indicator + правильные отступы чтобы заголовок не съезжал */
+.modal-drag{
+    display:flex;justify-content:center;
+    padding:12px 0 8px;
+}
+.modal-drag-bar{
+    width:40px;height:4px;
+    background:rgba(120,130,160,0.35);
+    border-radius:2px;
+}
+.modal-header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 0 14px;
+    border-bottom:1px solid rgba(70,80,110,0.15);
+    margin-bottom:18px;
+}
+.modal-header h3{
+    font-family:var(--font-display);font-size:17px;
+    color:var(--text-primary);font-weight:700;
+    margin:0;
+}
 .modal-buttons{display:flex;flex-direction:column;gap:8px;margin-top:18px;}
 .modal-btn{
     background:rgba(25,30,52,0.8);border:1px solid rgba(70,80,110,0.2);
     border-radius:14px;padding:13px 16px;font-size:14px;font-weight:600;
-    color:var(--text-primary);cursor:pointer;transition:all 0.2s;
+    color:var(--text-primary);cursor:pointer;transition:all 0.25s;
     width:100%;text-align:center;font-family:var(--font-body);
     display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;
 }
-.modal-btn:hover{background:rgba(122,111,191,0.2);border-color:rgba(122,111,191,0.3);color:var(--accent-bright);}
-.modal-btn-primary{background:linear-gradient(135deg,rgba(122,111,191,0.7),rgba(154,143,223,0.5))!important;border-color:rgba(122,111,191,0.4)!important;color:white!important;}
-.modal-close{position:absolute;top:16px;right:16px;background:rgba(30,35,55,0.5);border:1px solid rgba(70,80,110,0.2);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-size:14px;cursor:pointer;transition:all 0.2s;}
+.modal-btn:hover{
+    background:rgba(122,111,191,0.2);
+    border-color:rgba(122,111,191,0.3);
+    color:var(--accent-bright);
+    transform:translateY(-1px);
+}
+.modal-btn-primary{
+    background:linear-gradient(135deg,rgba(122,111,191,0.7),rgba(154,143,223,0.5))!important;
+    border-color:rgba(122,111,191,0.4)!important;
+    color:white!important;
+}
+.modal-btn-primary:hover{
+    background:linear-gradient(135deg,rgba(122,111,191,0.85),rgba(154,143,223,0.65))!important;
+    box-shadow:0 4px 16px rgba(122,111,191,0.25)!important;
+}
+.modal-close{
+    background:rgba(30,35,55,0.5);border:1px solid rgba(70,80,110,0.2);
+    border-radius:50%;width:32px;height:32px;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--text-secondary);font-size:12px;cursor:pointer;transition:all 0.2s;
+    flex-shrink:0;
+}
 .modal-close:hover{background:rgba(122,111,191,0.25);color:var(--accent-bright);}
+
+/* FIX: строка баланса в модалке */
+.modal-balance-warn{
+    display:flex;align-items:center;gap:8px;
+    padding:10px 14px;
+    background:rgba(255,80,80,0.08);
+    border:1px solid rgba(255,80,80,0.2);
+    border-radius:12px;
+    font-size:13px;font-weight:600;
+    color:#ff6b6b;
+    margin-top:4px;
+}
+.modal-balance-warn i{font-size:14px;flex-shrink:0;}
+
+/* FIX: строки данных в модалке — две колонки как у Envy */
+.modal-detail-row{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:7px 0;
+    border-bottom:1px solid rgba(70,80,110,0.1);
+    font-size:13px;
+}
+.modal-detail-row:last-of-type{border-bottom:none;}
+.modal-detail-label{color:var(--text-secondary);}
+.modal-detail-value{color:var(--text-primary);font-weight:600;}
+.modal-detail-value.accent{color:var(--accent-bright);font-size:17px;font-weight:800;}
+.modal-tariff-name{
+    font-family:var(--font-display);
+    font-size:20px;font-weight:800;
+    color:var(--accent-bright);
+    text-align:center;
+    padding:4px 0 14px;
+}
+
 @keyframes modalSlideUp{0%{transform:translateY(100%);opacity:0}100%{transform:translateY(0);opacity:1}}
 
-/* BOTTOM NAV */
+/* BOTTOM NAV — hover lift */
 .bottom-nav{
     display:flex;justify-content:space-around;
     padding:6px 4px;padding-bottom:max(6px,calc(var(--safe-bottom)+6px));
@@ -419,12 +547,28 @@ body{
     display:flex;flex-direction:column;align-items:center;gap:2px;
     font-size:10px;font-weight:600;padding:8px 6px;border-radius:16px;
     cursor:pointer;position:relative;flex:1;min-height:44px;
-    justify-content:center;font-family:var(--font-body);transition:all 0.2s;
+    justify-content:center;font-family:var(--font-body);
+    transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    border:1px solid transparent;
 }
 .nav-item i{font-size:18px;}
-.nav-item:hover{color:var(--accent-bright);background:rgba(122,111,191,0.08);}
-.nav-item.active{color:var(--accent-bright);background:rgba(122,111,191,0.12);border:1px solid rgba(122,111,191,0.2);}
-.nav-item.active::before{content:'';position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:var(--accent-bright);box-shadow:0 0 8px rgba(122,111,191,0.4);}
+/* FIX: hover lift для nav */
+.nav-item:hover{
+    color:var(--accent-bright);
+    background:rgba(122,111,191,0.08);
+    transform:translateY(-2px);
+}
+.nav-item.active{
+    color:var(--accent-bright);
+    background:rgba(122,111,191,0.12);
+    border:1px solid rgba(122,111,191,0.2);
+}
+.nav-item.active::before{
+    content:'';position:absolute;top:-4px;left:50%;
+    transform:translateX(-50%);width:5px;height:5px;
+    border-radius:50%;background:var(--accent-bright);
+    box-shadow:0 0 8px rgba(122,111,191,0.4);
+}
 .error-message{padding:16px;text-align:center;color:var(--text-secondary);margin-top:16px;font-size:13px;}
 </style>
 </head>
@@ -465,18 +609,21 @@ body{
 </div>
 </div>
 
-<!-- TOAST: вынесен за пределы #app чтобы избежать проблем с overflow и z-index в Telegram WebApp -->
+<!-- TOAST -->
 <div id="custom-toast" class="toast">
   <i class="fas fa-check-circle" id="toast-icon"></i>
   <span id="toast-message"></span>
 </div>
 
-<!-- MODAL -->
+<!-- MODAL — новая структура с drag indicator и правильным заголовком -->
 <div id="custom-modal" class="modal">
   <div class="modal-overlay"></div>
-  <div class="modal-content glass">
-    <button class="modal-close" id="modal-close"><i class="fas fa-times"></i></button>
-    <h3 id="modal-title"></h3>
+  <div class="modal-content">
+    <div class="modal-drag"><div class="modal-drag-bar"></div></div>
+    <div class="modal-header">
+      <h3 id="modal-title"></h3>
+      <button class="modal-close" id="modal-close"><i class="fas fa-times"></i></button>
+    </div>
     <div id="modal-body"></div>
     <div id="modal-buttons" class="modal-buttons"></div>
   </div>
@@ -498,7 +645,6 @@ const DEMO = {
         { id:2, days:90,  stars:369, traffic_gb:180, ip_limit:2,  label:'90 дней' },
         { id:3, days:180, stars:719, traffic_gb:360, ip_limit:3,  label:'180 дней' },
     ],
-    // FIX БАГИ 2: только коды стран без эмодзи
     locations: ['LV','NL','RU','US','PL','KZ','SE','TR','UA'],
     nodesCount: 9,
 };
@@ -514,8 +660,7 @@ const modalButtons = document.getElementById('modal-buttons');
 const modalClose = document.getElementById('modal-close');
 let currentTab = 'home';
 
-// ── TOAST FIX ──
-// Используем один таймаут с очисткой, чтобы уведомления не зависали
+// ── TOAST ──
 let toastTimer = null;
 function showToast(msg, type='success') {
     toastMsg.textContent = msg;
@@ -532,20 +677,9 @@ function showToast(msg, type='success') {
         toast.style.borderColor='rgba(122,111,191,0.4)';
         toast.style.color='var(--accent-bright)';
     }
-
-    // Сбрасываем предыдущий таймер если toast уже показан
-    if(toastTimer) {
-        clearTimeout(toastTimer);
-        toastTimer = null;
-    }
-
+    if(toastTimer){clearTimeout(toastTimer);toastTimer=null;}
     toast.classList.add('show');
-
-    // Скрываем через 3 секунды
-    toastTimer = setTimeout(() => {
-        toast.classList.remove('show');
-        toastTimer = null;
-    }, 3000);
+    toastTimer = setTimeout(()=>{toast.classList.remove('show');toastTimer=null;},3000);
 }
 
 // ── MODAL ──
@@ -645,7 +779,7 @@ function renderHome() {
             <div class="progress-bar"><div class="progress-fill" style="width:5%"></div></div>
             <div class="detail"><i class="fas fa-mobile-alt"></i> Устройств <span class="value">32 <span style="font-size:10px;color:var(--text-tertiary);">(1 на локацию)</span></span></div>
             <div style="margin-top:12px;">
-                <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:rgba(20,25,45,0.3);border:1px solid rgba(70,80,110,0.15);border-radius:14px;cursor:pointer;" onclick="showToast('Функция подключится после настройки backend')">
+                <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:rgba(20,25,45,0.3);border:1px solid rgba(70,80,110,0.15);border-radius:14px;cursor:pointer;transition:var(--transition);" onclick="showToast('Функция подключится после настройки backend')" onmouseover="this.style.borderColor='rgba(122,111,191,0.3)';this.style.transform='translateY(-1px)'" onmouseout="this.style.borderColor='rgba(70,80,110,0.15)';this.style.transform=''">
                     <div style="width:36px;height:36px;border-radius:10px;background:rgba(122,111,191,0.1);border:1px solid rgba(122,111,191,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                         <i class="fas fa-rocket" style="font-size:15px;color:var(--accent-bright);"></i>
                     </div>
@@ -675,7 +809,6 @@ function renderHome() {
 
 // ── TARIFFS ──
 function renderTariffs() {
-    // FIX БАГИ 2: рендерим локации как текстовые плашки (.country-tag) без эмодзи
     const locs = DEMO.locations;
     const n = DEMO.nodesCount;
 
@@ -712,32 +845,48 @@ function renderTariffs() {
     document.querySelectorAll('.tariff-card').forEach(card=>{
         card.addEventListener('click',()=>{
             const t = DEMO.tariffs.find(x=>x.id===parseInt(card.dataset.id));
+            const n = DEMO.nodesCount;
+            const bal = parseFloat(DEMO.balance);
+            const diff = (t.stars - bal).toFixed(2);
+            const notEnough = bal < t.stars;
+
             modalTitle.textContent = 'Подтверждение покупки';
+
+            // FIX: данные в две колонки как у Envy
             modalBody.innerHTML = `
-                <div style="text-align:center;">
-                    <div style="color:var(--text-secondary);font-size:13px;margin-bottom:8px;">Тариф</div>
-                    <div style="color:var(--accent-bright);font-size:22px;font-weight:700;margin-bottom:16px;">${t.days} дней</div>
-                    <div style="padding:14px;background:rgba(0,0,0,0.2);border:1px solid rgba(70,80,110,0.15);border-radius:12px;margin-bottom:12px;">
-                        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
-                            <span style="color:var(--text-secondary);font-size:13px;">Трафик:</span>
-                            <span style="color:var(--text-primary);font-weight:600;">${t.traffic_gb*n} ГБ</span>
-                        </div>
-                        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
-                            <span style="color:var(--text-secondary);font-size:13px;">Устройства:</span>
-                            <span style="color:var(--text-primary);font-weight:600;">${t.ip_limit*n} устройств</span>
-                        </div>
-                        <div style="display:flex;justify-content:space-between;padding-top:10px;border-top:1px solid rgba(70,80,110,0.15);">
-                            <span style="color:var(--text-secondary);font-size:13px;">Стоимость:</span>
-                            <span style="color:var(--accent-bright);font-size:20px;font-weight:700;">${t.stars}₽</span>
-                        </div>
+                <div class="modal-tariff-name">${t.days} дней</div>
+                <div style="background:rgba(0,0,0,0.15);border:1px solid rgba(70,80,110,0.12);border-radius:14px;padding:4px 14px;margin-bottom:12px;">
+                    <div class="modal-detail-row">
+                        <span class="modal-detail-label">Трафик</span>
+                        <span class="modal-detail-value">${t.traffic_gb * n} ГБ <span style="font-size:10px;color:var(--text-tertiary);">(${t.traffic_gb} ГБ на лок.)</span></span>
+                    </div>
+                    <div class="modal-detail-row">
+                        <span class="modal-detail-label">Устройства</span>
+                        <span class="modal-detail-value">${t.ip_limit * n} <span style="font-size:10px;color:var(--text-tertiary);">(${t.ip_limit} на лок.)</span></span>
+                    </div>
+                    <div class="modal-detail-row">
+                        <span class="modal-detail-label">Стоимость</span>
+                        <span class="modal-detail-value accent">${t.stars}₽</span>
                     </div>
                 </div>
+                ${notEnough ? `
+                <div class="modal-balance-warn">
+                    <i class="fas fa-exclamation-circle"></i>
+                    На балансе ${bal.toFixed(2)}₽ — не хватает ${diff}₽
+                </div>` : ''}
             `;
+
             modalButtons.innerHTML = '';
             const btn = document.createElement('button');
             btn.className = 'modal-btn modal-btn-primary';
-            btn.innerHTML = '<i class="fas fa-wallet"></i> Пополнить баланс и оплатить';
-            btn.addEventListener('click',()=>{ hideModal(); switchTab('topup'); });
+
+            if(notEnough) {
+                btn.innerHTML = '<i class="fas fa-wallet"></i> Пополнить баланс и оплатить';
+                btn.addEventListener('click',()=>{ hideModal(); switchTab('topup'); });
+            } else {
+                btn.innerHTML = `<i class="fas fa-credit-card"></i> Оплатить ${t.stars}₽`;
+                btn.addEventListener('click',()=>{ hideModal(); showToast('Доступно после подключения backend','warning'); });
+            }
             modalButtons.appendChild(btn);
             modal.classList.add('show');
         });
