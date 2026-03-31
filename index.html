@@ -47,30 +47,29 @@ body{
 
 /* ═══════════════════════════════════════
    ENTRANCE ANIMATIONS
-   Только opacity — transform не трогаем
-   чтобы hover translateY работал свободно
+   Оптимизировано для мгновенного hover
 ═══════════════════════════════════════ */
 @keyframes nvxFadeIn{
     from{opacity:0;}
     to{opacity:1;}
 }
 @keyframes nvxSlideDown{
-    from{opacity:0;transform:translateY(-10px);}
+    from{opacity:0;transform:translateY(-8px);}
     to{opacity:1;transform:translateY(0);}
 }
 @keyframes nvxSlideUp{
-    from{opacity:0;transform:translateY(10px);}
+    from{opacity:0;transform:translateY(8px);}
     to{opacity:1;transform:translateY(0);}
 }
 @keyframes nvxSlideLeft{
-    from{opacity:0;transform:translateX(-10px);}
+    from{opacity:0;transform:translateX(-8px);}
     to{opacity:1;transform:translateX(0);}
 }
 
 /* Базовые классы — opacity:0 до старта */
 .anim-title,.anim-left,.anim-up,.anim-down,.anim-fade{
     opacity:0;
-    will-change:opacity,transform;
+    will-change:opacity;
 }
 
 /* Задержки — одна шкала для всех */
@@ -413,15 +412,15 @@ body{
 }
 .copy-btn:hover{transform:scale(1.05);background:rgba(122,111,191,0.6);}
 
-/* TOPUP */
+/* TOPUP — мгновенный hover */
 .topup-method{
     padding:12px 14px;display:flex;align-items:center;gap:12px;
     border-radius:16px;background:rgba(20,25,45,0.2);
     border:1px solid rgba(70,80,110,0.15);
-    transition:transform 0.28s cubic-bezier(0.34,1.56,0.64,1),
-               border-color 0.28s ease,
-               box-shadow 0.28s ease,
-               background 0.28s ease;
+    transition:transform 0.15s cubic-bezier(0.34,1.56,0.64,1),
+               border-color 0.15s ease,
+               box-shadow 0.15s ease,
+               background 0.15s ease;
     cursor:pointer;position:relative;overflow:hidden;
     backdrop-filter:blur(8px);min-height:48px;margin-bottom:8px;
 }
@@ -435,14 +434,14 @@ body{
 .topup-method span{flex:1;font-weight:600;color:var(--text-primary);font-size:13px;}
 .topup-method i:last-child{font-size:12px;color:var(--text-secondary);}
 
-/* PROMO */
+/* PROMO — мгновенный hover без задержек */
 .promo-section{
     background:rgba(122,111,191,0.08);border:1px solid rgba(122,111,191,0.18);
     border-radius:18px;padding:14px;margin-bottom:14px;
-    transition:transform 0.28s cubic-bezier(0.34,1.56,0.64,1),
-               border-color 0.28s ease,
-               box-shadow 0.28s ease,
-               background 0.28s ease;
+    transition:transform 0.18s cubic-bezier(0.34,1.56,0.64,1),
+               border-color 0.18s ease,
+               box-shadow 0.18s ease,
+               background 0.18s ease;
     cursor:default;
 }
 .promo-section:hover{
