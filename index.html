@@ -635,17 +635,17 @@ body{
     color:var(--accent-bright);transform:translateY(-1px);
 }
 .modal-btn-primary{
-    background:linear-gradient(135deg,rgba(122,111,191,0.8),rgba(154,143,223,0.6)) !important;
+    background:linear-gradient(135deg,rgba(122,111,191,0.85),rgba(154,143,223,0.65)) !important;
     border:1px solid rgba(122,111,191,0.5) !important;
     color:white !important;
-    font-size:16px !important;
-    font-weight:700 !important;
-    min-height:56px !important;
-    height:56px !important;
-    border-radius:20px !important;
-    padding:0 20px !important;
-    letter-spacing:0.3px !important;
-    box-shadow:0 4px 16px rgba(122,111,191,0.2) !important;
+    font-size:14px !important;
+    font-weight:600 !important;
+    min-height:46px !important;
+    height:46px !important;
+    border-radius:14px !important;
+    padding:0 16px !important;
+    letter-spacing:0.2px !important;
+    box-shadow:0 4px 16px rgba(122,111,191,0.25) !important;
 }
 .modal-btn-primary:hover{
     background:linear-gradient(135deg,rgba(140,128,210,0.95),rgba(170,158,240,0.75)) !important;
@@ -1032,12 +1032,12 @@ function renderTariffs() {
             btn.innerHTML = `<i class="fas fa-credit-card"></i> Оплатить ${t.stars}₽`;
             // Задаём стили через setProperty с 'important' — это единственный надёжный способ
             const btnStyles = {
-                'min-height': '54px',
-                'height': '54px',
-                'border-radius': '18px',
-                'font-size': '15px',
-                'font-weight': '700',
-                'padding': '0 20px',
+                'min-height': '46px',
+                'height': '46px',
+                'border-radius': '14px',
+                'font-size': '14px',
+                'font-weight': '600',
+                'padding': '0 16px',
                 'width': '100%',
                 'display': 'flex',
                 'align-items': 'center',
