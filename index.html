@@ -48,64 +48,64 @@ body{
    ENTRANCE ANIMATIONS
 ═══════════════════════════════════════ */
 @keyframes fadeDown{
-    from{opacity:0;transform:translateY(-14px);}
+    from{opacity:0;transform:translateY(-9px);}
     to{opacity:1;transform:translateY(0);}
 }
 @keyframes slideInLeft{
-    from{opacity:0;transform:translateX(-22px);}
+    from{opacity:0;transform:translateX(-12px);}
     to{opacity:1;transform:translateX(0);}
 }
 @keyframes fadeUp{
-    from{opacity:0;transform:translateY(18px);}
+    from{opacity:0;transform:translateY(10px);}
     to{opacity:1;transform:translateY(0);}
 }
 @keyframes fadeIn{
-    from{opacity:0;transform:scale(0.97);}
+    from{opacity:0;transform:scale(0.98);}
     to{opacity:1;transform:scale(1);}
 }
 
 /* Title всегда сверху */
 .anim-title{
-    animation:fadeDown 0.38s cubic-bezier(0.22,1,0.36,1) both;
+    animation:fadeDown 0.6s cubic-bezier(0.22,1,0.36,1) both;
 }
 
 /* Главная — блоки слева */
 .anim-left{
-    animation:slideInLeft 0.38s cubic-bezier(0.22,1,0.36,1) both;
+    animation:slideInLeft 0.6s cubic-bezier(0.22,1,0.36,1) both;
 }
-.anim-left-d1{animation-delay:0.06s;}
-.anim-left-d2{animation-delay:0.13s;}
-.anim-left-d3{animation-delay:0.20s;}
+.anim-left-d1{animation-delay:0.08s;}
+.anim-left-d2{animation-delay:0.17s;}
+.anim-left-d3{animation-delay:0.26s;}
 
 /* Тарифы — снизу вверх stagger */
 .anim-up{
-    animation:fadeUp 0.36s cubic-bezier(0.22,1,0.36,1) both;
+    animation:fadeUp 0.58s cubic-bezier(0.22,1,0.36,1) both;
 }
-.anim-up-d1{animation-delay:0.04s;}
-.anim-up-d2{animation-delay:0.12s;}
-.anim-up-d3{animation-delay:0.20s;}
-.anim-up-d4{animation-delay:0.28s;}
-.anim-up-d5{animation-delay:0.36s;}
-.anim-up-d6{animation-delay:0.44s;}
+.anim-up-d1{animation-delay:0.06s;}
+.anim-up-d2{animation-delay:0.15s;}
+.anim-up-d3{animation-delay:0.24s;}
+.anim-up-d4{animation-delay:0.33s;}
+.anim-up-d5{animation-delay:0.42s;}
+.anim-up-d6{animation-delay:0.51s;}
 
 /* Рефералы — сверху/снизу */
 .anim-down{
-    animation:fadeDown 0.38s cubic-bezier(0.22,1,0.36,1) both;
+    animation:fadeDown 0.6s cubic-bezier(0.22,1,0.36,1) both;
 }
-.anim-down-d1{animation-delay:0.06s;}
-.anim-down-d2{animation-delay:0.12s;}
-.anim-down-d3{animation-delay:0.18s;}
+.anim-down-d1{animation-delay:0.08s;}
+.anim-down-d2{animation-delay:0.16s;}
+.anim-down-d3{animation-delay:0.24s;}
 
 /* Поддержка — плавный fadeIn */
 .anim-fade{
-    animation:fadeIn 0.45s cubic-bezier(0.22,1,0.36,1) both;
+    animation:fadeIn 0.62s cubic-bezier(0.22,1,0.36,1) both;
 }
-.anim-fade-d1{animation-delay:0.08s;}
-.anim-fade-d2{animation-delay:0.16s;}
-.anim-fade-d3{animation-delay:0.24s;}
-.anim-fade-d4{animation-delay:0.32s;}
-.anim-fade-d5{animation-delay:0.40s;}
-.anim-fade-d6{animation-delay:0.48s;}
+.anim-fade-d1{animation-delay:0.10s;}
+.anim-fade-d2{animation-delay:0.20s;}
+.anim-fade-d3{animation-delay:0.30s;}
+.anim-fade-d4{animation-delay:0.40s;}
+.anim-fade-d5{animation-delay:0.50s;}
+.anim-fade-d6{animation-delay:0.60s;}
 
 /* ═══════════════════════════════════════
    HEADER
@@ -202,7 +202,10 @@ body{
     border:1px solid rgba(80,90,130,0.25);
     border-radius:20px;
     backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-    transition:var(--transition);
+    transition:transform 0.28s cubic-bezier(0.34,1.56,0.64,1),
+               border-color 0.28s ease,
+               box-shadow 0.28s ease;
+    cursor:default;
 }
 .subscription-card:hover{
     transform:translateY(-2px);
@@ -280,7 +283,11 @@ body{
 ═══════════════════════════════════════ */
 .tariffs-list{display:flex;flex-direction:column;gap:10px;}
 .tariff-card{
-    padding:13px 14px;cursor:pointer;transition:var(--transition);
+    padding:13px 14px;cursor:pointer;
+    transition:transform 0.28s cubic-bezier(0.34,1.56,0.64,1),
+               border-color 0.28s ease,
+               box-shadow 0.28s ease,
+               background 0.28s ease;
     position:relative;overflow:hidden;
     background:rgba(20,25,45,0.25);
     border:1px solid rgba(70,80,110,0.18);
@@ -310,15 +317,19 @@ body{
 .tariff-locations{border-top:1px solid rgba(70,80,110,0.12);padding-top:8px;display:flex;flex-direction:column;gap:5px;}
 .tariff-locations-label{font-size:10px;color:var(--text-tertiary);font-weight:600;text-transform:uppercase;letter-spacing:0.6px;display:flex;align-items:center;gap:5px;}
 .tariff-locations-label i{color:var(--accent);font-size:10px;}
-.tariff-countries{display:flex;flex-wrap:wrap;gap:4px;}
-.country-tag{
-    font-size:11px;font-weight:700;
+.tariff-countries{display:flex;flex-wrap:wrap;gap:5px;}
+.country-flag{
+    font-size:22px;
     display:inline-flex;align-items:center;justify-content:center;
-    padding:3px 8px;border-radius:7px;
-    background:rgba(30,35,55,0.4);border:1px solid rgba(70,80,110,0.15);
-    color:var(--text-secondary);letter-spacing:0.5px;transition:all 0.2s;white-space:nowrap;
+    width:32px;height:32px;
+    border-radius:8px;
+    background:rgba(30,35,55,0.4);
+    border:1px solid rgba(70,80,110,0.15);
+    transition:all 0.22s;
+    cursor:default;
+    line-height:1;
 }
-.country-tag:hover{background:rgba(122,111,191,0.15);color:var(--accent-bright);border-color:rgba(122,111,191,0.25);}
+.country-flag:hover{background:rgba(122,111,191,0.15);border-color:rgba(122,111,191,0.3);transform:scale(1.12);}
 .tariff-locations-note{
     font-size:10px;color:var(--accent-bright);
     background:rgba(122,111,191,0.08);border:1px solid rgba(122,111,191,0.15);
@@ -340,7 +351,11 @@ body{
     padding:12px 8px;text-align:center;border-radius:16px;
     background:rgba(20,25,45,0.2);border:1px solid rgba(70,80,110,0.15);
     backdrop-filter:blur(8px);display:flex;flex-direction:column;align-items:center;gap:4px;
-    transition:var(--transition);cursor:default;
+    transition:transform 0.28s cubic-bezier(0.34,1.56,0.64,1),
+               border-color 0.28s ease,
+               box-shadow 0.28s ease,
+               background 0.28s ease;
+    cursor:default;
 }
 .stat-card:hover{
     transform:translateY(-2px);border-color:rgba(122,111,191,0.35);
@@ -355,7 +370,10 @@ body{
     padding:14px;margin-bottom:14px;
     background:rgba(20,25,45,0.2);border:1px solid rgba(70,80,110,0.15);
     border-radius:18px;backdrop-filter:blur(8px);
-    transition:var(--transition);cursor:default;
+    transition:transform 0.28s cubic-bezier(0.34,1.56,0.64,1),
+               border-color 0.28s ease,
+               box-shadow 0.28s ease;
+    cursor:default;
 }
 .ref-link:hover{
     transform:translateY(-2px);border-color:rgba(122,111,191,0.35);
@@ -374,11 +392,20 @@ body{
 .topup-method{
     padding:12px 14px;display:flex;align-items:center;gap:12px;
     border-radius:16px;background:rgba(20,25,45,0.2);
-    border:1px solid rgba(70,80,110,0.15);transition:var(--transition);
+    border:1px solid rgba(70,80,110,0.15);
+    transition:transform 0.28s cubic-bezier(0.34,1.56,0.64,1),
+               border-color 0.28s ease,
+               box-shadow 0.28s ease,
+               background 0.28s ease;
     cursor:pointer;position:relative;overflow:hidden;
     backdrop-filter:blur(8px);min-height:48px;margin-bottom:8px;
 }
-.topup-method:hover{border-color:rgba(122,111,191,0.25);background:rgba(30,40,60,0.3);transform:translateX(3px);}
+.topup-method:hover{
+    border-color:rgba(122,111,191,0.3);
+    background:rgba(30,40,60,0.35);
+    transform:translateY(-2px);
+    box-shadow:0 4px 14px rgba(0,0,0,0.2);
+}
 .topup-method i:first-child{font-size:20px;color:var(--accent-bright);width:24px;flex-shrink:0;}
 .topup-method span{flex:1;font-weight:600;color:var(--text-primary);font-size:13px;}
 .topup-method i:last-child{font-size:12px;color:var(--text-secondary);}
@@ -387,7 +414,11 @@ body{
 .promo-section{
     background:rgba(122,111,191,0.08);border:1px solid rgba(122,111,191,0.18);
     border-radius:18px;padding:14px;margin-bottom:14px;
-    transition:var(--transition);cursor:default;
+    transition:transform 0.28s cubic-bezier(0.34,1.56,0.64,1),
+               border-color 0.28s ease,
+               box-shadow 0.28s ease,
+               background 0.28s ease;
+    cursor:default;
 }
 .promo-section:hover{
     transform:translateY(-2px);border-color:rgba(122,111,191,0.35);
@@ -415,7 +446,11 @@ body{
     padding:20px 16px;text-align:center;margin-bottom:16px;
     background:rgba(20,25,45,0.2);border:1px solid rgba(70,80,110,0.15);
     border-radius:18px;backdrop-filter:blur(8px);
-    transition:var(--transition);cursor:default;
+    transition:transform 0.28s cubic-bezier(0.34,1.56,0.64,1),
+               border-color 0.28s ease,
+               box-shadow 0.28s ease,
+               background 0.28s ease;
+    cursor:default;
 }
 .support-card:hover{
     transform:translateY(-2px);border-color:rgba(122,111,191,0.35);
@@ -432,7 +467,18 @@ body{
 .support-card p{color:var(--text-secondary);margin-bottom:12px;font-size:13px;}
 
 /* FAQ */
-.faq{background:rgba(20,25,45,0.2);border:1px solid rgba(70,80,110,0.15);border-radius:18px;backdrop-filter:blur(8px);overflow:hidden;}
+.faq{
+    background:rgba(20,25,45,0.2);border:1px solid rgba(70,80,110,0.15);
+    border-radius:18px;backdrop-filter:blur(8px);overflow:hidden;
+    transition:transform 0.28s cubic-bezier(0.34,1.56,0.64,1),
+               border-color 0.28s ease,
+               box-shadow 0.28s ease;
+    cursor:default;
+}
+.faq:hover{
+    transform:translateY(-2px);border-color:rgba(122,111,191,0.3);
+    box-shadow:0 4px 14px rgba(0,0,0,0.2);
+}
 .faq-header{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid rgba(70,80,110,0.12);font-weight:700;font-size:13px;color:var(--text-secondary);letter-spacing:0.04em;text-transform:uppercase;}
 .faq-header i{color:var(--accent-bright);font-size:14px;}
 .faq-list{padding:6px 0;}
@@ -671,7 +717,17 @@ const DEMO = {
         { id:2, days:90,  stars:369, traffic_gb:180, ip_limit:2 },
         { id:3, days:180, stars:719, traffic_gb:360, ip_limit:3 },
     ],
-    locations: ['LV','NL','RU','US','PL','KZ','SE','TR','UA'],
+    locations: [
+        {code:'LV', flag:'🇱🇻'},
+        {code:'NL', flag:'🇳🇱'},
+        {code:'RU', flag:'🇷🇺'},
+        {code:'US', flag:'🇺🇸'},
+        {code:'PL', flag:'🇵🇱'},
+        {code:'KZ', flag:'🇰🇿'},
+        {code:'SE', flag:'🇸🇪'},
+        {code:'TR', flag:'🇹🇷'},
+        {code:'UA', flag:'🇺🇦'},
+    ],
     nodesCount: 9,
 };
 
@@ -860,7 +916,7 @@ function renderTariffs() {
                 </div>
                 <div class="tariff-locations">
                     <div class="tariff-locations-label"><i class="fas fa-map-marker-alt"></i> Страны в подписке</div>
-                    <div class="tariff-countries">${locs.map(code=>`<span class="country-tag">${code}</span>`).join('')}</div>
+                    <div class="tariff-countries">${locs.map(l=>`<span class="country-flag" title="${l.code}">${l.flag}</span>`).join('')}</div>
                     <div class="tariff-locations-note"><i class="fas fa-info-circle"></i> ${t.traffic_gb} ГБ на локацию · всего ${t.traffic_gb * n} ГБ</div>
                 </div>
                 <div class="tariff-card-btn">Выбрать <i class="fas fa-arrow-right"></i></div>
@@ -905,13 +961,13 @@ function renderTariffs() {
             modalButtons.innerHTML = '';
             const btn = document.createElement('button');
             btn.className = 'modal-btn modal-btn-primary';
-            if(notEnough) {
-                btn.innerHTML = '<i class="fas fa-wallet"></i> Пополнить баланс и оплатить';
-                btn.addEventListener('click',()=>{ hideModal(); switchTab('topup'); });
-            } else {
-                btn.innerHTML = `<i class="fas fa-credit-card"></i> Оплатить ${t.stars}₽`;
-                btn.addEventListener('click',()=>{ hideModal(); showToast('Доступно после подключения backend','warning'); });
-            }
+            // FIX: всегда показываем "Оплатить X₽", при нехватке — редирект на пополнение
+            btn.innerHTML = `<i class="fas fa-credit-card"></i> Оплатить ${t.stars}₽`;
+            btn.addEventListener('click',()=>{
+                hideModal();
+                if(notEnough){ switchTab('topup'); }
+                else { showToast('Доступно после подключения backend','warning'); }
+            });
             modalButtons.appendChild(btn);
             modal.classList.add('show');
         });
