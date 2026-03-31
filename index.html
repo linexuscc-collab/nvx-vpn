@@ -8,12 +8,10 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>NVX VPN</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
     --bg-dark: #0a0e27;
-    --glass-bg: rgba(15,15,30,0.3);
-    --glass-border: rgba(80,90,120,0.25);
     --accent: #7a6fbf;
     --accent-bright: #9a8fdf;
     --text-primary: #e5e5f0;
@@ -46,7 +44,72 @@ body{
     overflow:hidden;
 }
 
-/* HEADER — hover lift */
+/* ═══════════════════════════════════════
+   ENTRANCE ANIMATIONS
+═══════════════════════════════════════ */
+@keyframes fadeDown{
+    from{opacity:0;transform:translateY(-14px);}
+    to{opacity:1;transform:translateY(0);}
+}
+@keyframes slideInLeft{
+    from{opacity:0;transform:translateX(-22px);}
+    to{opacity:1;transform:translateX(0);}
+}
+@keyframes fadeUp{
+    from{opacity:0;transform:translateY(18px);}
+    to{opacity:1;transform:translateY(0);}
+}
+@keyframes fadeIn{
+    from{opacity:0;transform:scale(0.97);}
+    to{opacity:1;transform:scale(1);}
+}
+
+/* Title всегда сверху */
+.anim-title{
+    animation:fadeDown 0.38s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+/* Главная — блоки слева */
+.anim-left{
+    animation:slideInLeft 0.38s cubic-bezier(0.22,1,0.36,1) both;
+}
+.anim-left-d1{animation-delay:0.06s;}
+.anim-left-d2{animation-delay:0.13s;}
+.anim-left-d3{animation-delay:0.20s;}
+
+/* Тарифы — снизу вверх stagger */
+.anim-up{
+    animation:fadeUp 0.36s cubic-bezier(0.22,1,0.36,1) both;
+}
+.anim-up-d1{animation-delay:0.04s;}
+.anim-up-d2{animation-delay:0.12s;}
+.anim-up-d3{animation-delay:0.20s;}
+.anim-up-d4{animation-delay:0.28s;}
+.anim-up-d5{animation-delay:0.36s;}
+.anim-up-d6{animation-delay:0.44s;}
+
+/* Рефералы — сверху/снизу */
+.anim-down{
+    animation:fadeDown 0.38s cubic-bezier(0.22,1,0.36,1) both;
+}
+.anim-down-d1{animation-delay:0.06s;}
+.anim-down-d2{animation-delay:0.12s;}
+.anim-down-d3{animation-delay:0.18s;}
+
+/* Поддержка — плавный fadeIn */
+.anim-fade{
+    animation:fadeIn 0.45s cubic-bezier(0.22,1,0.36,1) both;
+}
+.anim-fade-d1{animation-delay:0.08s;}
+.anim-fade-d2{animation-delay:0.16s;}
+.anim-fade-d3{animation-delay:0.24s;}
+.anim-fade-d4{animation-delay:0.32s;}
+.anim-fade-d5{animation-delay:0.40s;}
+.anim-fade-d6{animation-delay:0.48s;}
+
+/* ═══════════════════════════════════════
+   HEADER
+═══════════════════════════════════════ */
 .header{
     display:flex;justify-content:space-between;align-items:center;
     padding:10px 14px;
@@ -73,8 +136,7 @@ body{
     background:linear-gradient(135deg,rgba(122,111,191,0.6),rgba(154,143,223,0.4));
     display:flex;align-items:center;justify-content:center;
     font-size:16px;color:white;font-weight:700;
-    flex-shrink:0;border:1px solid rgba(122,111,191,0.3);
-    overflow:hidden;
+    flex-shrink:0;border:1px solid rgba(122,111,191,0.3);overflow:hidden;
 }
 .avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:none;}
 .user-details{display:flex;flex-direction:column;gap:2px;min-width:0;}
@@ -91,7 +153,9 @@ body{
 .balance:hover{background:rgba(40,50,75,0.4);}
 .balance i{font-size:14px;color:var(--accent-bright);}
 
-/* CONTENT */
+/* ═══════════════════════════════════════
+   CONTENT
+═══════════════════════════════════════ */
 .content{
     flex:1;overflow-y:auto;overflow-x:hidden;
     padding:2px 0 8px;
@@ -100,7 +164,6 @@ body{
 }
 .content::-webkit-scrollbar{display:none;}
 
-/* SECTION TITLE */
 .section-title{
     font-family:var(--font-display);
     font-size:21px;font-weight:700;
@@ -121,7 +184,6 @@ body{
     display:flex;align-items:center;gap:6px;
 }
 
-/* GLASS */
 .glass{
     background:rgba(15,18,40,0.55);
     backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
@@ -130,7 +192,9 @@ body{
 }
 .glass:hover{border-color:rgba(122,111,191,0.4);}
 
-/* SUBSCRIPTION CARD — hover lift */
+/* ═══════════════════════════════════════
+   SUBSCRIPTION CARD
+═══════════════════════════════════════ */
 .subscription-card{
     padding:16px;margin-bottom:12px;
     position:relative;overflow:hidden;
@@ -162,7 +226,9 @@ body{
 .subscription-card .detail i{width:16px;color:var(--accent-bright);font-size:12px;flex-shrink:0;}
 .subscription-card .detail .value{color:var(--text-primary);font-weight:600;margin-left:auto;}
 
-/* BUTTONS */
+/* ═══════════════════════════════════════
+   BUTTONS
+═══════════════════════════════════════ */
 .btn{
     border:none;border-radius:18px;padding:10px 18px;
     font-weight:600;font-size:13px;
@@ -184,11 +250,9 @@ body{
 }
 .btn.secondary:hover{background:rgba(40,50,75,0.4);color:var(--accent-bright);}
 
-/* PROGRESS BAR */
 .progress-bar{height:4px;background:rgba(70,80,110,0.15);border-radius:2px;margin:8px 0 6px;overflow:hidden;}
 .progress-fill{height:100%;background:linear-gradient(90deg,rgba(122,111,191,0.6),rgba(154,143,223,0.4));border-radius:2px;transition:width 0.4s ease;}
 
-/* ACTION BUTTONS */
 .action-buttons{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
 .btn.action-row{
     display:flex;flex-direction:row;align-items:center;gap:12px;
@@ -211,7 +275,9 @@ body{
 .action-desc{font-size:11px;color:rgba(255,255,255,0.5);}
 .action-arrow{font-size:11px;color:rgba(255,255,255,0.35);flex-shrink:0;}
 
-/* TARIFF CARDS — компактнее как у Envy */
+/* ═══════════════════════════════════════
+   TARIFF CARDS
+═══════════════════════════════════════ */
 .tariffs-list{display:flex;flex-direction:column;gap:10px;}
 .tariff-card{
     padding:13px 14px;cursor:pointer;transition:var(--transition);
@@ -225,7 +291,6 @@ body{
 .tariff-card:hover{background:rgba(30,40,65,0.35);border-color:rgba(122,111,191,0.35);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.25);}
 .tariff-card-header{display:flex;align-items:center;justify-content:space-between;gap:8px;}
 .tariff-card-days{display:flex;align-items:baseline;gap:4px;}
-/* FIX: уменьшен размер шрифта дней как у Envy */
 .tariff-days-num{font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--text-primary);line-height:1;}
 .tariff-days-label{font-size:12px;color:var(--text-secondary);font-weight:500;}
 .tariff-card-price{
@@ -233,7 +298,6 @@ body{
     background:rgba(122,111,191,0.12);border:1px solid rgba(122,111,191,0.2);
     border-radius:10px;padding:4px 12px;flex-shrink:0;
 }
-/* FIX: уменьшен размер цены как у Envy */
 .tariff-price-num{font-family:var(--font-display);font-size:17px;font-weight:800;color:var(--accent-bright);line-height:1;}
 .tariff-price-cur{font-size:12px;color:var(--accent);font-weight:600;}
 .tariff-card-features{display:flex;gap:6px;flex-wrap:wrap;}
@@ -247,21 +311,14 @@ body{
 .tariff-locations-label{font-size:10px;color:var(--text-tertiary);font-weight:600;text-transform:uppercase;letter-spacing:0.6px;display:flex;align-items:center;gap:5px;}
 .tariff-locations-label i{color:var(--accent);font-size:10px;}
 .tariff-countries{display:flex;flex-wrap:wrap;gap:4px;}
-
 .country-tag{
     font-size:11px;font-weight:700;
     display:inline-flex;align-items:center;justify-content:center;
-    padding:3px 8px;
-    border-radius:7px;
-    background:rgba(30,35,55,0.4);
-    border:1px solid rgba(70,80,110,0.15);
-    color:var(--text-secondary);
-    letter-spacing:0.5px;
-    transition:all 0.2s;
-    white-space:nowrap;
+    padding:3px 8px;border-radius:7px;
+    background:rgba(30,35,55,0.4);border:1px solid rgba(70,80,110,0.15);
+    color:var(--text-secondary);letter-spacing:0.5px;transition:all 0.2s;white-space:nowrap;
 }
 .country-tag:hover{background:rgba(122,111,191,0.15);color:var(--accent-bright);border-color:rgba(122,111,191,0.25);}
-
 .tariff-locations-note{
     font-size:10px;color:var(--accent-bright);
     background:rgba(122,111,191,0.08);border:1px solid rgba(122,111,191,0.15);
@@ -275,7 +332,9 @@ body{
 }
 .tariff-card:hover .tariff-card-btn{background:linear-gradient(135deg,rgba(122,111,191,0.7),rgba(154,143,223,0.5));}
 
-/* STATS GRID — hover lift */
+/* ═══════════════════════════════════════
+   STATS GRID
+═══════════════════════════════════════ */
 .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
 .stat-card{
     padding:12px 8px;text-align:center;border-radius:16px;
@@ -284,16 +343,14 @@ body{
     transition:var(--transition);cursor:default;
 }
 .stat-card:hover{
-    transform:translateY(-2px);
-    border-color:rgba(122,111,191,0.35);
-    background:rgba(25,32,58,0.35);
-    box-shadow:0 4px 14px rgba(0,0,0,0.2);
+    transform:translateY(-2px);border-color:rgba(122,111,191,0.35);
+    background:rgba(25,32,58,0.35);box-shadow:0 4px 14px rgba(0,0,0,0.2);
 }
 .stat-icon{font-size:20px;color:var(--accent-bright);}
 .stat-label{font-size:9px;color:var(--text-secondary);font-weight:600;text-transform:uppercase;letter-spacing:0.4px;}
 .stat-value{font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--accent-bright);}
 
-/* REF LINK — hover lift */
+/* REF LINK */
 .ref-link{
     padding:14px;margin-bottom:14px;
     background:rgba(20,25,45,0.2);border:1px solid rgba(70,80,110,0.15);
@@ -301,8 +358,7 @@ body{
     transition:var(--transition);cursor:default;
 }
 .ref-link:hover{
-    transform:translateY(-2px);
-    border-color:rgba(122,111,191,0.35);
+    transform:translateY(-2px);border-color:rgba(122,111,191,0.35);
     box-shadow:0 4px 14px rgba(0,0,0,0.2);
 }
 .ref-link p{font-size:12px;color:var(--text-secondary);margin-bottom:8px;display:flex;align-items:center;gap:6px;font-weight:600;}
@@ -327,17 +383,15 @@ body{
 .topup-method span{flex:1;font-weight:600;color:var(--text-primary);font-size:13px;}
 .topup-method i:last-child{font-size:12px;color:var(--text-secondary);}
 
-/* PROMO — hover lift */
+/* PROMO */
 .promo-section{
     background:rgba(122,111,191,0.08);border:1px solid rgba(122,111,191,0.18);
     border-radius:18px;padding:14px;margin-bottom:14px;
     transition:var(--transition);cursor:default;
 }
 .promo-section:hover{
-    transform:translateY(-2px);
-    border-color:rgba(122,111,191,0.35);
-    background:rgba(122,111,191,0.12);
-    box-shadow:0 4px 14px rgba(0,0,0,0.2);
+    transform:translateY(-2px);border-color:rgba(122,111,191,0.35);
+    background:rgba(122,111,191,0.12);box-shadow:0 4px 14px rgba(0,0,0,0.2);
 }
 .promo-section p{font-size:12px;color:var(--text-secondary);margin-bottom:8px;display:flex;align-items:center;gap:6px;font-weight:600;}
 .promo-section p i{color:var(--accent-bright);}
@@ -345,20 +399,18 @@ body{
 .promo-input{
     flex:1;background:rgba(0,0,0,0.2);border:1px solid rgba(70,80,110,0.2);
     border-radius:12px;padding:11px 14px;color:var(--text-primary);
-    font-size:13px;outline:none;font-family:var(--font-body);
-    transition:border-color 0.2s;
+    font-size:13px;outline:none;font-family:var(--font-body);transition:border-color 0.2s;
 }
 .promo-input::placeholder{color:var(--text-tertiary);}
 .promo-input:focus{border-color:rgba(122,111,191,0.4);}
 .promo-btn{
     padding:11px 16px;background:linear-gradient(135deg,rgba(122,111,191,0.7),rgba(154,143,223,0.5));
     border:none;border-radius:12px;color:white;font-size:13px;font-weight:600;
-    cursor:pointer;white-space:nowrap;font-family:var(--font-body);
-    transition:var(--transition);
+    cursor:pointer;white-space:nowrap;font-family:var(--font-body);transition:var(--transition);
 }
 .promo-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(122,111,191,0.2);}
 
-/* SUPPORT — hover lift + float animation */
+/* SUPPORT */
 .support-card{
     padding:20px 16px;text-align:center;margin-bottom:16px;
     background:rgba(20,25,45,0.2);border:1px solid rgba(70,80,110,0.15);
@@ -366,12 +418,9 @@ body{
     transition:var(--transition);cursor:default;
 }
 .support-card:hover{
-    transform:translateY(-2px);
-    border-color:rgba(122,111,191,0.35);
-    background:rgba(25,32,58,0.3);
-    box-shadow:0 6px 20px rgba(0,0,0,0.25);
+    transform:translateY(-2px);border-color:rgba(122,111,191,0.35);
+    background:rgba(25,32,58,0.3);box-shadow:0 6px 20px rgba(0,0,0,0.25);
 }
-/* Float animation для иконки поддержки как у Envy */
 @keyframes float{
     0%,100%{transform:translateY(0);}
     50%{transform:translateY(-6px);}
@@ -409,30 +458,22 @@ body{
 .toast{
     position:fixed;
     bottom:max(80px, calc(var(--safe-bottom) + 80px));
-    left:50%;
-    transform:translateX(-50%) translateY(160px);
-    background:rgba(20,25,45,0.95);
-    border:1px solid rgba(70,80,110,0.2);
-    border-radius:32px;
-    padding:10px 16px;
+    left:50%;transform:translateX(-50%) translateY(160px);
+    background:rgba(20,25,45,0.95);border:1px solid rgba(70,80,110,0.2);
+    border-radius:32px;padding:10px 16px;
     display:flex;align-items:center;gap:8px;
     font-weight:500;font-size:13px;color:var(--accent-bright);
     box-shadow:0 4px 24px rgba(0,0,0,0.5);
     transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s ease;
-    z-index:9999;
-    white-space:nowrap;max-width:85vw;
-    pointer-events:none;
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
-    will-change:transform;
-    opacity:0;
+    z-index:9999;white-space:nowrap;max-width:85vw;
+    pointer-events:none;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    will-change:transform;opacity:0;
 }
-.toast.show{
-    transform:translateX(-50%) translateY(0);
-    opacity:1;
-}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
 
-/* MODAL — drag indicator + исправленный заголовок */
+/* ═══════════════════════════════════════
+   MODAL — полностью переработан
+═══════════════════════════════════════ */
 .modal{display:none;position:fixed;inset:0;z-index:1500;justify-content:center;align-items:flex-end;padding:0;}
 .modal.show{display:flex;}
 .modal-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);}
@@ -445,95 +486,99 @@ body{
     box-shadow:0 -8px 40px rgba(0,0,0,0.5);
     max-height:92vh;overflow-y:auto;
     animation:modalSlideUp 0.35s cubic-bezier(0.22,1,0.36,1);
+    /* hover lift на модалку */
+    transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
 }
-/* FIX: drag indicator + правильные отступы чтобы заголовок не съезжал */
-.modal-drag{
-    display:flex;justify-content:center;
-    padding:12px 0 8px;
+.modal-content:hover{
+    transform:translateY(-2px);
+    box-shadow:0 -12px 50px rgba(0,0,0,0.6);
 }
-.modal-drag-bar{
-    width:40px;height:4px;
-    background:rgba(120,130,160,0.35);
-    border-radius:2px;
-}
+/* drag indicator */
+.modal-drag{display:flex;justify-content:center;padding:14px 0 10px;}
+.modal-drag-bar{width:40px;height:4px;background:rgba(120,130,160,0.35);border-radius:2px;}
+/* заголовок — правильный отступ */
 .modal-header{
     display:flex;align-items:center;justify-content:space-between;
-    padding:0 0 14px;
+    padding:0 0 16px;
     border-bottom:1px solid rgba(70,80,110,0.15);
-    margin-bottom:18px;
+    margin-bottom:20px;
 }
 .modal-header h3{
     font-family:var(--font-display);font-size:17px;
-    color:var(--text-primary);font-weight:700;
-    margin:0;
-}
-.modal-buttons{display:flex;flex-direction:column;gap:8px;margin-top:18px;}
-.modal-btn{
-    background:rgba(25,30,52,0.8);border:1px solid rgba(70,80,110,0.2);
-    border-radius:14px;padding:13px 16px;font-size:14px;font-weight:600;
-    color:var(--text-primary);cursor:pointer;transition:all 0.25s;
-    width:100%;text-align:center;font-family:var(--font-body);
-    display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;
-}
-.modal-btn:hover{
-    background:rgba(122,111,191,0.2);
-    border-color:rgba(122,111,191,0.3);
-    color:var(--accent-bright);
-    transform:translateY(-1px);
-}
-.modal-btn-primary{
-    background:linear-gradient(135deg,rgba(122,111,191,0.7),rgba(154,143,223,0.5))!important;
-    border-color:rgba(122,111,191,0.4)!important;
-    color:white!important;
-}
-.modal-btn-primary:hover{
-    background:linear-gradient(135deg,rgba(122,111,191,0.85),rgba(154,143,223,0.65))!important;
-    box-shadow:0 4px 16px rgba(122,111,191,0.25)!important;
+    color:var(--text-primary);font-weight:700;margin:0;
 }
 .modal-close{
     background:rgba(30,35,55,0.5);border:1px solid rgba(70,80,110,0.2);
     border-radius:50%;width:32px;height:32px;
     display:flex;align-items:center;justify-content:center;
-    color:var(--text-secondary);font-size:12px;cursor:pointer;transition:all 0.2s;
-    flex-shrink:0;
+    color:var(--text-secondary);font-size:12px;cursor:pointer;transition:all 0.2s;flex-shrink:0;
 }
 .modal-close:hover{background:rgba(122,111,191,0.25);color:var(--accent-bright);}
 
-/* FIX: строка баланса в модалке */
-.modal-balance-warn{
-    display:flex;align-items:center;gap:8px;
-    padding:10px 14px;
-    background:rgba(255,80,80,0.08);
-    border:1px solid rgba(255,80,80,0.2);
-    border-radius:12px;
-    font-size:13px;font-weight:600;
-    color:#ff6b6b;
-    margin-top:4px;
+/* FIX: название тарифа в модалке — минималистичный Inter Light как у Envy */
+.modal-tariff-name{
+    font-family:var(--font-body);
+    font-size:22px;font-weight:300;
+    color:var(--accent-bright);
+    text-align:center;
+    letter-spacing:0.5px;
+    padding:0 0 16px;
 }
-.modal-balance-warn i{font-size:14px;flex-shrink:0;}
 
-/* FIX: строки данных в модалке — две колонки как у Envy */
+/* строки данных — две колонки */
 .modal-detail-row{
     display:flex;justify-content:space-between;align-items:center;
-    padding:7px 0;
-    border-bottom:1px solid rgba(70,80,110,0.1);
-    font-size:13px;
+    padding:7px 0;border-bottom:1px solid rgba(70,80,110,0.1);font-size:13px;
 }
 .modal-detail-row:last-of-type{border-bottom:none;}
 .modal-detail-label{color:var(--text-secondary);}
 .modal-detail-value{color:var(--text-primary);font-weight:600;}
-.modal-detail-value.accent{color:var(--accent-bright);font-size:17px;font-weight:800;}
-.modal-tariff-name{
-    font-family:var(--font-display);
-    font-size:20px;font-weight:800;
-    color:var(--accent-bright);
-    text-align:center;
-    padding:4px 0 14px;
+.modal-detail-value.accent{color:var(--accent-bright);font-size:17px;font-weight:700;}
+
+/* FIX: строка баланса — иконка кошелька + белые цифры + правильные отступы */
+.modal-balance-warn{
+    display:flex;align-items:center;gap:10px;
+    padding:11px 14px;
+    background:rgba(255,80,80,0.07);
+    border:1px solid rgba(255,80,80,0.18);
+    border-radius:12px;
+    font-size:13px;font-weight:500;
+    color:var(--text-secondary);
+    margin-top:12px;
+}
+.modal-balance-warn i{font-size:15px;color:#ff6b6b;flex-shrink:0;}
+.modal-balance-warn .warn-balance{color:var(--text-primary);font-weight:600;}
+.modal-balance-warn .warn-short{color:#ff6b6b;font-weight:700;}
+
+.modal-buttons{display:flex;flex-direction:column;gap:8px;margin-top:16px;}
+
+/* FIX: кнопка оплаты — компактнее, стиль как у Envy */
+.modal-btn{
+    background:rgba(25,30,52,0.8);border:1px solid rgba(70,80,110,0.2);
+    border-radius:14px;padding:12px 16px;font-size:14px;font-weight:600;
+    color:var(--text-primary);cursor:pointer;transition:all 0.25s;
+    width:100%;text-align:center;font-family:var(--font-body);
+    display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;
+}
+.modal-btn:hover{
+    background:rgba(122,111,191,0.2);border-color:rgba(122,111,191,0.3);
+    color:var(--accent-bright);transform:translateY(-1px);
+}
+.modal-btn-primary{
+    background:linear-gradient(135deg,rgba(122,111,191,0.75),rgba(154,143,223,0.55))!important;
+    border-color:rgba(122,111,191,0.4)!important;color:white!important;
+    font-size:15px!important;font-weight:700!important;
+}
+.modal-btn-primary:hover{
+    background:linear-gradient(135deg,rgba(122,111,191,0.9),rgba(154,143,223,0.7))!important;
+    box-shadow:0 4px 18px rgba(122,111,191,0.3)!important;
 }
 
 @keyframes modalSlideUp{0%{transform:translateY(100%);opacity:0}100%{transform:translateY(0);opacity:1}}
 
-/* BOTTOM NAV — hover lift */
+/* ═══════════════════════════════════════
+   BOTTOM NAV
+═══════════════════════════════════════ */
 .bottom-nav{
     display:flex;justify-content:space-around;
     padding:6px 4px;padding-bottom:max(6px,calc(var(--safe-bottom)+6px));
@@ -552,17 +597,8 @@ body{
     border:1px solid transparent;
 }
 .nav-item i{font-size:18px;}
-/* FIX: hover lift для nav */
-.nav-item:hover{
-    color:var(--accent-bright);
-    background:rgba(122,111,191,0.08);
-    transform:translateY(-2px);
-}
-.nav-item.active{
-    color:var(--accent-bright);
-    background:rgba(122,111,191,0.12);
-    border:1px solid rgba(122,111,191,0.2);
-}
+.nav-item:hover{color:var(--accent-bright);background:rgba(122,111,191,0.08);transform:translateY(-2px);}
+.nav-item.active{color:var(--accent-bright);background:rgba(122,111,191,0.12);border:1px solid rgba(122,111,191,0.2);}
 .nav-item.active::before{
     content:'';position:absolute;top:-4px;left:50%;
     transform:translateX(-50%);width:5px;height:5px;
@@ -575,8 +611,6 @@ body{
 <body>
 <div id="app">
 <div class="ui-layer">
-
-  <!-- HEADER -->
   <header class="header">
     <div class="user-info">
       <div class="avatar" id="avatarContainer">
@@ -593,11 +627,7 @@ body{
       <span id="userBalance">0.00₽</span>
     </div>
   </header>
-
-  <!-- CONTENT -->
   <main class="content" id="content"></main>
-
-  <!-- BOTTOM NAV -->
   <nav class="bottom-nav">
     <button class="nav-item active" data-tab="home"><i class="fas fa-home"></i><span>Главная</span></button>
     <button class="nav-item" data-tab="tariffs"><i class="fas fa-tags"></i><span>Тарифы</span></button>
@@ -605,17 +635,14 @@ body{
     <button class="nav-item" data-tab="topup"><i class="fas fa-wallet"></i><span>Пополнить</span></button>
     <button class="nav-item" data-tab="support"><i class="fas fa-headset"></i><span>Поддержка</span></button>
   </nav>
-
 </div>
 </div>
 
-<!-- TOAST -->
 <div id="custom-toast" class="toast">
   <i class="fas fa-check-circle" id="toast-icon"></i>
   <span id="toast-message"></span>
 </div>
 
-<!-- MODAL — новая структура с drag indicator и правильным заголовком -->
 <div id="custom-modal" class="modal">
   <div class="modal-overlay"></div>
   <div class="modal-content">
@@ -630,7 +657,6 @@ body{
 </div>
 
 <script>
-// ── STATE ──
 const DEMO = {
     name: 'ONE_DAY',
     id: '641915862',
@@ -641,23 +667,23 @@ const DEMO = {
     referral: { total: 0, earned: 0, percent: 25 },
     refLink: 'https://t.me/NVXvpn_bot?start=ref641915862',
     tariffs: [
-        { id:1, days:30,  stars:129, traffic_gb:60,  ip_limit:1,  label:'30 дней' },
-        { id:2, days:90,  stars:369, traffic_gb:180, ip_limit:2,  label:'90 дней' },
-        { id:3, days:180, stars:719, traffic_gb:360, ip_limit:3,  label:'180 дней' },
+        { id:1, days:30,  stars:129, traffic_gb:60,  ip_limit:1 },
+        { id:2, days:90,  stars:369, traffic_gb:180, ip_limit:2 },
+        { id:3, days:180, stars:719, traffic_gb:360, ip_limit:3 },
     ],
     locations: ['LV','NL','RU','US','PL','KZ','SE','TR','UA'],
     nodesCount: 9,
 };
 
 const contentEl = document.getElementById('content');
-const toast = document.getElementById('custom-toast');
-const toastMsg = document.getElementById('toast-message');
+const toast     = document.getElementById('custom-toast');
+const toastMsg  = document.getElementById('toast-message');
 const toastIcon = document.getElementById('toast-icon');
-const modal = document.getElementById('custom-modal');
-const modalTitle = document.getElementById('modal-title');
-const modalBody = document.getElementById('modal-body');
+const modal     = document.getElementById('custom-modal');
+const modalTitle   = document.getElementById('modal-title');
+const modalBody    = document.getElementById('modal-body');
 const modalButtons = document.getElementById('modal-buttons');
-const modalClose = document.getElementById('modal-close');
+const modalClose   = document.getElementById('modal-close');
 let currentTab = 'home';
 
 // ── TOAST ──
@@ -690,7 +716,7 @@ modal?.addEventListener('click',e=>{if(e.target.classList.contains('modal-overla
 // ── HEADER ──
 function updateHeader() {
     document.getElementById('userName').textContent = DEMO.name;
-    document.getElementById('userId').textContent = 'ID: ' + DEMO.id;
+    document.getElementById('userId').textContent   = 'ID: ' + DEMO.id;
     document.getElementById('userBalance').textContent = DEMO.balance + '₽';
 }
 updateHeader();
@@ -720,14 +746,13 @@ function showTab(tab) {
     }, 300);
 }
 
-// ── HOME ──
+// ── HOME — анимация слева ──
 function renderHome() {
     contentEl.innerHTML = `
-        <div class="section-title">Добро пожаловать, ${DEMO.name}</div>
-        <div class="subscription-card glass" id="subCard"></div>
+        <div class="section-title anim-title">Добро пожаловать, ${DEMO.name}</div>
+        <div class="subscription-card glass anim-left anim-left-d1" id="subCard"></div>
         <div id="trialBlock"></div>
     `;
-
     const subCard = document.getElementById('subCard');
 
     if (!DEMO.hasSubscription) {
@@ -751,7 +776,7 @@ function renderHome() {
 
         if (DEMO.trialAvailable) {
             document.getElementById('trialBlock').innerHTML = `
-                <div class="subscription-card glass" style="margin-top:0;">
+                <div class="subscription-card glass anim-left anim-left-d2" style="margin-top:0;">
                     <div class="title"><i class="fas fa-flask"></i> Тестовый период</div>
                     <div class="detail"><i class="fas fa-database"></i> Трафик <span class="value">48 ГБ <span style="font-size:10px;color:var(--text-tertiary);">(1.5 ГБ на локацию)</span></span></div>
                     <div class="detail"><i class="fas fa-hourglass-end"></i> Длительность <span class="value">1 день</span></div>
@@ -779,7 +804,7 @@ function renderHome() {
             <div class="progress-bar"><div class="progress-fill" style="width:5%"></div></div>
             <div class="detail"><i class="fas fa-mobile-alt"></i> Устройств <span class="value">32 <span style="font-size:10px;color:var(--text-tertiary);">(1 на локацию)</span></span></div>
             <div style="margin-top:12px;">
-                <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:rgba(20,25,45,0.3);border:1px solid rgba(70,80,110,0.15);border-radius:14px;cursor:pointer;transition:var(--transition);" onclick="showToast('Функция подключится после настройки backend')" onmouseover="this.style.borderColor='rgba(122,111,191,0.3)';this.style.transform='translateY(-1px)'" onmouseout="this.style.borderColor='rgba(70,80,110,0.15)';this.style.transform=''">
+                <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;background:rgba(20,25,45,0.3);border:1px solid rgba(70,80,110,0.15);border-radius:14px;cursor:pointer;transition:all 0.25s;" onclick="showToast('Функция подключится после настройки backend')" onmouseover="this.style.borderColor='rgba(122,111,191,0.3)';this.style.transform='translateY(-1px)'" onmouseout="this.style.borderColor='rgba(70,80,110,0.15)';this.style.transform=''">
                     <div style="width:36px;height:36px;border-radius:10px;background:rgba(122,111,191,0.1);border:1px solid rgba(122,111,191,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                         <i class="fas fa-rocket" style="font-size:15px;color:var(--accent-bright);"></i>
                     </div>
@@ -807,16 +832,17 @@ function renderHome() {
     }
 }
 
-// ── TARIFFS ──
+// ── TARIFFS — анимация снизу вверх stagger ──
 function renderTariffs() {
     const locs = DEMO.locations;
     const n = DEMO.nodesCount;
+    const delays = ['anim-up-d1','anim-up-d2','anim-up-d3'];
 
     contentEl.innerHTML = `
-        <div class="section-title">Выберите тариф</div>
+        <div class="section-title anim-title">Выберите тариф</div>
         <div class="tariffs-list">
-            ${DEMO.tariffs.map(t => `
-            <div class="tariff-card" data-id="${t.id}">
+            ${DEMO.tariffs.map((t,i) => `
+            <div class="tariff-card anim-up ${delays[i]}" data-id="${t.id}">
                 <div class="tariff-card-header">
                     <div class="tariff-card-days">
                         <span class="tariff-days-num">${t.days}</span>
@@ -847,15 +873,15 @@ function renderTariffs() {
             const t = DEMO.tariffs.find(x=>x.id===parseInt(card.dataset.id));
             const n = DEMO.nodesCount;
             const bal = parseFloat(DEMO.balance);
-            const diff = (t.stars - bal).toFixed(2);
+            const diff = Math.ceil(t.stars - bal);
             const notEnough = bal < t.stars;
 
             modalTitle.textContent = 'Подтверждение покупки';
 
-            // FIX: данные в две колонки как у Envy
+            // FIX: "30 дней доступа" + минималистичный шрифт Inter Light
             modalBody.innerHTML = `
-                <div class="modal-tariff-name">${t.days} дней</div>
-                <div style="background:rgba(0,0,0,0.15);border:1px solid rgba(70,80,110,0.12);border-radius:14px;padding:4px 14px;margin-bottom:12px;">
+                <div class="modal-tariff-name">${t.days} дней доступа</div>
+                <div style="background:rgba(0,0,0,0.15);border:1px solid rgba(70,80,110,0.12);border-radius:14px;padding:4px 14px;margin-bottom:4px;">
                     <div class="modal-detail-row">
                         <span class="modal-detail-label">Трафик</span>
                         <span class="modal-detail-value">${t.traffic_gb * n} ГБ <span style="font-size:10px;color:var(--text-tertiary);">(${t.traffic_gb} ГБ на лок.)</span></span>
@@ -871,15 +897,14 @@ function renderTariffs() {
                 </div>
                 ${notEnough ? `
                 <div class="modal-balance-warn">
-                    <i class="fas fa-exclamation-circle"></i>
-                    На балансе ${bal.toFixed(2)}₽ — не хватает ${diff}₽
+                    <i class="fas fa-wallet"></i>
+                    <span>На балансе <span class="warn-balance">${bal.toFixed(2)}₽</span> — не хватает <span class="warn-short">${diff}₽</span></span>
                 </div>` : ''}
             `;
 
             modalButtons.innerHTML = '';
             const btn = document.createElement('button');
             btn.className = 'modal-btn modal-btn-primary';
-
             if(notEnough) {
                 btn.innerHTML = '<i class="fas fa-wallet"></i> Пополнить баланс и оплатить';
                 btn.addEventListener('click',()=>{ hideModal(); switchTab('topup'); });
@@ -893,41 +918,41 @@ function renderTariffs() {
     });
 }
 
-// ── REFERRAL ──
+// ── REFERRAL — сверху/снизу ──
 function renderReferral() {
     const r = DEMO.referral;
     contentEl.innerHTML = `
-        <div class="section-title">Приглашайте друзей и зарабатывайте</div>
+        <div class="section-title anim-title">Приглашайте друзей и зарабатывайте</div>
         <div class="stats-grid">
-            <div class="stat-card glass">
+            <div class="stat-card glass anim-down anim-down-d1">
                 <div class="stat-icon"><i class="fas fa-user-plus"></i></div>
                 <span class="stat-label">Приглашено</span>
                 <span class="stat-value">${r.total}</span>
             </div>
-            <div class="stat-card glass">
+            <div class="stat-card glass anim-down anim-down-d2">
                 <div class="stat-icon"><i class="fas fa-money-bill-wave"></i></div>
                 <span class="stat-label">Заработано</span>
                 <span class="stat-value">${r.earned.toFixed(2)}₽</span>
             </div>
-            <div class="stat-card glass">
+            <div class="stat-card glass anim-down anim-down-d3">
                 <div class="stat-icon"><i class="fas fa-percent"></i></div>
                 <span class="stat-label">Процент</span>
                 <span class="stat-value">${r.percent}%</span>
             </div>
         </div>
-        <div class="ref-link glass">
+        <div class="ref-link glass anim-up anim-up-d2">
             <p><i class="fas fa-link"></i> Ваша реферальная ссылка</p>
             <div style="display:flex;gap:6px;align-items:center;">
                 <div style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:rgba(0,0,0,0.2);border:1px solid rgba(70,80,110,0.15);border-radius:12px;padding:10px 14px;color:var(--text-primary);font-size:11px;">${DEMO.refLink}</div>
                 <button class="copy-btn" id="copyRef"><i class="fas fa-copy"></i></button>
             </div>
         </div>
-        <div style="display:flex;align-items:flex-start;gap:8px;padding:10px 14px;background:rgba(122,111,191,0.06);border:1px solid rgba(122,111,191,0.12);border-radius:14px;margin-bottom:14px;">
+        <div class="anim-up anim-up-d3" style="display:flex;align-items:flex-start;gap:8px;padding:10px 14px;background:rgba(122,111,191,0.06);border:1px solid rgba(122,111,191,0.12);border-radius:14px;margin-bottom:14px;">
             <i class="fas fa-lightbulb" style="color:var(--accent-bright);font-size:13px;margin-top:1px;flex-shrink:0;"></i>
             <span style="font-size:11px;color:var(--text-secondary);line-height:1.5;">Отправляйте ссылку друзьям, публикуйте в чатах и соцсетях - заработок будет расти автоматически</span>
         </div>
-        <div class="section-subtitle">Вывод средств</div>
-        <div class="action-buttons">
+        <div class="section-subtitle anim-up anim-up-d4">Вывод средств</div>
+        <div class="action-buttons anim-up anim-up-d5">
             <button class="btn primary action-row" id="withdrawCard">
                 <div class="action-icon-wrap"><i class="fas fa-credit-card"></i></div>
                 <div class="action-text-wrap"><span class="action-label">На карту</span><span class="action-desc">Вывод на банковскую карту (от 500₽)</span></div>
@@ -948,32 +973,32 @@ function renderReferral() {
     document.getElementById('withdrawBalance').addEventListener('click',()=>showToast('Доступно после подключения backend','warning'));
 }
 
-// ── TOPUP ──
+// ── TOPUP — stagger fadeUp ──
 function renderTopUp() {
     contentEl.innerHTML = `
-        <div class="section-title">Пополнить баланс</div>
-        <div class="promo-section">
+        <div class="section-title anim-title">Пополнить баланс</div>
+        <div class="promo-section anim-up anim-up-d1">
             <p><i class="fas fa-ticket-alt"></i> Активировать промокод</p>
             <div class="promo-row">
                 <input class="promo-input" placeholder="ВВЕДИТЕ ПРОМОКОД" id="promoInput">
                 <button class="promo-btn" id="promoBtn">Активировать</button>
             </div>
         </div>
-        <div style="display:flex;align-items:flex-start;gap:8px;padding:10px 14px;background:rgba(122,111,191,0.06);border:1px solid rgba(122,111,191,0.12);border-radius:14px;margin-bottom:14px;">
+        <div class="anim-up anim-up-d2" style="display:flex;align-items:flex-start;gap:8px;padding:10px 14px;background:rgba(122,111,191,0.06);border:1px solid rgba(122,111,191,0.12);border-radius:14px;margin-bottom:14px;">
             <i class="fas fa-info-circle" style="color:var(--accent-bright);font-size:13px;margin-top:1px;flex-shrink:0;"></i>
             <span style="font-size:12px;color:var(--text-secondary);line-height:1.5;">Выберите удобный способ оплаты и желаемую сумму. Средства зачисляются мгновенно.</span>
         </div>
-        <div class="section-subtitle">Доступные способы</div>
-        <div class="topup-method" onclick="showToast('Переход к оплате через СБП')">
+        <div class="section-subtitle anim-up anim-up-d3">Доступные способы</div>
+        <div class="topup-method anim-up anim-up-d3" onclick="showToast('Переход к оплате через СБП')">
             <i class="fas fa-university"></i><span>СБП</span><i class="fas fa-chevron-right"></i>
         </div>
-        <div class="topup-method" onclick="showToast('Переход к CryptoBot')">
+        <div class="topup-method anim-up anim-up-d4" onclick="showToast('Переход к CryptoBot')">
             <i class="fas fa-coins"></i><span>CryptoBot</span><i class="fas fa-chevron-right"></i>
         </div>
-        <div class="topup-method" onclick="showToast('Переход к Telegram Stars')">
+        <div class="topup-method anim-up anim-up-d5" onclick="showToast('Переход к Telegram Stars')">
             <i class="fas fa-star"></i><span>Telegram Stars</span><i class="fas fa-chevron-right"></i>
         </div>
-        <div class="topup-method" onclick="showToast('Переход к Lolz Market')">
+        <div class="topup-method anim-up anim-up-d6" onclick="showToast('Переход к Lolz Market')">
             <i class="fas fa-shopping-cart"></i><span>Lolz Market</span><i class="fas fa-chevron-right"></i>
         </div>
     `;
@@ -984,18 +1009,18 @@ function renderTopUp() {
     });
 }
 
-// ── SUPPORT ──
+// ── SUPPORT — fadeIn stagger, иконка уже плавает ──
 function renderSupport() {
     contentEl.innerHTML = `
-        <div class="section-title">Служба поддержки</div>
-        <div class="support-card glass">
+        <div class="section-title anim-title">Служба поддержки</div>
+        <div class="support-card glass anim-fade anim-fade-d1">
             <i class="fas fa-headset support-icon"></i>
             <p>Есть вопросы? Свяжитесь с нами 24/7</p>
             <button class="btn primary" onclick="showToast('Открываем чат поддержки')">
                 <i class="fab fa-telegram"></i> Открыть чат
             </button>
         </div>
-        <div class="faq glass">
+        <div class="faq glass anim-fade anim-fade-d2">
             <div class="faq-header"><i class="fas fa-layer-group"></i> Часто задаваемые вопросы</div>
             <div class="faq-list">
                 ${[
@@ -1005,8 +1030,8 @@ function renderSupport() {
                     ['fa-wallet','Какие способы пополнения баланса доступны?','Поддерживаются: <strong>Telegram Stars</strong>, <strong>CryptoBot</strong> (USDT, TON), <strong>Lolz Market</strong>, <strong>СБП</strong>.'],
                     ['fa-flask','Как получить тестовый период?','Тестовая подписка — <strong>один раз в 31 день</strong>: 1 день, 1.5 ГБ на локацию, 1 устройство на локацию. Баннер появится на главной вкладке.'],
                     ['fa-globe','Сколько серверов и в каких странах?','Сеть охватывает <strong>9+ стран</strong>: LV, NL, RU, US, PL, KZ, SE, TR, UA. Список постоянно расширяется.'],
-                ].map(([icon,q,a])=>`
-                <details class="faq-item">
+                ].map(([icon,q,a],i)=>`
+                <details class="faq-item anim-fade anim-fade-d${Math.min(i+3,6)}">
                     <summary>
                         <div class="faq-icon-wrap"><i class="fas ${icon}"></i></div>
                         <span class="faq-question">${q}</span>
@@ -1019,7 +1044,6 @@ function renderSupport() {
     `;
 }
 
-// ── INIT ──
 showTab('home');
 </script>
 </body>
