@@ -525,34 +525,32 @@ body{
 .modal-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);}
 .modal-content{
     max-width:100%;width:100%;
-    padding:0 20px max(28px,calc(var(--safe-bottom)+20px));
+    padding:0;
     border-radius:24px 24px 0 0;position:relative;z-index:1;
     background:rgba(14,18,38,0.97);border:1px solid rgba(80,90,130,0.25);
     border-bottom:none;backdrop-filter:blur(20px);
     box-shadow:0 -8px 40px rgba(0,0,0,0.5);
     max-height:92vh;overflow-y:auto;
     animation:modalSlideUp 0.35s cubic-bezier(0.22,1,0.36,1);
-    /* hover lift на модалку */
     transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
 }
 .modal-content:hover{
     transform:translateY(-2px);
     box-shadow:0 -12px 50px rgba(0,0,0,0.6);
 }
-/* drag indicator */
-.modal-drag{display:flex;justify-content:center;padding:14px 0 10px;}
+.modal-drag{display:flex;justify-content:center;padding:14px 0 6px;}
 .modal-drag-bar{width:40px;height:4px;background:rgba(120,130,160,0.35);border-radius:2px;}
-/* заголовок — правильный отступ */
 .modal-header{
     display:flex;align-items:center;justify-content:space-between;
-    padding:0 0 16px;
+    padding:10px 20px 14px 20px;
     border-bottom:1px solid rgba(70,80,110,0.15);
-    margin-bottom:20px;
 }
 .modal-header h3{
     font-family:var(--font-display);font-size:17px;
     color:var(--text-primary);font-weight:700;margin:0;
 }
+#modal-body{padding:20px 20px 0 20px;}
+#modal-buttons.modal-buttons{padding:0 20px max(24px,calc(var(--safe-bottom)+16px)) 20px;}
 .modal-close{
     background:rgba(30,35,55,0.5);border:1px solid rgba(70,80,110,0.2);
     border-radius:50%;width:32px;height:32px;
@@ -597,7 +595,6 @@ body{
 .modal-balance-warn .warn-short{color:#ff6b6b;font-weight:700;}
 
 .modal-buttons{display:flex;flex-direction:column;gap:8px;margin-top:16px;}
-
 /* FIX: кнопка оплаты — компактнее, стиль как у Envy */
 .modal-btn{
     background:rgba(25,30,52,0.8);border:1px solid rgba(70,80,110,0.2);
