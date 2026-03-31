@@ -24,7 +24,7 @@
     --safe-bottom: env(safe-area-inset-bottom, 0px);
     --safe-left: env(safe-area-inset-left, 0px);
     --safe-right: env(safe-area-inset-right, 0px);
-    --transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    --transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html,body{width:100%;height:100%;}
@@ -46,23 +46,23 @@ body{
 }
 
 /* ═══════════════════════════════════════
-   ENTRANCE ANIMATIONS
-   Оптимизировано для мгновенного hover
+   ENTRANCE ANIMATIONS — как в Envy VPN
+   Амплитуда 15px, длительность 0.6s ease-out
 ═══════════════════════════════════════ */
 @keyframes nvxFadeIn{
     from{opacity:0;}
     to{opacity:1;}
 }
 @keyframes nvxSlideDown{
-    from{opacity:0;transform:translateY(-8px);}
+    from{opacity:0;transform:translateY(-15px);}
     to{opacity:1;transform:translateY(0);}
 }
 @keyframes nvxSlideUp{
-    from{opacity:0;transform:translateY(8px);}
+    from{opacity:0;transform:translateY(15px);}
     to{opacity:1;transform:translateY(0);}
 }
 @keyframes nvxSlideLeft{
-    from{opacity:0;transform:translateX(-8px);}
+    from{opacity:0;transform:translateX(-15px);}
     to{opacity:1;transform:translateX(0);}
 }
 
@@ -72,39 +72,39 @@ body{
     will-change:opacity;
 }
 
-/* Задержки — одна шкала для всех */
+/* Задержки — как в Envy VPN */
 .anim-d0{animation-delay:0.00s;}
-.anim-d1{animation-delay:0.08s;}
-.anim-d2{animation-delay:0.16s;}
-.anim-d3{animation-delay:0.24s;}
-.anim-d4{animation-delay:0.32s;}
-.anim-d5{animation-delay:0.40s;}
-.anim-d6{animation-delay:0.48s;}
+.anim-d1{animation-delay:0.05s;}
+.anim-d2{animation-delay:0.1s;}
+.anim-d3{animation-delay:0.15s;}
+.anim-d4{animation-delay:0.2s;}
+.anim-d5{animation-delay:0.25s;}
+.anim-d6{animation-delay:0.3s;}
 
-/* Старые классы задержек — совместимость */
-.anim-title{animation:nvxSlideDown 0.75s cubic-bezier(0.16,1,0.3,1) both;}
-.anim-left{animation:nvxSlideLeft 0.75s cubic-bezier(0.16,1,0.3,1) both;}
-.anim-left-d1{animation-delay:0.07s;}
-.anim-left-d2{animation-delay:0.16s;}
-.anim-left-d3{animation-delay:0.25s;}
-.anim-up{animation:nvxSlideUp 0.75s cubic-bezier(0.16,1,0.3,1) both;}
-.anim-up-d1{animation-delay:0.07s;}
-.anim-up-d2{animation-delay:0.16s;}
-.anim-up-d3{animation-delay:0.25s;}
-.anim-up-d4{animation-delay:0.34s;}
-.anim-up-d5{animation-delay:0.43s;}
-.anim-up-d6{animation-delay:0.52s;}
-.anim-down{animation:nvxSlideDown 0.75s cubic-bezier(0.16,1,0.3,1) both;}
-.anim-down-d1{animation-delay:0.07s;}
-.anim-down-d2{animation-delay:0.16s;}
-.anim-down-d3{animation-delay:0.25s;}
-.anim-fade{animation:nvxFadeIn 0.7s ease-out both;}
-.anim-fade-d1{animation-delay:0.07s;}
-.anim-fade-d2{animation-delay:0.16s;}
-.anim-fade-d3{animation-delay:0.25s;}
-.anim-fade-d4{animation-delay:0.34s;}
-.anim-fade-d5{animation-delay:0.43s;}
-.anim-fade-d6{animation-delay:0.52s;}
+/* Старые классы задержек — совместимость с Envy-style */
+.anim-title{animation:nvxSlideDown 0.6s ease-out both;}
+.anim-left{animation:nvxSlideLeft 0.6s ease-out both;}
+.anim-left-d1{animation-delay:0.05s;}
+.anim-left-d2{animation-delay:0.1s;}
+.anim-left-d3{animation-delay:0.15s;}
+.anim-up{animation:nvxSlideUp 0.6s ease-out both;}
+.anim-up-d1{animation-delay:0.05s;}
+.anim-up-d2{animation-delay:0.1s;}
+.anim-up-d3{animation-delay:0.15s;}
+.anim-up-d4{animation-delay:0.2s;}
+.anim-up-d5{animation-delay:0.25s;}
+.anim-up-d6{animation-delay:0.3s;}
+.anim-down{animation:nvxSlideDown 0.6s ease-out both;}
+.anim-down-d1{animation-delay:0.05s;}
+.anim-down-d2{animation-delay:0.1s;}
+.anim-down-d3{animation-delay:0.15s;}
+.anim-fade{animation:nvxFadeIn 0.6s ease-out both;}
+.anim-fade-d1{animation-delay:0.05s;}
+.anim-fade-d2{animation-delay:0.1s;}
+.anim-fade-d3{animation-delay:0.15s;}
+.anim-fade-d4{animation-delay:0.2s;}
+.anim-fade-d5{animation-delay:0.25s;}
+.anim-fade-d6{animation-delay:0.3s;}
 
 /* anim-done: сбрасываем анимацию — hover свободен */
 .anim-done{
@@ -740,13 +740,13 @@ body{
 let cleanupTimer = null;
 function registerAnimCleanup() {
     if(cleanupTimer) clearTimeout(cleanupTimer);
-    // Через 1.4s все анимации точно закончились (max: 0.52s delay + 0.75s duration = 1.27s)
+    // Envy-style: max delay 0.3s + duration 0.6s = 0.9s, даём запас до 1s
     cleanupTimer = setTimeout(() => {
         document.querySelectorAll('.anim-title,.anim-left,.anim-up,.anim-down,.anim-fade').forEach(el => {
             el.classList.add('anim-done');
         });
         cleanupTimer = null;
-    }, 1100);
+    }, 950);
 }
 
 const DEMO = {
