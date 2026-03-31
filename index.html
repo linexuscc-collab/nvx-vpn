@@ -574,7 +574,7 @@ body{
     color:var(--text-primary);font-weight:700;margin:0;
 }
 #modal-body{padding:20px 20px 0 20px;}
-#modal-buttons.modal-buttons{padding:0 20px max(24px,calc(var(--safe-bottom)+16px)) 20px;}
+#modal-buttons.modal-buttons{padding:0 20px max(16px,calc(var(--safe-bottom)+12px)) 20px;}
 .modal-close{
     background:rgba(30,35,55,0.5);border:1px solid rgba(70,80,110,0.2);
     border-radius:50%;width:32px;height:32px;
@@ -607,21 +607,21 @@ body{
 /* Envy-style: строка баланса — по центру с отступами */
 .modal-balance-warn{
     display:flex;align-items:center;justify-content:center;gap:8px;
-    padding:12px 16px;
+    padding:10px 14px;
     background:rgba(255,80,80,0.07);
     border:1px solid rgba(255,80,80,0.18);
     border-radius:12px;
-    font-size:13px;font-weight:500;
+    font-size:12px;font-weight:500;
     color:var(--text-secondary);
-    margin:16px 20px 0;
+    margin:12px 16px 0;
     text-align:center;
 }
 .modal-balance-warn i{font-size:14px;color:#ff6b6b;flex-shrink:0;}
 .modal-balance-warn .warn-balance{color:var(--text-primary);font-weight:600;}
 .modal-balance-warn .warn-short{color:#ff6b6b;font-weight:700;}
 
-.modal-buttons{display:flex;flex-direction:column;gap:8px;margin-top:16px;}
-/* FIX: кнопка оплаты — компактнее, стиль как у Envy */
+.modal-buttons{display:flex;flex-direction:column;gap:6px;margin-top:12px;}
+/* Кнопка оплаты как в Envy VPN */
 .modal-btn{
     border-radius:14px;padding:12px 16px;font-size:14px;font-weight:600;
     color:var(--text-primary);cursor:pointer;transition:all 0.25s;
@@ -636,7 +636,6 @@ body{
     background:rgba(122,111,191,0.2);border-color:rgba(122,111,191,0.3);
     color:var(--accent-bright);transform:translateY(-1px);
 }
-/* Кнопка оплаты как в Envy VPN - компактная, с иконкой */
 .modal-btn-primary{
     background:linear-gradient(135deg,rgba(122,111,191,0.75),rgba(154,143,223,0.55)) !important;
     border:1px solid rgba(122,111,191,0.4) !important;
