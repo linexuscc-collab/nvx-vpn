@@ -583,44 +583,36 @@ body{
 }
 .modal-close:hover{background:rgba(122,111,191,0.25);color:var(--accent-bright);}
 
-/* Envy-style: название тарифа по центру с отступами */
 .modal-tariff-name{
     font-family:var(--font-body);
     font-size:22px;font-weight:300;
     color:var(--accent-bright);
     text-align:center;
     letter-spacing:0.5px;
-    padding:8px 0 18px;
+    padding:0 0 16px;
 }
-
-/* Envy-style: строки данных — центрированные с отступами */
 .modal-detail-row{
-    display:flex;flex-direction:column;align-items:center;gap:4px;
-    padding:10px 0;border-bottom:1px solid rgba(70,80,110,0.08);font-size:13px;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:7px 0;border-bottom:1px solid rgba(70,80,110,0.1);font-size:13px;
 }
 .modal-detail-row:last-of-type{border-bottom:none;}
-.modal-detail-label{color:var(--text-secondary);font-size:12px;text-transform:uppercase;letter-spacing:0.8px;}
-.modal-detail-value{color:var(--text-primary);font-weight:600;font-size:15px;}
-.modal-detail-value.accent{color:var(--accent-bright);font-size:24px;font-weight:700;margin-top:2px;}
-.modal-detail-sub{font-size:10px;color:var(--text-tertiary);font-weight:400;}
-
-/* Envy-style: строка баланса — по центру с отступами */
+.modal-detail-label{color:var(--text-secondary);}
+.modal-detail-value{color:var(--text-primary);font-weight:600;}
+.modal-detail-value.accent{color:var(--accent-bright);font-size:17px;font-weight:700;}
 .modal-balance-warn{
-    display:flex;align-items:center;justify-content:center;gap:8px;
-    padding:10px 14px;
+    display:flex;align-items:center;gap:10px;
+    padding:11px 14px;
     background:rgba(255,80,80,0.07);
     border:1px solid rgba(255,80,80,0.18);
     border-radius:12px;
-    font-size:12px;font-weight:500;
+    font-size:13px;font-weight:500;
     color:var(--text-secondary);
-    margin:12px 16px 0;
-    text-align:center;
+    margin-top:12px;
 }
-.modal-balance-warn i{font-size:14px;color:#ff6b6b;flex-shrink:0;}
+.modal-balance-warn i{font-size:15px;color:#ff6b6b;flex-shrink:0;}
 .modal-balance-warn .warn-balance{color:var(--text-primary);font-weight:600;}
 .modal-balance-warn .warn-short{color:#ff6b6b;font-weight:700;}
-
-.modal-buttons{display:flex;flex-direction:column;gap:6px;margin-top:12px;}
+.modal-buttons{display:flex;flex-direction:column;gap:8px;margin-top:16px;}
 /* Кнопка оплаты как в Envy VPN */
 .modal-btn{
     border-radius:14px;padding:12px 16px;font-size:14px;font-weight:600;
@@ -1005,10 +997,9 @@ function renderTariffs() {
 
             modalTitle.textContent = 'Подтверждение покупки';
 
-            // Envy-style: данные по центру с отступами
             modalBody.innerHTML = `
                 <div class="modal-tariff-name">${t.days} дней доступа</div>
-                <div style="padding:0 8px;">
+                <div style="background:rgba(0,0,0,0.15);border:1px solid rgba(70,80,110,0.12);border-radius:14px;padding:4px 14px;margin-bottom:4px;">
                     <div class="modal-detail-row">
                         <span class="modal-detail-label">Трафик</span>
                         <span class="modal-detail-value">${t.traffic_gb * n} ГБ <span class="modal-detail-sub">(${t.traffic_gb} ГБ на лок.)</span></span>
@@ -1017,7 +1008,7 @@ function renderTariffs() {
                         <span class="modal-detail-label">Устройства</span>
                         <span class="modal-detail-value">${t.ip_limit * n} <span class="modal-detail-sub">(${t.ip_limit} на лок.)</span></span>
                     </div>
-                    <div class="modal-detail-row" style="padding-bottom:0;">
+                    <div class="modal-detail-row">
                         <span class="modal-detail-label">Стоимость</span>
                         <span class="modal-detail-value accent">${t.stars}₽</span>
                     </div>
