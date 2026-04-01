@@ -915,6 +915,7 @@ const SKELETON_DELAY_MS   = 250;
 const ANIM_CLEANUP_MS     = 950;  // max-delay(0.3s) + duration(0.6s) + buffer
 const TOAST_DURATION_MS   = 3000;
 const ANIM_SELECTORS      = '.anim-title,.anim-left,.anim-up,.anim-down,.anim-fade';
+const DOUBLE_CLICK_PREVENT_MS = 300; // Защита от двойных кликов
 
 const PAYMENT_METHODS = {
     sbp:    'СБП',
@@ -926,11 +927,59 @@ const PAYMENT_METHODS = {
 /* ═══════════════════════════════════════
    TELEGRAM WEBAPP INIT
 ═══════════════════════════════════════ */
-if (window.Telegram?.WebApp) {
-    const tg = Telegram.WebApp;
+const tg = window.Telegram?.WebApp;
+if (tg) {
     tg.setHeaderColor('#1a1635');
     tg.setBackgroundColor('#1a1635');
     tg.expand();
+}
+
+/* ═══════════════════════════════════════
+   HAPTIC FEEDBACK MODULE
+═══════════════════════════════════════ */
+const HapticFeedback = {
+    /** Вибрация при клике на кнопку (лёгкая) */
+    buttonLight() {
+        tg?.HapticFeedback?.impactOccurred?.('light');
+    },
+    /** Вибрация при важном действии (средняя) */
+    buttonMedium() {
+        tg?.HapticFeedback?.impactOccurred?.('medium');
+    },
+    /** Вибрация при навигации */
+    navigation() {
+        tg?.HapticFeedback?.impactOccurred?.('light');
+    },
+    /** Вибрация при успехе */
+    success() {
+        tg?.HapticFeedback?.notificationOccurred?.('success');
+    },
+    /** Вибрация при ошибке */
+    error() {
+        tg?.HapticFeedback?.notificationOccurred?.('error');
+    },
+    /** Вибрация при предупреждении */
+    warning() {
+        tg?.HapticFeedback?.notificationOccurred?.('warning');
+    },
+    /** Вибрация при выборе (селект) */
+    selection() {
+        tg?.HapticFeedback?.selectionChanged?.();
+    }
+};
+
+/* ═══════════════════════════════════════
+   DOUBLE-CLICK PREVENTION
+═══════════════════════════════════════ */
+const clickTimestamps = new Map();
+function canProceed(actionId) {
+    const now = Date.now();
+    const lastClick = clickTimestamps.get(actionId) || 0;
+    if (now - lastClick < DOUBLE_CLICK_PREVENT_MS) {
+        return false;
+    }
+    clickTimestamps.set(actionId, now);
+    return true;
 }
 
 /* ═══════════════════════════════════════
@@ -1052,7 +1101,10 @@ async function copyToClipboard(text) {
 /* ═══════════════════════════════════════
    MODAL
 ═══════════════════════════════════════ */
-function hideModal() { modal.classList.remove('show'); }
+function hideModal() {
+    HapticFeedback.buttonLight();
+    modal.classList.remove('show');
+}
 modalClose?.addEventListener('click', hideModal);
 modal?.addEventListener('click', e => {
     if (e.target.classList.contains('modal-overlay')) hideModal();
@@ -1068,7 +1120,12 @@ function updateHeader() {
     $('#userBalance').textContent = `${u.balance.toFixed(2)}₽`;
 }
 updateHeader();
-$('#balanceDisplay').addEventListener('click', () => switchTab('topup'));
+
+/* Header balance click with haptic */
+$('#balanceDisplay')?.addEventListener('click', () => {
+    HapticFeedback.buttonLight();
+    switchTab('topup');
+});
 
 /* ═══════════════════════════════════════
    NAVIGATION — event delegation
@@ -1081,7 +1138,10 @@ function switchTab(tab) {
 
 $('#bottomNav').addEventListener('click', e => {
     const navItem = e.target.closest('.nav-item');
-    if (navItem) switchTab(navItem.dataset.tab);
+    if (navItem && canProceed('nav-' + navItem.dataset.tab)) {
+        HapticFeedback.navigation();
+        switchTab(navItem.dataset.tab);
+    }
 });
 
 /* ═══════════════════════════════════════
@@ -1114,34 +1174,39 @@ contentEl.addEventListener('click', e => {
 
     // Action row buttons (renew, devices)
     const actionBtn = target.closest('.btn.action-row[data-action]');
-    if (actionBtn) {
+    if (actionBtn && canProceed('action-' + actionBtn.dataset.action)) {
+        HapticFeedback.buttonMedium();
         showToast('Доступно после подключения backend', 'warning');
         return;
     }
 
     // Connect help card
-    if (target.closest('#connectHelpCard')) {
+    if (target.closest('#connectHelpCard') && canProceed('connectHelp')) {
+        HapticFeedback.buttonLight();
         showToast('Функция подключится после настройки backend');
         return;
     }
 
     // Tariff card click
     const tariffCard = target.closest('.tariff-card[data-id]');
-    if (tariffCard) {
+    if (tariffCard && canProceed('tariff-' + tariffCard.dataset.id)) {
+        HapticFeedback.buttonMedium();
         openTariffModal(parseInt(tariffCard.dataset.id));
         return;
     }
 
     // Topup method
     const topupMethod = target.closest('.topup-method[data-method]');
-    if (topupMethod) {
+    if (topupMethod && canProceed('topup-' + topupMethod.dataset.method)) {
+        HapticFeedback.buttonMedium();
         const name = PAYMENT_METHODS[topupMethod.dataset.method];
         showToast(`Переход к оплате через ${name}`);
         return;
     }
 
     // Copy referral link
-    if (target.closest('#copyRef')) {
+    if (target.closest('#copyRef') && canProceed('copyRef')) {
+        HapticFeedback.buttonLight();
         copyToClipboard(AppData.referral.link).then(ok => {
             showToast(ok ? 'Ссылка скопирована' : 'Не удалось скопировать', ok ? 'success' : 'error');
         });
@@ -1149,7 +1214,8 @@ contentEl.addEventListener('click', e => {
     }
 
     // Promo button
-    if (target.closest('#promoBtn')) {
+    if (target.closest('#promoBtn') && canProceed('promo')) {
+        HapticFeedback.buttonMedium();
         const input = $('#promoInput');
         if (!input?.value.trim()) { showToast('Введите промокод', 'warning'); return; }
         showToast('Промокод не найден', 'error');
@@ -1157,28 +1223,32 @@ contentEl.addEventListener('click', e => {
     }
 
     // Buy subscription
-    if (target.closest('#buySubBtn')) {
+    if (target.closest('#buySubBtn') && canProceed('buySub')) {
+        HapticFeedback.buttonMedium();
         switchTab('tariffs');
         return;
     }
 
     // Trial activation
-    if (target.closest('#trialBtn')) {
+    if (target.closest('#trialBtn') && canProceed('trial')) {
+        HapticFeedback.buttonMedium();
         AppData.subscription.trialAvailable = false;
         AppData.subscription.active = true;
-        showToast('Тестовая подписка активирована');
+        showToast('Тестовая подписка активирована', 'success');
         renderHome();
         return;
     }
 
     // Withdraw buttons
-    if (target.closest('#withdrawCard') || target.closest('#withdrawBalance')) {
+    if ((target.closest('#withdrawCard') || target.closest('#withdrawBalance')) && canProceed('withdraw')) {
+        HapticFeedback.buttonMedium();
         showToast('Доступно после подключения backend', 'warning');
         return;
     }
 
     // Support chat
-    if (target.closest('#supportChatBtn')) {
+    if (target.closest('#supportChatBtn') && canProceed('support')) {
+        HapticFeedback.buttonMedium();
         showToast('Открываем чат поддержки');
         return;
     }
@@ -1346,6 +1416,7 @@ function openTariffModal(tariffId) {
     btn.className = 'modal-btn-primary';
     btn.innerHTML = `<i class="fas fa-credit-card"></i> Оплатить ${t.price}₽`;
     btn.addEventListener('click', () => {
+        HapticFeedback.buttonMedium();
         hideModal();
         if (notEnough) { switchTab('topup'); }
         else { showToast('Доступно после подключения backend', 'warning'); }
