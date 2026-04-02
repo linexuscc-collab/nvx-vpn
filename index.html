@@ -1548,7 +1548,15 @@ function renderSupport() {
 /* ═══════════════════════════════════════
    INIT
 ═══════════════════════════════════════ */
-showTab('home');
+const _startParam = tg?.initDataUnsafe?.start_param || new URLSearchParams(window.location.search).get('tab');
+const _validTabs = Object.keys(TAB_RENDERERS);
+const _initTab = (_startParam && _validTabs.includes(_startParam)) ? _startParam : 'home';
+
+if (_initTab !== 'home') {
+    $$('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.tab === _initTab));
+    currentTab = _initTab;
+}
+showTab(_initTab);
 </script>
 </body>
 </html>
