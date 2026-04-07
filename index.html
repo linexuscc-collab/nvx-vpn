@@ -285,6 +285,41 @@ body {
     box-shadow: var(--card-shadow-hover);
 }
 
+/* Disable hover on touch devices to prevent sticky states */
+@media (hover: none) {
+    .hoverable:hover {
+        transform: none;
+        border-color: var(--card-border);
+        box-shadow: none;
+    }
+    .header:hover,
+    .glass:hover,
+    .tariff-card:hover,
+    .stat-card:hover,
+    .ref-link:hover,
+    .promo-section:hover,
+    .support-card:hover,
+    .faq:hover,
+    .btn.action-row:hover,
+    .btn.primary:hover,
+    .btn.secondary:hover,
+    .topup-method:hover,
+    .copy-btn:hover,
+    .promo-btn:hover,
+    .modal-close:hover,
+    .modal-btn:hover,
+    .modal-btn-primary:hover,
+    .nav-item:hover,
+    .country-flag:hover,
+    .connect-help-card:hover,
+    .modal-content:hover {
+        transform: none;
+        border-color: var(--card-border);
+        box-shadow: none;
+        background: inherit;
+    }
+}
+
 /* ═══════════════════════════════════════
    SUBSCRIPTION CARD
 ═══════════════════════════════════════ */
@@ -915,7 +950,7 @@ const SKELETON_DELAY_MS   = 250;
 const ANIM_CLEANUP_MS     = 950;  // max-delay(0.3s) + duration(0.6s) + buffer
 const TOAST_DURATION_MS   = 3000;
 const ANIM_SELECTORS      = '.anim-title,.anim-left,.anim-up,.anim-down,.anim-fade';
-const DOUBLE_CLICK_PREVENT_MS = 300; // Защита от двойных кликов
+const DOUBLE_CLICK_PREVENT_MS = 500; // Защита от двойных кликов
 
 const PAYMENT_METHODS = {
     sbp:    'СБП',
@@ -925,13 +960,17 @@ const PAYMENT_METHODS = {
 };
 
 /* ═══════════════════════════════════════
-   TELEGRAM WEBAPP INIT
+   TELEGRAM WEBAPP INIT (with fallback)
 ═══════════════════════════════════════ */
 const tg = window.Telegram?.WebApp;
+const isTelegram = !!tg;
+
 if (tg) {
     tg.setHeaderColor('#1a1635');
     tg.setBackgroundColor('#1a1635');
     tg.expand();
+} else {
+    console.warn('[NVX VPN] Открыто вне Telegram — некоторые функции недоступны');
 }
 
 /* ═══════════════════════════════════════
@@ -969,9 +1008,11 @@ const HapticFeedback = {
 };
 
 /* ═══════════════════════════════════════
-   DOUBLE-CLICK PREVENTION
+   DOUBLE-CLICK PREVENTION (with TTL cleanup)
 ═══════════════════════════════════════ */
 const clickTimestamps = new Map();
+const CLICK_TTL_MS = 10000; // Очистка записей старше 10 секунд
+
 function canProceed(actionId) {
     const now = Date.now();
     const lastClick = clickTimestamps.get(actionId) || 0;
@@ -979,8 +1020,22 @@ function canProceed(actionId) {
         return false;
     }
     clickTimestamps.set(actionId, now);
+
+    // TTL cleanup — удаляем старые записи
+    for (const [key, ts] of clickTimestamps) {
+        if (now - ts > CLICK_TTL_MS) clickTimestamps.delete(key);
+    }
     return true;
 }
+
+/* ═══════════════════════════════════════
+   PROMO CODES (test stubs)
+═══════════════════════════════════════ */
+const VALID_PROMOS = {
+    'NVX2026':  { bonus: 50,  desc: '+50₽ на баланс' },
+    'WELCOME':  { bonus: 30,  desc: '+30₽ на баланс' },
+    'FREEVPN':  { bonus: 100, desc: '+100₽ на баланс' },
+};
 
 /* ═══════════════════════════════════════
    DATA LAYER — готов к замене на API
@@ -1000,7 +1055,7 @@ const AppData = {
         total: 0,
         earned: 0,
         percent: 25,
-        link: 'https://t.me/NVXvpn_bot?start=ref641915862',
+        link: '', // Генерируется динамически в initApp()
     },
     tariffs: [
         { id: 1, days: 30,  price: 129, traffic_gb: 60,  ip_limit: 1 },
@@ -1099,12 +1154,74 @@ async function copyToClipboard(text) {
 }
 
 /* ═══════════════════════════════════════
-   MODAL
+   MODAL (with drag-to-dismiss + ARIA + close confirmation)
 ═══════════════════════════════════════ */
+let modalHasInput = false; // Track if modal has unsaved input
+let modalDragStartY = 0;
+let modalDragCurrentY = 0;
+let modalIsDragging = false;
+
 function hideModal() {
+    if (modalHasInput) {
+        // Show confirmation before closing if there's unsaved input
+        if (!confirm('Закрыть? Введённые данные будут потеряны.')) return;
+    }
     HapticFeedback.buttonLight();
     modal.classList.remove('show');
+    modalHasInput = false;
 }
+
+// ARIA: make modal accessible
+modal?.setAttribute('role', 'dialog');
+modal?.setAttribute('aria-modal', 'true');
+modal?.setAttribute('aria-labelledby', 'modal-title');
+
+// Drag-to-dismiss for modal
+const modalContent = $('.modal-content');
+const modalDragBar = $('.modal-drag-bar');
+
+function onModalDragStart(e) {
+    const touch = e.touches?.[0] || e;
+    modalDragStartY = touch.clientY;
+    modalIsDragging = true;
+    modalContent.style.transition = 'none';
+}
+
+function onModalDragMove(e) {
+    if (!modalIsDragging) return;
+    const touch = e.touches?.[0] || e;
+    modalDragCurrentY = touch.clientY - modalDragStartY;
+    if (modalDragCurrentY > 0) {
+        modalContent.style.transform = `translateY(${modalDragCurrentY}px)`;
+    }
+}
+
+function onModalDragEnd() {
+    if (!modalIsDragging) return;
+    modalIsDragging = false;
+    modalContent.style.transition = '';
+    if (modalDragCurrentY > 100) {
+        // Dismiss modal
+        modalContent.style.transform = 'translateY(100%)';
+        setTimeout(() => {
+            modal.classList.remove('show');
+            modalContent.style.transform = '';
+            modalHasInput = false;
+        }, 200);
+    } else {
+        // Snap back
+        modalContent.style.transform = '';
+    }
+    modalDragCurrentY = 0;
+}
+
+modalDragBar?.addEventListener('mousedown', onModalDragStart);
+modalDragBar?.addEventListener('touchstart', onModalDragStart, { passive: true });
+document.addEventListener('mousemove', onModalDragMove);
+document.addEventListener('touchmove', onModalDragMove, { passive: true });
+document.addEventListener('mouseup', onModalDragEnd);
+document.addEventListener('touchend', onModalDragEnd);
+
 modalClose?.addEventListener('click', hideModal);
 modal?.addEventListener('click', e => {
     if (e.target.classList.contains('modal-overlay')) hideModal();
@@ -1218,7 +1335,18 @@ contentEl.addEventListener('click', e => {
         HapticFeedback.buttonMedium();
         const input = $('#promoInput');
         if (!input?.value.trim()) { showToast('Введите промокод', 'warning'); return; }
-        showToast('Промокод не найден', 'error');
+        const code = input.value.trim().toUpperCase();
+        const promo = VALID_PROMOS[code];
+        if (promo) {
+            AppData.user.balance += promo.bonus;
+            updateHeader();
+            showToast(`Промокод активирован: ${promo.desc}`, 'success');
+            HapticFeedback.success();
+            input.value = '';
+        } else {
+            showToast('Промокод не найден', 'error');
+            HapticFeedback.error();
+        }
         return;
     }
 
@@ -1417,9 +1545,20 @@ function openTariffModal(tariffId) {
     btn.innerHTML = `<i class="fas fa-credit-card"></i> Оплатить ${t.price}₽`;
     btn.addEventListener('click', () => {
         HapticFeedback.buttonMedium();
-        hideModal();
-        if (notEnough) { switchTab('topup'); }
-        else { showToast('Доступно после подключения backend', 'warning'); }
+        // Show loading state
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Обработка...';
+        btn.style.pointerEvents = 'none';
+        btn.style.opacity = '0.7';
+
+        setTimeout(() => {
+            hideModal();
+            if (notEnough) { switchTab('topup'); }
+            else { showToast('Доступно после подключения backend', 'warning'); }
+            // Reset button state
+            btn.innerHTML = `<i class="fas fa-credit-card"></i> Оплатить ${t.price}₽`;
+            btn.style.pointerEvents = '';
+            btn.style.opacity = '';
+        }, 800);
     });
     modalButtons.appendChild(btn);
     modal.classList.add('show');
@@ -1496,7 +1635,7 @@ function renderTopUp() {
         </div>
         <div class="section-subtitle anim-up anim-up-d3">Доступные способы</div>
         ${Object.entries(PAYMENT_METHODS).map(([key, name], i) => {
-            const icons = { sbp: 'fa-university', crypto: 'fa-coins', stars: 'fa-star', lolz: 'fa-shopping-cart' };
+            const icons = { sbp: 'fa-university', crypto: 'fa-coins', stars: 'fa-star', lolz: 'fa-tags' };
             return `<div class="topup-method anim-up anim-up-d${Math.min(i + 3, 6)}" data-method="${key}">
                 <i class="fas ${icons[key]}"></i><span>${name}</span><i class="fas fa-chevron-right"></i>
             </div>`;
@@ -1546,17 +1685,82 @@ function renderSupport() {
 }
 
 /* ═══════════════════════════════════════
-   INIT
+   INIT — Avatar, Referral Link, BackButton, Keyboard
 ═══════════════════════════════════════ */
-const _startParam = tg?.initDataUnsafe?.start_param || new URLSearchParams(window.location.search).get('tab');
-const _validTabs = Object.keys(TAB_RENDERERS);
-const _initTab = (_startParam && _validTabs.includes(_startParam)) ? _startParam : 'home';
+function initApp() {
+    // 1. Load avatar from Telegram
+    if (isTelegram && tg.initDataUnsafe?.user) {
+        const tgUser = tg.initDataUnsafe.user;
+        if (tgUser.username) AppData.user.name = tgUser.username;
+        if (tgUser.id) AppData.user.id = String(tgUser.id);
+        if (tgUser.photo_url) {
+            AppData.user.avatar = tgUser.photo_url;
+            const avatarImg = $('#avatarImage');
+            const avatarInitial = $('#userInitial');
+            if (avatarImg) {
+                avatarImg.src = tgUser.photo_url;
+                avatarImg.style.display = 'block';
+            }
+            if (avatarInitial) avatarInitial.style.display = 'none';
+        }
+    }
 
-if (_initTab !== 'home') {
-    $$('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.tab === _initTab));
-    currentTab = _initTab;
+    // 2. Generate dynamic referral link
+    AppData.referral.link = `https://t.me/NVXvpn_bot?start=ref${AppData.user.id}`;
+
+    // 3. Update header with potentially new data
+    updateHeader();
+
+    // 4. Setup Telegram BackButton
+    if (isTelegram && tg.BackButton) {
+        tg.BackButton.onClick(() => {
+            HapticFeedback.navigation();
+            if (currentTab !== 'home') {
+                switchTab('home');
+                tg.BackButton.hide();
+            }
+        });
+    }
+
+    // 5. Handle Telegram keyboard (viewport changes)
+    if (isTelegram) {
+        tg.onEvent('viewportChanged', () => {
+            // Adjust layout when keyboard appears/disappears
+            const content = $('.content');
+            if (content) {
+                content.style.height = `${tg.viewportHeight}px`;
+            }
+        });
+    }
+
+    // 6. Show/hide BackButton on tab change
+    const origSwitchTab = switchTab;
+    // We override switchTab to handle BackButton
+    const _origShowTab = showTab;
+    window.showTab = function(tab) {
+        _origShowTab(tab);
+        if (isTelegram && tg.BackButton) {
+            if (tab === 'home') tg.BackButton.hide();
+            else tg.BackButton.show();
+        }
+    };
+
+    // 7. Determine initial tab
+    const _startParam = tg?.initDataUnsafe?.start_param || new URLSearchParams(window.location.search).get('tab');
+    const _validTabs = Object.keys(TAB_RENDERERS);
+    const _initTab = (_startParam && _validTabs.includes(_startParam)) ? _startParam : 'home';
+
+    if (_initTab !== 'home') {
+        $$('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.tab === _initTab));
+        currentTab = _initTab;
+        if (isTelegram && tg.BackButton) tg.BackButton.show();
+    }
+
+    showTab(_initTab);
 }
-showTab(_initTab);
+
+// Call init
+initApp();
 </script>
 </body>
 </html>
