@@ -354,13 +354,7 @@ body {
         border-color: rgba(122, 111, 191, 0.4) !important;
         box-shadow: 0 0 14px rgba(122, 111, 191, 0.12) !important;
     }
-    /* JS-pressed класс для мгновенного визуального фидбэка */
-    .nav-item.nav-pressed {
-        transform: scale(0.90) !important;
-        background: rgba(122, 111, 191, 0.22) !important;
-        border-color: rgba(122, 111, 191, 0.5) !important;
-        transition: transform 0.08s ease !important;
-    }
+
 }
 
 /* ═══════════════════════════════════════
@@ -952,8 +946,9 @@ body {
     font-size: 10px; font-weight: 600; padding: 8px 6px; border-radius: 16px;
     cursor: pointer; position: relative; flex: 1; min-height: 44px; min-width: 44px;
     justify-content: center; font-family: var(--font-body);
-    /* Только нужные свойства — без transform в transition (управляем JS) */
-    transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease,
+                transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+    will-change: transform;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
     user-select: none;
@@ -1469,10 +1464,14 @@ function switchTab(tab) {
 function _navHandleTap(btn) {
     if (!btn || !btn.dataset.tab) return;
     HapticFeedback.navigation();
-    // Визуальный фидбэк через JS-класс (надёжнее CSS :active в WebView)
-    btn.classList.add('nav-pressed');
-    setTimeout(() => btn.classList.remove('nav-pressed'), 180);
-    switchTab(btn.dataset.tab);
+    // Scale сразу — GPU-слой уже выделен через will-change
+    btn.style.transform = 'scale(0.90)';
+    setTimeout(() => { btn.style.transform = ''; }, 150);
+    // switchTab через rAF: браузер коммитит кадр с nav-анимацией
+    // ДО того как начнётся тяжёлая DOM-работа content-перехода
+    requestAnimationFrame(() => {
+        switchTab(btn.dataset.tab);
+    });
 }
 
 $$('.nav-item').forEach(btn => {
@@ -1506,40 +1505,31 @@ let tabTimer = null;
 function showTab(tab) {
     if (tabTimer) { clearTimeout(tabTimer); tabTimer = null; }
 
-    // Fade out current content
-    contentEl.style.transition = 'opacity 0.15s ease, transform 0.15s ease';
+    // Рендерим сразу (без fade-out конкурирующего с nav-анимацией)
+    if (tabTimer) { clearTimeout(tabTimer); tabTimer = null; }
     contentEl.style.opacity = '0';
-    contentEl.style.transform = 'translateY(6px)';
+    contentEl.style.transform = 'translateY(10px)';
+    contentEl.style.transition = 'none';
+    contentEl.innerHTML = '';
 
     tabTimer = setTimeout(() => {
         tabTimer = null;
-        contentEl.style.transition = '';
-        // Invisible placeholder — no visible skeleton blocks
-        contentEl.innerHTML = '';
-        contentEl.style.opacity = '1';
-        contentEl.style.transform = 'translateY(0)';
-
-        setTimeout(() => {
-            const renderer = TAB_RENDERERS[tab];
-            if (renderer) {
-                try {
-                    renderer();
-                } catch (err) {
-                    console.error(`[NVX] Ошибка рендера вкладки "${tab}":`, err);
-                    contentEl.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-triangle"></i> Ошибка загрузки. Попробуйте ещё раз.</div>`;
-                }
+        const renderer = TAB_RENDERERS[tab];
+        if (renderer) {
+            try { renderer(); }
+            catch (err) {
+                console.error(`[NVX] Ошибка рендера вкладки "${tab}":`, err);
+                contentEl.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-triangle"></i> Ошибка загрузки. Попробуйте ещё раз.</div>`;
             }
-            // Fade in rendered content
-            contentEl.style.opacity = '0';
-            contentEl.style.transform = 'translateY(8px)';
-            requestAnimationFrame(() => {
-                contentEl.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
-                contentEl.style.opacity = '1';
-                contentEl.style.transform = 'translateY(0)';
-                setTimeout(() => { contentEl.style.transition = ''; }, 280);
-            });
-        }, SKELETON_DELAY_MS);
-    }, 150);
+        }
+        // Плавный fade-in нового контента
+        requestAnimationFrame(() => {
+            contentEl.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
+            contentEl.style.opacity = '1';
+            contentEl.style.transform = 'translateY(0)';
+            setTimeout(() => { contentEl.style.transition = ''; }, 250);
+        });
+    }, SKELETON_DELAY_MS);
 }
 
 /* ═══════════════════════════════════════
