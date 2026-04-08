@@ -675,9 +675,9 @@ body {
     cursor: default;
 }
 .faq:hover {
-    transform: translateY(-2px);
+    /* No transform — overflow:hidden clips children at pre-transform bounds */
     border-color: rgba(122, 111, 191, 0.3);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 }
 .faq-header { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid rgba(70, 80, 110, 0.12); font-weight: 700; font-size: 13px; color: var(--text-secondary); letter-spacing: 0.04em; text-transform: uppercase; }
 .faq-header i { color: var(--accent-bright); font-size: 14px; }
@@ -859,10 +859,11 @@ body {
     background: none; border: none; color: var(--text-secondary);
     display: flex; flex-direction: column; align-items: center; gap: 2px;
     font-size: 10px; font-weight: 600; padding: 8px 6px; border-radius: 16px;
-    cursor: pointer; position: relative; flex: 1; min-height: 44px;
+    cursor: pointer; position: relative; flex: 1; min-height: 44px; min-width: 44px;
     justify-content: center; font-family: var(--font-body);
     transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
     border: 1px solid transparent;
+    touch-action: manipulation; /* removes 300ms tap delay on mobile */
 }
 .nav-item i { font-size: 18px; }
 .nav-item:hover { color: var(--accent-bright); background: rgba(122, 111, 191, 0.08); transform: translateY(-2px); }
@@ -875,8 +876,13 @@ body {
 }
 
 /* Utility */
-.text-muted { font-size: 10px; color: var(--text-tertiary); }
-.error-message { padding: 16px; text-align: center; color: var(--text-secondary); margin-top: 16px; font-size: 13px; }
+.text-muted { font-size: 10px; color: var(--text-tertiary); font-weight: 400; }
+.error-message {
+    padding: 16px; text-align: center; color: var(--text-secondary);
+    margin-top: 16px; font-size: 13px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.error-message i { font-size: 22px; color: var(--danger); opacity: 0.8; }
 </style>
 </head>
 <body>
@@ -1271,6 +1277,11 @@ function switchTab(tab) {
     $$('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
     currentTab = tab;
     showTab(tab);
+    // BackButton: show on all tabs except home
+    if (isTelegram && tg.BackButton) {
+        if (tab === 'home') tg.BackButton.hide();
+        else tg.BackButton.show();
+    }
 }
 
 $('#bottomNav').addEventListener('click', e => {
@@ -1766,17 +1777,7 @@ function initApp() {
         });
     }
 
-    // 6. Show/hide BackButton on tab change — handled inside switchTab
-    const _origSwitchTab = switchTab;
-    switchTab = function(tab) {
-        _origSwitchTab(tab);
-        if (isTelegram && tg.BackButton) {
-            if (tab === 'home') tg.BackButton.hide();
-            else tg.BackButton.show();
-        }
-    };
-
-    // 7. Determine initial tab
+    // 6. Determine initial tab
     const _startParam = tg?.initDataUnsafe?.start_param || new URLSearchParams(window.location.search).get('tab');
     const _validTabs = Object.keys(TAB_RENDERERS);
     const _initTab = (_startParam && _validTabs.includes(_startParam)) ? _startParam : 'home';
