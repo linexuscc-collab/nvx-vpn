@@ -89,7 +89,7 @@ body {
     animation: orbFloat 20s ease-in-out infinite;
     box-shadow: 0 0 100px rgba(122, 111, 191, 0.3), inset 0 0 60px rgba(154, 143, 223, 0.2);
     will-change: transform;
-    contain: strict;
+    contain: layout;
 }
 .space-orb-1 { width: 600px; height: 600px; top: -200px; left: -200px; animation-duration: 25s; }
 .space-orb-2 { width: 500px; height: 500px; top: 50%; right: -150px; animation-delay: -8s; animation-duration: 30s; }
@@ -304,6 +304,10 @@ body {
     .glass:hover,
     [class*="card"]:hover,
     [class*="btn"]:hover,
+    .ref-link:hover,
+    .promo-section:hover,
+    .faq:hover,
+    .modal-content:hover,
     .topup-method:hover,
     .copy-btn:hover,
     .promo-btn:hover,
@@ -964,6 +968,7 @@ if (tg) {
     tg.setHeaderColor('#1a1635');
     tg.setBackgroundColor('#1a1635');
     tg.expand();
+    tg.ready();
 } else {
     console.warn('[NVX VPN] Открыто вне Telegram — некоторые функции недоступны');
 }
