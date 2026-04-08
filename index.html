@@ -926,39 +926,33 @@ body {
     backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); flex-shrink: 0;
 }
 .nav-item {
-    background: none; border: none; color: var(--text-secondary);
+    background: none; border: 1px solid transparent; color: var(--text-secondary);
     display: flex; flex-direction: column; align-items: center; gap: 2px;
     font-size: 10px; font-weight: 600; padding: 8px 6px; border-radius: 16px;
     cursor: pointer; position: relative; flex: 1; min-height: 44px; min-width: 44px;
     justify-content: center; font-family: var(--font-body);
-    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-    border: 1px solid transparent;
-    touch-action: manipulation; /* removes 300ms tap delay on mobile */
+    /* Конкретные свойства вместо 'all' — фикс двойного тапа на мобильных */
+    transition: color 0.25s ease, background 0.25s ease, border-color 0.2s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
 }
 .nav-item i { font-size: 18px; }
+/* Hover: только цвет и фон, без окантовки — точно как у референса */
 .nav-item:hover {
     color: var(--accent-bright);
-    background: rgba(122, 111, 191, 0.14);
-    border-color: rgba(122, 111, 191, 0.6);
-    box-shadow:
-        0 0 0 1px rgba(122, 111, 191, 0.25),
-        0 0 12px rgba(122, 111, 191, 0.18),
-        inset 0 0 10px rgba(122, 111, 191, 0.06);
-    transform: translateY(-1px);
+    background: rgba(122, 111, 191, 0.08);
 }
+/* Active tap: быстрый scale без !important и без лишних свойств */
 .nav-item:active {
-    transform: scale(0.88) !important;
-    background: rgba(122, 111, 191, 0.22) !important;
-    border-color: rgba(122, 111, 191, 0.65) !important;
-    transition: transform 0.08s ease, background 0.08s ease !important;
+    transform: scale(0.92);
+    transition: transform 0.08s ease;
 }
+/* Active tab: фон + окантовка как у референса */
 .nav-item.active {
     color: var(--accent-bright);
-    background: rgba(122, 111, 191, 0.16);
-    border: 1px solid rgba(122, 111, 191, 0.35);
-    box-shadow:
-        0 0 0 1px rgba(122, 111, 191, 0.15),
-        0 0 16px rgba(122, 111, 191, 0.1);
+    background: rgba(122, 111, 191, 0.12);
+    border-color: rgba(122, 111, 191, 0.2);
 }
 .nav-item.active::before {
     content: ''; position: absolute; top: -4px; left: 50%;
@@ -1844,13 +1838,11 @@ function renderReferral() {
                 box-shadow:0 4px 16px rgba(122,111,191,0.12);">
                 <i class="fas fa-gift" style="font-size:26px;color:var(--accent-bright);"></i>
             </div>
-            <div style="font-family:var(--font-display);font-size:18px;font-weight:800;color:var(--text-primary);letter-spacing:-0.3px;">
+            <div style="font-size:18px;font-weight:800;color:var(--text-primary);letter-spacing:-0.3px;">
                 Реферальная программа
             </div>
-            <div style="font-size:13px;color:var(--text-tertiary);margin-top:4px;line-height:1.5;">
-                Приглашайте друзей — получайте
-                <span style="color:var(--accent-bright);font-weight:700;">${r.percent}%</span>
-                с их пополнений
+            <div style="font-size:13px;color:var(--text-tertiary);margin-top:4px;">
+                Приглашайте друзей - получайте <span style="color:var(--accent-bright);font-weight:700;">${r.percent}%</span> с их пополнений
             </div>
         </div>
         <div class="stats-grid">
