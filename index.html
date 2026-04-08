@@ -88,6 +88,8 @@ body {
     filter: blur(50px);
     animation: orbFloat 20s ease-in-out infinite;
     box-shadow: 0 0 100px rgba(122, 111, 191, 0.3), inset 0 0 60px rgba(154, 143, 223, 0.2);
+    will-change: transform;
+    contain: strict;
 }
 .space-orb-1 { width: 600px; height: 600px; top: -200px; left: -200px; animation-duration: 25s; }
 .space-orb-2 { width: 500px; height: 500px; top: 50%; right: -150px; animation-delay: -8s; animation-duration: 30s; }
@@ -117,6 +119,16 @@ body {
 @keyframes starsTwinkle {
     0%, 100% { opacity: 0.3; transform: scale(1); }
     50% { opacity: 0.6; transform: scale(1.02); }
+}
+
+/* Reduce animation load for users who prefer reduced motion or low-end devices */
+@media (prefers-reduced-motion: reduce) {
+    .space-orb, .space-stars, #space-bg::before { animation: none !important; }
+    .support-icon { animation: none !important; }
+}
+/* Hide extra orbs on small/low-end screens to save GPU */
+@media (max-width: 400px) {
+    .space-orb-3, .space-orb-4 { display: none; }
 }
 
 /* ═══════════════════════════════════════
@@ -287,36 +299,19 @@ body {
 
 /* Disable hover on touch devices to prevent sticky states */
 @media (hover: none) {
-    .hoverable:hover {
-        transform: none;
-        border-color: var(--card-border);
-        box-shadow: none;
-    }
+    .hoverable:hover,
     .header:hover,
     .glass:hover,
-    .tariff-card:hover,
-    .stat-card:hover,
-    .ref-link:hover,
-    .promo-section:hover,
-    .support-card:hover,
-    .faq:hover,
-    .btn.action-row:hover,
-    .btn.primary:hover,
-    .btn.secondary:hover,
+    [class*="card"]:hover,
+    [class*="btn"]:hover,
     .topup-method:hover,
     .copy-btn:hover,
     .promo-btn:hover,
     .modal-close:hover,
-    .modal-btn:hover,
-    .modal-btn-primary:hover,
     .nav-item:hover,
-    .country-flag:hover,
-    .connect-help-card:hover,
-    .modal-content:hover {
-        transform: none;
-        border-color: var(--card-border);
-        box-shadow: none;
-        background: inherit;
+    .country-flag:hover {
+        transform: none !important;
+        box-shadow: none !important;
     }
 }
 
@@ -1030,6 +1025,9 @@ function canProceed(actionId) {
 
 /* ═══════════════════════════════════════
    PROMO CODES (test stubs)
+   ⚠️  SECURITY: Перенести на backend перед продакшеном!
+   Клиентская валидация промокодов позволяет пользователям
+   увидеть все коды через DevTools и модифицировать баланс.
 ═══════════════════════════════════════ */
 const VALID_PROMOS = {
     'NVX2026':  { bonus: 50,  desc: '+50₽ на баланс' },
@@ -1095,6 +1093,15 @@ const modalButtons = $('#modal-buttons');
 const modalClose   = $('#modal-close');
 
 let currentTab = 'home';
+
+/* ═══════════════════════════════════════
+   XSS PROTECTION — escape user data before innerHTML
+═══════════════════════════════════════ */
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.appendChild(document.createTextNode(String(str)));
+    return div.innerHTML;
+}
 
 /* ═══════════════════════════════════════
    ANIMATION CLEANUP
@@ -1201,7 +1208,15 @@ function onModalDragEnd() {
     modalIsDragging = false;
     modalContent.style.transition = '';
     if (modalDragCurrentY > 100) {
-        // Dismiss modal
+        // Use hideModal() to respect unsaved-input confirmation
+        const hadInput = modalHasInput;
+        if (hadInput && !confirm('Закрыть? Введённые данные будут потеряны.')) {
+            // User cancelled — snap back
+            modalContent.style.transform = '';
+            modalDragCurrentY = 0;
+            return;
+        }
+        // Dismiss modal with animation
         modalContent.style.transform = 'translateY(100%)';
         setTimeout(() => {
             modal.classList.remove('show');
@@ -1232,9 +1247,9 @@ modal?.addEventListener('click', e => {
 ═══════════════════════════════════════ */
 function updateHeader() {
     const u = AppData.user;
-    $('#userName').textContent = u.name;
-    $('#userId').textContent = `ID: ${u.id}`;
-    $('#userBalance').textContent = `${u.balance.toFixed(2)}₽`;
+    $('#userName').textContent = String(u.name);
+    $('#userId').textContent = `ID: ${String(u.id)}`;
+    $('#userBalance').textContent = `${Number(u.balance).toFixed(2)}₽`;
 }
 updateHeader();
 
@@ -1279,7 +1294,14 @@ function showTab(tab) {
     tabTimer = setTimeout(() => {
         tabTimer = null;
         const renderer = TAB_RENDERERS[tab];
-        if (renderer) renderer();
+        if (renderer) {
+            try {
+                renderer();
+            } catch (err) {
+                console.error(`[NVX] Ошибка рендера вкладки "${tab}":`, err);
+                contentEl.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-triangle"></i> Ошибка загрузки. Попробуйте ещё раз.</div>`;
+            }
+        }
     }, SKELETON_DELAY_MS);
 }
 
@@ -1308,7 +1330,7 @@ contentEl.addEventListener('click', e => {
     const tariffCard = target.closest('.tariff-card[data-id]');
     if (tariffCard && canProceed('tariff-' + tariffCard.dataset.id)) {
         HapticFeedback.buttonMedium();
-        openTariffModal(parseInt(tariffCard.dataset.id));
+        openTariffModal(parseInt(tariffCard.dataset.id, 10));
         return;
     }
 
@@ -1389,7 +1411,7 @@ function renderHome() {
     const { user, subscription } = AppData;
 
     contentEl.innerHTML = `
-        <div class="section-title anim-title">Добро пожаловать, ${user.name}</div>
+        <div class="section-title anim-title">Добро пожаловать, ${escapeHtml(user.name)}</div>
         <div class="subscription-card glass hoverable anim-left anim-left-d1" id="subCard"></div>
         <div id="trialBlock"></div>
     `;
@@ -1506,8 +1528,9 @@ function renderTariffs() {
    TARIFF MODAL
 ═══════════════════════════════════════ */
 function openTariffModal(tariffId) {
+    if (!Number.isFinite(tariffId)) return;
     const t = AppData.tariffs.find(x => x.id === tariffId);
-    if (!t) return;
+    if (!t) { showToast('Тариф не найден', 'error'); return; }
 
     const n = AppData.nodesCount;
     const bal = AppData.user.balance;
@@ -1591,7 +1614,7 @@ function renderReferral() {
         <div class="ref-link glass anim-up anim-up-d2">
             <p><i class="fas fa-link"></i> Ваша реферальная ссылка</p>
             <div style="display:flex;gap:6px;align-items:center;">
-                <div class="ref-link-input">${r.link}</div>
+                <div class="ref-link-input">${escapeHtml(r.link)}</div>
                 <button class="copy-btn" id="copyRef"><i class="fas fa-copy"></i></button>
             </div>
         </div>
@@ -1724,21 +1747,24 @@ function initApp() {
 
     // 5. Handle Telegram keyboard (viewport changes)
     if (isTelegram) {
-        tg.onEvent('viewportChanged', () => {
-            // Adjust layout when keyboard appears/disappears
+        tg.onEvent('viewportChanged', ({ isStateStable }) => {
+            // Only adjust on stable viewport to avoid layout thrash
+            if (!isStateStable) return;
             const content = $('.content');
             if (content) {
-                content.style.height = `${tg.viewportHeight}px`;
+                if (tg.isExpanded) {
+                    content.style.height = '';  // Reset to CSS flex
+                } else {
+                    content.style.height = `${tg.viewportStableHeight - 120}px`;
+                }
             }
         });
     }
 
-    // 6. Show/hide BackButton on tab change
-    const origSwitchTab = switchTab;
-    // We override switchTab to handle BackButton
-    const _origShowTab = showTab;
-    window.showTab = function(tab) {
-        _origShowTab(tab);
+    // 6. Show/hide BackButton on tab change — handled inside switchTab
+    const _origSwitchTab = switchTab;
+    switchTab = function(tab) {
+        _origSwitchTab(tab);
         if (isTelegram && tg.BackButton) {
             if (tab === 'home') tg.BackButton.hide();
             else tg.BackButton.show();
