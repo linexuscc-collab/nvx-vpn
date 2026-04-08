@@ -77,6 +77,14 @@ body {
     0%, 100% { opacity: 0.6; transform: scale(1); }
     50% { opacity: 1; transform: scale(1.1); }
 }
+@keyframes accentPulse {
+    0%, 100% { opacity: 0.5; }
+    50%      { opacity: 1; }
+}
+@keyframes shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
 .space-orb {
     position: absolute; border-radius: 50%;
     background: radial-gradient(circle at 30% 30%,
@@ -253,7 +261,9 @@ body {
 .section-title::after {
     content: ''; position: absolute; bottom: 0; left: 0;
     width: 40px; height: 2px;
-    background: linear-gradient(90deg, var(--accent-bright), transparent);
+    background: linear-gradient(90deg, var(--accent-bright), rgba(154, 143, 223, 0.3), var(--accent-bright));
+    background-size: 200% 100%;
+    animation: shimmer 3s ease-in-out infinite;
     border-radius: 2px;
 }
 .section-subtitle {
@@ -329,6 +339,14 @@ body {
     border: 1px solid rgba(80, 90, 130, 0.25);
     border-radius: 20px;
     backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+}
+.subscription-card::before {
+    content: ''; position: absolute;
+    top: -20%; right: -20%;
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, rgba(122, 111, 191, 0.1) 0%, transparent 70%);
+    border-radius: 50%; filter: blur(30px);
+    pointer-events: none; opacity: 0.6;
 }
 .subscription-card:hover {
     background: rgba(20, 25, 50, 0.65);
@@ -598,16 +616,25 @@ body {
     padding: 12px 14px; display: flex; align-items: center; gap: 12px;
     border-radius: 16px; background: rgba(20, 25, 45, 0.2);
     border: 1px solid var(--card-border);
-    transition: var(--transition-fast);
+    transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
     cursor: pointer; position: relative; overflow: hidden;
     backdrop-filter: blur(8px); min-height: 48px; margin-bottom: 8px;
+}
+.topup-method::after {
+    content: ''; position: absolute; left: 0; top: 0;
+    width: 2px; height: 100%;
+    background: linear-gradient(180deg, rgba(122, 111, 191, 0.7), transparent);
+    transform: scaleY(0); transform-origin: top;
+    transition: transform 0.3s ease-out;
 }
 .topup-method:hover {
     border-color: rgba(122, 111, 191, 0.3);
     background: rgba(30, 40, 60, 0.35);
-    transform: translateY(-2px);
+    transform: translateX(3px);
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
 }
+.topup-method:hover::after { transform: scaleY(1); }
+.topup-method:active { transform: scale(0.97); }
 .topup-method i:first-child { font-size: 20px; color: var(--accent-bright); width: 24px; flex-shrink: 0; }
 .topup-method span { flex: 1; font-weight: 600; color: var(--text-primary); font-size: 13px; }
 .topup-method i:last-child { font-size: 12px; color: var(--text-secondary); }
@@ -684,17 +711,32 @@ body {
 .faq-list { padding: 6px 0; }
 .faq-item { border-bottom: 1px solid rgba(70, 80, 110, 0.08); }
 .faq-item:last-child { border-bottom: none; }
+.faq-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 13px 16px; cursor: pointer; list-style: none;
+    transition: background 0.2s; min-height: 44px;
+    -webkit-tap-highlight-color: transparent; user-select: none;
+}
+.faq-row:hover { background: rgba(122, 111, 191, 0.06); }
+/* Legacy: keep summary styles for any remaining <details> */
 .faq-item summary { display: flex; align-items: center; gap: 12px; padding: 13px 16px; cursor: pointer; list-style: none; transition: background 0.2s; min-height: 44px; }
 .faq-item summary::-webkit-details-marker { display: none; }
 .faq-item summary:hover { background: rgba(122, 111, 191, 0.06); }
-.faq-icon-wrap { width: 34px; height: 34px; border-radius: 10px; background: var(--accent-glow); display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--accent-bright); flex-shrink: 0; }
-.faq-item[open] .faq-icon-wrap { background: rgba(122, 111, 191, 0.22); }
+/* Accordion body */
+.faq-body {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.35s ease;
+    will-change: max-height;
+    padding: 0 16px;
+}
+.faq-body p { font-size: 12px; line-height: 1.65; color: var(--text-secondary); padding: 12px 0 14px; border-top: 1px solid rgba(70,80,110,0.1); margin: 0; }
+.faq-body p strong { color: var(--text-primary); font-weight: 600; }
+/* Open state */
+.faq-item.open .faq-icon-wrap { background: rgba(122, 111, 191, 0.22); }
+.faq-item.open .faq-chevron { transform: rotate(180deg); color: var(--accent-bright); }
+.faq-icon-wrap { width: 34px; height: 34px; border-radius: 10px; background: var(--accent-glow); display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--accent-bright); flex-shrink: 0; transition: background 0.2s; }
 .faq-question { flex: 1; font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.4; }
-.faq-chevron { font-size: 11px; color: var(--text-tertiary); transition: transform 0.25s; flex-shrink: 0; }
-.faq-item[open] .faq-chevron { transform: rotate(180deg); color: var(--accent-bright); }
-.faq-answer { padding: 0 16px 14px 62px; }
-.faq-answer p { font-size: 12px; line-height: 1.65; color: var(--text-secondary); }
-.faq-answer strong { color: var(--text-primary); font-weight: 600; }
+.faq-chevron { font-size: 11px; color: var(--text-tertiary); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); flex-shrink: 0; }
 
 /* ═══════════════════════════════════════
    SKELETON LOADER
@@ -873,6 +915,7 @@ body {
     transform: translateX(-50%); width: 5px; height: 5px;
     border-radius: 50%; background: var(--accent-bright);
     box-shadow: 0 0 8px rgba(122, 111, 191, 0.4);
+    animation: accentPulse 2s ease-in-out infinite;
 }
 
 /* Utility */
@@ -1288,6 +1331,8 @@ $('#bottomNav').addEventListener('click', e => {
     const navItem = e.target.closest('.nav-item');
     if (navItem && canProceed('nav-' + navItem.dataset.tab)) {
         HapticFeedback.navigation();
+        navItem.style.transform = 'scale(0.90)';
+        setTimeout(() => { navItem.style.transform = ''; }, 150);
         switchTab(navItem.dataset.tab);
     }
 });
@@ -1306,19 +1351,41 @@ const TAB_RENDERERS = {
 let tabTimer = null;
 function showTab(tab) {
     if (tabTimer) { clearTimeout(tabTimer); tabTimer = null; }
-    contentEl.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
+
+    // Fade out current content
+    contentEl.style.transition = 'opacity 0.15s ease, transform 0.15s ease';
+    contentEl.style.opacity = '0';
+    contentEl.style.transform = 'translateY(6px)';
+
     tabTimer = setTimeout(() => {
         tabTimer = null;
-        const renderer = TAB_RENDERERS[tab];
-        if (renderer) {
-            try {
-                renderer();
-            } catch (err) {
-                console.error(`[NVX] Ошибка рендера вкладки "${tab}":`, err);
-                contentEl.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-triangle"></i> Ошибка загрузки. Попробуйте ещё раз.</div>`;
+        contentEl.style.transition = '';
+        // Show skeleton
+        contentEl.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
+        contentEl.style.opacity = '1';
+        contentEl.style.transform = 'translateY(0)';
+
+        setTimeout(() => {
+            const renderer = TAB_RENDERERS[tab];
+            if (renderer) {
+                try {
+                    renderer();
+                } catch (err) {
+                    console.error(`[NVX] Ошибка рендера вкладки "${tab}":`, err);
+                    contentEl.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-triangle"></i> Ошибка загрузки. Попробуйте ещё раз.</div>`;
+                }
             }
-        }
-    }, SKELETON_DELAY_MS);
+            // Fade in rendered content
+            contentEl.style.opacity = '0';
+            contentEl.style.transform = 'translateY(8px)';
+            requestAnimationFrame(() => {
+                contentEl.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
+                contentEl.style.opacity = '1';
+                contentEl.style.transform = 'translateY(0)';
+                setTimeout(() => { contentEl.style.transition = ''; }, 280);
+            });
+        }, SKELETON_DELAY_MS);
+    }, 150);
 }
 
 /* ═══════════════════════════════════════
@@ -1705,22 +1772,47 @@ function renderSupport() {
                 <i class="fab fa-telegram"></i> Открыть чат
             </button>
         </div>
-        <div class="faq glass anim-fade anim-fade-d2">
+        <div class="faq anim-fade anim-fade-d2">
             <div class="faq-header"><i class="fas fa-layer-group"></i> Часто задаваемые вопросы</div>
-            <div class="faq-list">
+            <div class="faq-list" id="faqList">
                 ${FAQ_ITEMS.map(([icon, q, a], i) => `
-                <details class="faq-item anim-fade anim-fade-d${Math.min(i + 3, 6)}">
-                    <summary>
+                <div class="faq-item" data-i="${i}">
+                    <div class="faq-row">
                         <div class="faq-icon-wrap"><i class="fas ${icon}"></i></div>
                         <span class="faq-question">${q}</span>
                         <i class="fas fa-chevron-down faq-chevron"></i>
-                    </summary>
-                    <div class="faq-answer"><p>${a}</p></div>
-                </details>`).join('')}
+                    </div>
+                    <div class="faq-body"><p>${a}</p></div>
+                </div>`).join('')}
             </div>
         </div>
     `;
     registerAnimCleanup();
+
+    // Cache heights before any max-height CSS kicks in, then init accordion
+    const items = $$('.faq-item', contentEl);
+    const heightCache = new Map();
+    items.forEach(item => {
+        const p = item.querySelector('.faq-body p');
+        if (p) heightCache.set(item, p.scrollHeight + 28);
+    });
+
+    items.forEach(item => {
+        const body = item.querySelector('.faq-body');
+        item.querySelector('.faq-row').addEventListener('click', () => {
+            const isOpen = item.classList.contains('open');
+            // Close all
+            items.forEach(o => {
+                o.classList.remove('open');
+                o.querySelector('.faq-body').style.maxHeight = '0';
+            });
+            // Open clicked if it was closed
+            if (!isOpen) {
+                item.classList.add('open');
+                body.style.maxHeight = (heightCache.get(item) || 200) + 'px';
+            }
+        });
+    });
 }
 
 /* ═══════════════════════════════════════
@@ -1789,6 +1881,71 @@ function initApp() {
     }
 
     showTab(_initTab);
+}
+
+/* ═══════════════════════════════════════
+   LOADING OVERLAY
+═══════════════════════════════════════ */
+(function _injectLoadingStyles() {
+    if (document.getElementById('loading-overlay-styles')) return;
+    const s = document.createElement('style');
+    s.id = 'loading-overlay-styles';
+    s.textContent = `
+        @keyframes loading-spin { to { transform: rotate(360deg); } }
+        @keyframes loading-pulse { 0%,100%{opacity:0.6;} 50%{opacity:1;} }
+        #loading-overlay {
+            position: fixed; inset: 0; z-index: 9999;
+            background: rgba(10, 14, 39, 0.75);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 16px; pointer-events: all;
+            opacity: 0; transition: opacity 0.25s ease;
+            backdrop-filter: blur(4px);
+        }
+        #loading-overlay.visible { opacity: 1; }
+        #loading-overlay .lo-spinner {
+            width: 52px; height: 52px;
+            border: 3px solid rgba(122,111,191,0.15);
+            border-top-color: var(--accent-bright);
+            border-radius: 50%;
+            animation: loading-spin 0.8s linear infinite;
+            will-change: transform;
+        }
+        #loading-overlay .lo-msg {
+            color: #c8c2f0; font-size: 14px; font-weight: 500;
+            letter-spacing: 0.3px; text-align: center;
+            max-width: 220px; line-height: 1.5;
+            animation: loading-pulse 2s ease-in-out infinite;
+            font-family: var(--font-body);
+        }
+    `;
+    document.head.appendChild(s);
+})();
+
+function showLoading(message = 'Загрузка...') {
+    let overlay = document.getElementById('loading-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'loading-overlay';
+        overlay.innerHTML = `<div class="lo-spinner"></div><span class="lo-msg">${escapeHtml(message)}</span>`;
+        document.body.appendChild(overlay);
+    } else {
+        const msgEl = overlay.querySelector('.lo-msg');
+        if (msgEl) msgEl.textContent = message;
+        // Restart spinner animation
+        const old = overlay.querySelector('.lo-spinner');
+        if (old) old.replaceWith(old.cloneNode(true));
+    }
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('visible')));
+}
+
+function hideLoading() {
+    const overlay = document.getElementById('loading-overlay');
+    if (overlay) {
+        overlay.classList.remove('visible');
+        setTimeout(() => { overlay.style.display = 'none'; }, 250);
+    }
 }
 
 // Call init
