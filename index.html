@@ -335,10 +335,31 @@ body {
     .copy-btn:hover,
     .promo-btn:hover,
     .modal-close:hover,
-    .nav-item:hover,
     .country-flag:hover {
         transform: none !important;
         box-shadow: none !important;
+    }
+    /* На тач — убираем hover у nav полностью */
+    .nav-item:hover {
+        background: none !important;
+        border-color: transparent !important;
+        box-shadow: none !important;
+        color: var(--text-secondary) !important;
+    }
+    /* Исключение: active остаётся видимым */
+    .nav-item.active,
+    .nav-item.active:hover {
+        color: var(--accent-bright) !important;
+        background: rgba(122, 111, 191, 0.18) !important;
+        border-color: rgba(122, 111, 191, 0.4) !important;
+        box-shadow: 0 0 14px rgba(122, 111, 191, 0.12) !important;
+    }
+    /* JS-pressed класс для мгновенного визуального фидбэка */
+    .nav-item.nav-pressed {
+        transform: scale(0.90) !important;
+        background: rgba(122, 111, 191, 0.22) !important;
+        border-color: rgba(122, 111, 191, 0.5) !important;
+        transition: transform 0.08s ease !important;
     }
 }
 
@@ -931,14 +952,15 @@ body {
     font-size: 10px; font-weight: 600; padding: 8px 6px; border-radius: 16px;
     cursor: pointer; position: relative; flex: 1; min-height: 44px; min-width: 44px;
     justify-content: center; font-family: var(--font-body);
-    transition: color 0.25s ease, background 0.25s ease,
-                border-color 0.25s ease, box-shadow 0.25s ease,
-                transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    /* Только нужные свойства — без transform в transition (управляем JS) */
+    transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
     user-select: none;
+    -webkit-user-select: none;
 }
 .nav-item i { font-size: 18px; }
+/* Hover — только десктоп, на тач @media (hover:none) сбросит */
 .nav-item:hover {
     color: var(--accent-bright);
     background: rgba(122, 111, 191, 0.1);
@@ -946,11 +968,12 @@ body {
     box-shadow: 0 0 10px rgba(122, 111, 191, 0.15),
                 inset 0 0 8px rgba(122, 111, 191, 0.05);
 }
-.nav-item:active { transform: scale(0.90); }
+/* Active: управляется JS transform — CSS :active ненадёжен в Telegram WebView */
 .nav-item.active {
     color: var(--accent-bright);
-    background: var(--accent-glow);
-    border-color: var(--accent-border);
+    background: rgba(122, 111, 191, 0.18);
+    border-color: rgba(122, 111, 191, 0.4);
+    box-shadow: 0 0 14px rgba(122, 111, 191, 0.12);
 }
 .nav-item.active::before {
     content: ''; position: absolute; top: -4px; left: 50%;
@@ -1440,26 +1463,33 @@ function switchTab(tab) {
     }
 }
 
-$('#bottomNav').addEventListener('click', e => {
-    const navItem = e.target.closest('.nav-item');
-    if (navItem) {
-        HapticFeedback.navigation();
-        switchTab(navItem.dataset.tab);
-    }
-});
+/* ── Nav: touchend+preventDefault (Telegram WebApp proven pattern) ──
+   touchend с preventDefault: мгновенный отклик + блокировка ghost-click на iOS
+   click: fallback для десктопа и устройств без touch */
+function _navHandleTap(btn) {
+    if (!btn || !btn.dataset.tab) return;
+    HapticFeedback.navigation();
+    // Визуальный фидбэк через JS-класс (надёжнее CSS :active в WebView)
+    btn.classList.add('nav-pressed');
+    setTimeout(() => btn.classList.remove('nav-pressed'), 180);
+    switchTab(btn.dataset.tab);
+}
 
-// Мгновенный визуальный фидбэк на мобильном через touchstart (не ждёт click)
-$('#bottomNav').addEventListener('touchstart', e => {
-    const navItem = e.target.closest('.nav-item');
-    if (navItem) {
-        navItem.style.transform = 'scale(0.90)';
-        navItem.style.transition = 'transform 0.08s ease';
-        setTimeout(() => {
-            navItem.style.transform = '';
-            navItem.style.transition = '';
-        }, 150);
-    }
-}, { passive: true });
+$$('.nav-item').forEach(btn => {
+    let _touchHandled = false;
+
+    btn.addEventListener('touchend', function(e) {
+        e.preventDefault(); // блокирует ghost-click (300ms задержку) на iOS/Android
+        _touchHandled = true;
+        _navHandleTap(this);
+        setTimeout(() => { _touchHandled = false; }, 500);
+    }, { passive: false }); // passive:false обязателен для e.preventDefault()
+
+    btn.addEventListener('click', function() {
+        if (_touchHandled) return; // touchend уже обработал
+        _navHandleTap(this);
+    });
+});
 
 /* ═══════════════════════════════════════
    TAB ROUTER
