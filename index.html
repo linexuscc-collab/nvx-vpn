@@ -6,9 +6,12 @@
 <meta name="theme-color" content="#1a1635">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: blob:; connect-src 'self' https:;">
 <title>NVX VPN</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔒</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -948,7 +951,6 @@ body {
     justify-content: center; font-family: var(--font-body);
     transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease,
                 transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
-    will-change: transform;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
     user-select: none;
@@ -1060,7 +1062,6 @@ body {
     </div>
   </div>
 </div>
-</div>
 
 <!-- 3D Space Background -->
 <div id="space-bg">
@@ -1145,10 +1146,10 @@ const tg = window.Telegram?.WebApp;
 const isTelegram = !!tg;
 
 if (tg) {
-    tg.setHeaderColor('#1a1635');
-    tg.setBackgroundColor('#1a1635');
-    tg.expand();
-    tg.ready();
+    try { tg.setHeaderColor('#1a1635'); } catch {}
+    try { tg.setBackgroundColor('#1a1635'); } catch {}
+    try { tg.expand(); } catch {}
+    try { tg.ready(); } catch {}
 } else {
     console.warn('[NVX VPN] Открыто вне Telegram — некоторые функции недоступны');
 }
@@ -1283,9 +1284,12 @@ let currentTab = 'home';
    XSS PROTECTION — escape user data before innerHTML
 ═══════════════════════════════════════ */
 function escapeHtml(str) {
-    const div = document.createElement('div');
-    div.appendChild(document.createTextNode(String(str)));
-    return div.innerHTML;
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
 }
 
 /* ═══════════════════════════════════════
@@ -1502,11 +1506,12 @@ const TAB_RENDERERS = {
 };
 
 let tabTimer = null;
+let pendingRender = null; // Prevent rAF queue buildup on rapid tab switches
+
 function showTab(tab) {
     if (tabTimer) { clearTimeout(tabTimer); tabTimer = null; }
+    if (pendingRender) { cancelAnimationFrame(pendingRender); pendingRender = null; }
 
-    // Рендерим сразу (без fade-out конкурирующего с nav-анимацией)
-    if (tabTimer) { clearTimeout(tabTimer); tabTimer = null; }
     contentEl.style.opacity = '0';
     contentEl.style.transform = 'translateY(10px)';
     contentEl.style.transition = 'none';
@@ -1950,33 +1955,8 @@ function renderTopUp() {
             </div>`).join('')}
     `;
     registerAnimCleanup();
-
-    // Promo code handler
-    $('#promoBtn')?.addEventListener('click', () => {
-        const input = $('#promoInput');
-        const code = input?.value?.trim().toUpperCase();
-        if (!code) { showToast('Введите промокод', 'warning'); return; }
-        HapticFeedback.buttonLight();
-        const promo = VALID_PROMOS[code];
-        if (promo) {
-            AppData.user.balance += promo.bonus;
-            updateHeader();
-            input.value = '';
-            showToast(`Промокод активирован! ${promo.desc}`, 'success');
-            HapticFeedback.success();
-        } else {
-            showToast('Неверный или уже использованный промокод', 'error');
-            HapticFeedback.error();
-        }
-    });
-
-    // Topup method click handler
-    $$('.topup-method').forEach(el => {
-        el.addEventListener('click', () => {
-            HapticFeedback.buttonLight();
-            showToast('Доступно после подключения backend', 'warning');
-        });
-    });
+    // Promo code handler — делегируется через contentEl.addEventListener (см. выше)
+    // Topup method handler — делегируется через contentEl.addEventListener (см. выше)
 }
 
 /* ═══════════════════════════════════════
@@ -2177,10 +2157,8 @@ function hideLoading() {
     }
 }
 
-// Splash: hide after app initialises
-const _origInitApp = initApp;
-initApp = function() {
-    _origInitApp();
+// Splash: hide after app initialises (extracted from initApp rewrite pattern)
+function _hideSplash() {
     setTimeout(() => {
         const splash = document.getElementById('nvx-splash');
         if (splash) {
@@ -2188,10 +2166,11 @@ initApp = function() {
             setTimeout(() => { splash.style.display = 'none'; }, 500);
         }
     }, 1550); // bar animation (1.4s delay 0.15s) + tiny buffer
-};
+}
 
-// Call init
+// Call init then hide splash
 initApp();
+_hideSplash();
 </script>
 </body>
 </html>
