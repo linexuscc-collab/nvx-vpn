@@ -46,6 +46,30 @@
     --accent-border: rgba(122, 111, 191, 0.2);
     --danger: #ff6b6b;
     --warning: #ffa502;
+    /* Opacity variants for accent color */
+    --accent-05: rgba(122, 111, 191, 0.05);
+    --accent-06: rgba(122, 111, 191, 0.06);
+    --accent-07: rgba(122, 111, 191, 0.07);
+    --accent-08: rgba(122, 111, 191, 0.08);
+    --accent-12: rgba(122, 111, 191, 0.12);
+    --accent-14: rgba(122, 111, 191, 0.14);
+    --accent-15: rgba(122, 111, 191, 0.15);
+    --accent-18: rgba(122, 111, 191, 0.18);
+    --accent-22: rgba(122, 111, 191, 0.22);
+    --accent-25: rgba(122, 111, 191, 0.25);
+    --accent-30: rgba(122, 111, 191, 0.30);
+    --accent-40: rgba(122, 111, 191, 0.40);
+    --accent-50: rgba(122, 111, 191, 0.50);
+    --accent-55: rgba(122, 111, 191, 0.55);
+    --accent-60: rgba(122, 111, 191, 0.60);
+    --accent-70: rgba(122, 111, 191, 0.70);
+    /* Semantic color tokens */
+    --danger-bg: rgba(255, 80, 80, 0.07);
+    --danger-border: rgba(255, 80, 80, 0.18);
+    --warning-border: rgba(255, 165, 2, 0.5);
+    --card-bg-dark: rgba(10, 14, 39, 0.75);
+    --overlay-bg: rgba(0, 0, 0, 0.6);
+    --modal-bg: rgba(14, 18, 38, 0.97);
 }
 
 /* ═══════════════════════════════════════
@@ -140,6 +164,16 @@ body {
 /* Hide extra orbs on small/low-end screens to save GPU */
 @media (max-width: 400px) {
     .space-orb-3, .space-orb-4 { display: none; }
+}
+/* Optimize backdrop-filter for mobile devices to save GPU */
+@media (max-width: 480px) {
+    .glass, .subscription-card, .ref-link, .promo-section,
+    .support-card, .faq, .stat-card, .topup-method,
+    .header, .bottom-nav, .modal-content, .modal-overlay,
+    .toast, .connect-help-card, .tariff-card {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
 }
 
 /* ═══════════════════════════════════════
@@ -814,6 +848,45 @@ body {
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
 /* ═══════════════════════════════════════
+   CONFIRM DIALOG
+═══════════════════════════════════════ */
+.confirm-overlay {
+    position: fixed; inset: 0; z-index: 2000;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+.confirm-overlay.show { opacity: 1; pointer-events: auto; }
+.confirm-box {
+    background: var(--modal-bg); border: 1px solid rgba(80, 90, 130, 0.3);
+    border-radius: 18px; padding: 24px 20px 16px;
+    max-width: 300px; width: 85vw; text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    transform: scale(0.92); transition: transform 0.2s ease;
+}
+.confirm-overlay.show .confirm-box { transform: scale(1); }
+.confirm-box p { color: var(--text-primary); font-size: 14px; line-height: 1.5; margin-bottom: 18px; }
+.confirm-buttons { display: flex; gap: 10px; justify-content: center; }
+.confirm-btn {
+    padding: 10px 22px; border-radius: 12px; font-size: 13px; font-weight: 600;
+    border: none; cursor: pointer; font-family: var(--font-body);
+    transition: transform 0.15s ease, background 0.2s ease;
+    min-height: 42px;
+}
+.confirm-btn:active { transform: scale(0.96); }
+.confirm-btn-cancel {
+    background: rgba(30, 35, 55, 0.5); color: var(--text-secondary);
+    border: 1px solid rgba(70, 80, 110, 0.2);
+}
+.confirm-btn-cancel:hover { background: rgba(40, 50, 75, 0.5); }
+.confirm-btn-ok {
+    background: linear-gradient(135deg, rgba(122, 111, 191, 0.6), rgba(154, 143, 223, 0.4));
+    color: white; border: 1px solid rgba(122, 111, 191, 0.3);
+}
+.confirm-btn-ok:hover { background: linear-gradient(135deg, rgba(122, 111, 191, 0.8), rgba(154, 143, 223, 0.6)); }
+
+/* ═══════════════════════════════════════
    MODAL — bottom sheet style
 ═══════════════════════════════════════ */
 .modal { display: none; position: fixed; inset: 0; z-index: 1500; justify-content: center; align-items: flex-end; padding: 0; }
@@ -1094,11 +1167,11 @@ body {
   <main class="content" id="content"></main>
 
   <nav class="bottom-nav" id="bottomNav">
-    <button class="nav-item active" data-tab="home"><i class="fas fa-home"></i><span>Главная</span></button>
-    <button class="nav-item" data-tab="tariffs"><i class="fas fa-tags"></i><span>Тарифы</span></button>
-    <button class="nav-item" data-tab="referral"><i class="fas fa-users"></i><span>Рефералы</span></button>
-    <button class="nav-item" data-tab="topup"><i class="fas fa-wallet"></i><span>Пополнить</span></button>
-    <button class="nav-item" data-tab="support"><i class="fas fa-headset"></i><span>Поддержка</span></button>
+    <button type="button" class="nav-item active" data-tab="home"><i class="fas fa-home"></i><span>Главная</span></button>
+    <button type="button" class="nav-item" data-tab="tariffs"><i class="fas fa-tags"></i><span>Тарифы</span></button>
+    <button type="button" class="nav-item" data-tab="referral"><i class="fas fa-users"></i><span>Рефералы</span></button>
+    <button type="button" class="nav-item" data-tab="topup"><i class="fas fa-wallet"></i><span>Пополнить</span></button>
+    <button type="button" class="nav-item" data-tab="support"><i class="fas fa-headset"></i><span>Поддержка</span></button>
   </nav>
 </div>
 </div>
@@ -1114,7 +1187,7 @@ body {
     <div class="modal-drag"><div class="modal-drag-bar"></div></div>
     <div class="modal-header">
       <h3 id="modal-title"></h3>
-      <button class="modal-close" id="modal-close"><i class="fas fa-times"></i></button>
+      <button type="button" class="modal-close" id="modal-close"><i class="fas fa-times"></i></button>
     </div>
     <div id="modal-body"></div>
     <div id="modal-buttons" class="modal-buttons"></div>
@@ -1327,26 +1400,78 @@ function showToast(msg, type = 'success') {
 }
 
 /* ═══════════════════════════════════════
-   CLIPBOARD HELPER (with fallback)
+   CLIPBOARD HELPER — navigator.clipboard.writeText primary
 ═══════════════════════════════════════ */
 async function copyToClipboard(text) {
     try {
+        // Primary: modern Clipboard API
         if (navigator.clipboard?.writeText) {
             await navigator.clipboard.writeText(text);
-        } else {
-            // Fallback for older WebViews
-            const ta = document.createElement('textarea');
-            ta.value = text;
-            ta.style.cssText = 'position:fixed;left:-9999px;';
-            document.body.appendChild(ta);
-            ta.select();
-            document.execCommand('copy');
-            document.body.removeChild(ta);
+            return true;
         }
+    } catch {
+        // Fall through to fallback
+    }
+    // Fallback for older WebViews
+    try {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
         return true;
     } catch {
         return false;
     }
+}
+
+/* ═══════════════════════════════════════
+   CUSTOM CONFIRM DIALOG — replaces native confirm()
+   Returns Promise<boolean>, non-blocking
+═══════════════════════════════════════ */
+function showConfirmDialog(message) {
+    return new Promise((resolve) => {
+        // Remove any existing confirm dialog
+        const existing = document.getElementById('confirmDialog');
+        if (existing) existing.remove();
+
+        const overlay = document.createElement('div');
+        overlay.id = 'confirmDialog';
+        overlay.className = 'confirm-overlay';
+        overlay.innerHTML = `
+            <div class="confirm-box">
+                <p>${escapeHtml(message)}</p>
+                <div class="confirm-buttons">
+                    <button type="button" class="confirm-btn confirm-btn-cancel" id="confirmCancel">Отмена</button>
+                    <button type="button" class="confirm-btn confirm-btn-ok" id="confirmOk">OK</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+
+        // Trigger animation
+        requestAnimationFrame(() => overlay.classList.add('show'));
+
+        const cleanup = (result) => {
+            overlay.classList.remove('show');
+            setTimeout(() => { overlay.remove(); }, 200);
+            resolve(result);
+        };
+
+        $('#confirmCancel', overlay).addEventListener('click', () => {
+            HapticFeedback.buttonLight();
+            cleanup(false);
+        });
+        $('#confirmOk', overlay).addEventListener('click', () => {
+            HapticFeedback.buttonLight();
+            cleanup(true);
+        });
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) cleanup(false);
+        });
+    });
 }
 
 /* ═══════════════════════════════════════
@@ -1359,8 +1484,15 @@ let modalIsDragging = false;
 
 function hideModal() {
     if (modalHasInput) {
-        // Show confirmation before closing if there's unsaved input
-        if (!confirm('Закрыть? Введённые данные будут потеряны.')) return;
+        // Use custom non-blocking confirm dialog
+        showConfirmDialog('Закрыть? Введённые данные будут потеряны.').then(ok => {
+            if (ok) {
+                HapticFeedback.buttonLight();
+                modal.classList.remove('show');
+                modalHasInput = false;
+            }
+        });
+        return;
     }
     HapticFeedback.buttonLight();
     modal.classList.remove('show');
@@ -1398,20 +1530,7 @@ function onModalDragEnd() {
     modalContent.style.transition = '';
     if (modalDragCurrentY > 100) {
         // Use hideModal() to respect unsaved-input confirmation
-        const hadInput = modalHasInput;
-        if (hadInput && !confirm('Закрыть? Введённые данные будут потеряны.')) {
-            // User cancelled — snap back
-            modalContent.style.transform = '';
-            modalDragCurrentY = 0;
-            return;
-        }
-        // Dismiss modal with animation
-        modalContent.style.transform = 'translateY(100%)';
-        setTimeout(() => {
-            modal.classList.remove('show');
-            modalContent.style.transform = '';
-            modalHasInput = false;
-        }, 200);
+        hideModal();
     } else {
         // Snap back
         modalContent.style.transform = '';
@@ -1452,7 +1571,11 @@ $('#balanceDisplay')?.addEventListener('click', () => {
    NAVIGATION — event delegation
 ═══════════════════════════════════════ */
 function switchTab(tab) {
-    $$('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+    $$('.nav-item').forEach(b => {
+        const isActive = b.dataset.tab === tab;
+        b.classList.toggle('active', isActive);
+        b.setAttribute('aria-current', isActive ? 'page' : 'false');
+    });
     currentTab = tab;
     showTab(tab);
     // BackButton: show on all tabs except home
