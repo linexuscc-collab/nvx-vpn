@@ -6,13 +6,13 @@
 <meta name="theme-color" content="#1a1635">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: blob:; connect-src 'self' https:;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: blob:; connect-src 'self' https://telegram.org https://api.telegram.org;">
 <title>NVX VPN</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔒</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════
@@ -37,13 +37,13 @@
     --glass-bg: rgba(18, 22, 48, 0.35);
     --glass-bg-hover: rgba(22, 28, 58, 0.45);
     --glass-border: rgba(100, 115, 155, 0.2);
-    --glass-border-hover: rgba(122, 111, 191, 0.4);
+    --glass-border-hover: var(--accent-40);
     --card-bg: rgba(20, 25, 45, 0.25);
     --card-border: rgba(70, 80, 110, 0.15);
-    --card-border-hover: rgba(122, 111, 191, 0.35);
+    --card-border-hover: var(--accent-30);
     --card-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.25);
-    --accent-glow: rgba(122, 111, 191, 0.12);
-    --accent-border: rgba(122, 111, 191, 0.2);
+    --accent-glow: var(--accent-12);
+    --accent-border: var(--accent-22);
     --danger: #ff6b6b;
     --warning: #ffa502;
     /* Opacity variants for accent color */
@@ -63,6 +63,7 @@
     --accent-55: rgba(122, 111, 191, 0.55);
     --accent-60: rgba(122, 111, 191, 0.60);
     --accent-70: rgba(122, 111, 191, 0.70);
+    --accent-80: rgba(122, 111, 191, 0.80);
     /* Semantic color tokens */
     --danger-bg: rgba(255, 80, 80, 0.07);
     --danger-border: rgba(255, 80, 80, 0.18);
@@ -96,7 +97,7 @@ body {
 }
 #space-bg::before {
     content: ''; position: absolute; inset: 0;
-    background: radial-gradient(circle at 50% 50%, rgba(122, 111, 191, 0.15) 0%, transparent 60%);
+    background: radial-gradient(circle at 50% 50%, var(--accent-15) 0%, transparent 60%);
     filter: blur(60px);
     animation: pulseGlow 8s ease-in-out infinite;
 }
@@ -115,14 +116,14 @@ body {
 .space-orb {
     position: absolute; border-radius: 50%;
     background: radial-gradient(circle at 30% 30%,
-        rgba(122, 111, 191, 0.6) 0%,
+        var(--accent-60) 0%,
         rgba(154, 143, 223, 0.4) 30%,
         rgba(76, 66, 141, 0.25) 50%,
         rgba(30, 25, 65, 0.1) 70%,
         transparent 100%);
     filter: blur(50px);
     animation: orbFloat 20s ease-in-out infinite;
-    box-shadow: 0 0 100px rgba(122, 111, 191, 0.3), inset 0 0 60px rgba(154, 143, 223, 0.2);
+    box-shadow: 0 0 100px var(--accent-30), inset 0 0 60px rgba(154, 143, 223, 0.2);
     will-change: transform;
     contain: layout;
 }
@@ -257,15 +258,15 @@ body {
 .user-info { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .avatar {
     width: 40px; height: 40px; border-radius: 50%;
-    background: linear-gradient(135deg, rgba(122, 111, 191, 0.6), rgba(154, 143, 223, 0.4));
+    background: linear-gradient(135deg, var(--accent-60), rgba(154, 143, 223, 0.4));
     display: flex; align-items: center; justify-content: center;
     font-size: 16px; color: white; font-weight: 700;
-    flex-shrink: 0; border: 1px solid rgba(122, 111, 191, 0.3); overflow: hidden;
+    flex-shrink: 0; border: 1px solid var(--accent-30); overflow: hidden;
     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
 }
 .header:hover .avatar {
     transform: scale(1.1);
-    box-shadow: 0 4px 14px rgba(122, 111, 191, 0.3);
+    box-shadow: 0 4px 14px var(--accent-30);
 }
 .avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: none; }
 .user-details { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
@@ -332,11 +333,11 @@ body {
         0 1px 0 rgba(255, 255, 255, 0.05) inset;
 }
 .glass:hover {
-    border-color: rgba(122, 111, 191, 0.55);
+    border-color: var(--accent-55);
     background: rgba(16, 20, 48, 0.65);
     box-shadow:
         0 8px 28px rgba(0, 0, 0, 0.45),
-        0 0 0 1px rgba(122, 111, 191, 0.12),
+        0 0 0 1px var(--accent-12),
         0 1px 0 rgba(255, 255, 255, 0.06) inset;
     transform: translateY(-1px);
 }
@@ -387,9 +388,9 @@ body {
     .nav-item.active,
     .nav-item.active:hover {
         color: var(--accent-bright) !important;
-        background: rgba(122, 111, 191, 0.18) !important;
-        border-color: rgba(122, 111, 191, 0.4) !important;
-        box-shadow: 0 0 14px rgba(122, 111, 191, 0.12) !important;
+        background: var(--accent-18) !important;
+        border-color: var(--accent-40) !important;
+        box-shadow: 0 0 14px var(--accent-12) !important;
     }
 
 }
@@ -409,7 +410,7 @@ body {
     content: ''; position: absolute;
     top: -20%; right: -20%;
     width: 120px; height: 120px;
-    background: radial-gradient(circle, rgba(122, 111, 191, 0.1) 0%, transparent 70%);
+    background: radial-gradient(circle, var(--accent-12) 0%, transparent 70%);
     border-radius: 50%; filter: blur(30px);
     pointer-events: none; opacity: 0.6;
 }
@@ -451,14 +452,14 @@ body {
     transition: var(--transition);
 }
 .connect-help-card:hover {
-    border-color: rgba(122, 111, 191, 0.3);
+    border-color: var(--accent-30);
     transform: translateY(-1px);
     background: rgba(25, 32, 58, 0.4);
 }
 .connect-help-icon {
     width: 36px; height: 36px; border-radius: 10px;
     background: var(--accent-glow);
-    border: 1px solid rgba(122, 111, 191, 0.15);
+    border: 1px solid var(--accent-15);
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
 }
@@ -480,11 +481,11 @@ body {
 }
 .btn:active { transform: scale(0.97); }
 .btn.primary {
-    background: linear-gradient(135deg, rgba(122, 111, 191, 0.7), rgba(154, 143, 223, 0.5));
-    color: white; border: 1px solid rgba(122, 111, 191, 0.3);
-    backdrop-filter: blur(8px); box-shadow: 0 4px 12px rgba(122, 111, 191, 0.15);
+    background: linear-gradient(135deg, var(--accent-70), rgba(154, 143, 223, 0.5));
+    color: white; border: 1px solid var(--accent-30);
+    backdrop-filter: blur(8px); box-shadow: 0 4px 12px var(--accent-15);
 }
-.btn.primary:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(122, 111, 191, 0.2); }
+.btn.primary:hover { transform: translateY(-1px); box-shadow: 0 6px 16px var(--accent-22); }
 .btn.secondary {
     background: rgba(30, 35, 55, 0.3); border: 1px solid rgba(70, 80, 110, 0.2);
     color: var(--text-secondary); backdrop-filter: blur(8px);
@@ -494,7 +495,7 @@ body {
 .btn.rounded { border-radius: 26px; }
 
 .progress-bar { height: 4px; background: rgba(70, 80, 110, 0.15); border-radius: 2px; margin: 8px 0 6px; overflow: hidden; }
-.progress-fill { height: 100%; background: linear-gradient(90deg, rgba(122, 111, 191, 0.6), rgba(154, 143, 223, 0.4)); border-radius: 2px; transition: width 0.4s ease; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-60), rgba(154, 143, 223, 0.4)); border-radius: 2px; transition: width 0.4s ease; }
 
 /* ═══════════════════════════════════════
    ACTION ROW BUTTONS
@@ -513,7 +514,7 @@ body {
 }
 .btn.action-row:hover {
     background: var(--accent-glow);
-    border-color: rgba(122, 111, 191, 0.25);
+    border-color: var(--accent-25);
     transform: translateY(-2px);
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
 }
@@ -524,7 +525,7 @@ body {
     font-size: 18px; flex-shrink: 0; color: var(--accent-bright);
     transition: var(--transition);
 }
-.btn.action-row:hover .action-icon-wrap { background: rgba(122, 111, 191, 0.15); transform: scale(1.08); }
+.btn.action-row:hover .action-icon-wrap { background: var(--accent-15); transform: scale(1.08); }
 .action-text-wrap { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .action-label { font-weight: 700; font-size: 14px; color: var(--text-primary); }
 .action-desc { font-size: 11px; color: rgba(255, 255, 255, 0.5); }
@@ -601,22 +602,22 @@ body {
     transition: all 0.22s;
     cursor: default; line-height: 1;
 }
-.country-flag:hover { background: rgba(122, 111, 191, 0.15); border-color: rgba(122, 111, 191, 0.3); transform: scale(1.12); }
+.country-flag:hover { background: var(--accent-15); border-color: var(--accent-30); transform: scale(1.12); }
 .tariff-locations-note {
     font-size: 10px; color: var(--accent-bright);
-    background: rgba(122, 111, 191, 0.08); border: 1px solid rgba(122, 111, 191, 0.15);
+    background: var(--accent-08); border: 1px solid var(--accent-15);
     border-radius: 7px; padding: 4px 8px;
     display: flex; align-items: center; gap: 5px; font-weight: 500;
 }
 .tariff-card-btn {
     display: flex; align-items: center; justify-content: center; gap: 6px;
     padding: 9px;
-    background: linear-gradient(135deg, rgba(122, 111, 191, 0.5), rgba(154, 143, 223, 0.3));
-    border: 1px solid rgba(122, 111, 191, 0.3); border-radius: 11px;
+    background: linear-gradient(135deg, var(--accent-50), rgba(154, 143, 223, 0.3));
+    border: 1px solid var(--accent-30); border-radius: 11px;
     font-size: 13px; font-weight: 700; color: white; transition: all 0.2s;
 }
 .tariff-card:hover .tariff-card-btn {
-    background: linear-gradient(135deg, rgba(122, 111, 191, 0.7), rgba(154, 143, 223, 0.5));
+    background: linear-gradient(135deg, var(--accent-70), rgba(154, 143, 223, 0.5));
 }
 
 /* ═══════════════════════════════════════
@@ -661,18 +662,18 @@ body {
 }
 .copy-btn {
     width: 44px; height: 44px; border-radius: 28px;
-    background: rgba(122, 111, 191, 0.5); border: 1px solid rgba(122, 111, 191, 0.3);
+    background: var(--accent-50); border: 1px solid var(--accent-30);
     color: white; font-size: 14px; cursor: pointer; transition: var(--transition);
     display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
-.copy-btn:hover { transform: scale(1.05); background: rgba(122, 111, 191, 0.6); }
+.copy-btn:hover { transform: scale(1.05); background: var(--accent-60); }
 
 /* INFO HINT BLOCK (reusable) */
 .info-hint {
     display: flex; align-items: flex-start; gap: 8px;
     padding: 10px 14px;
-    background: rgba(122, 111, 191, 0.06);
-    border: 1px solid rgba(122, 111, 191, 0.12);
+    background: var(--accent-06);
+    border: 1px solid var(--accent-12);
     border-radius: 14px; margin-bottom: 14px;
 }
 .info-hint i { color: var(--accent-bright); font-size: 13px; margin-top: 1px; flex-shrink: 0; }
@@ -693,12 +694,12 @@ body {
 .topup-method::after {
     content: ''; position: absolute; left: 0; top: 0;
     width: 2px; height: 100%;
-    background: linear-gradient(180deg, rgba(122, 111, 191, 0.7), transparent);
+    background: linear-gradient(180deg, var(--accent-70), transparent);
     transform: scaleY(0); transform-origin: top;
     transition: transform 0.3s ease-out;
 }
 .topup-method:hover {
-    border-color: rgba(122, 111, 191, 0.3);
+    border-color: var(--accent-30);
     background: rgba(30, 40, 60, 0.35);
     transform: translateX(3px);
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
@@ -721,7 +722,7 @@ body {
 
 /* PROMO */
 .promo-section {
-    background: rgba(122, 111, 191, 0.08); border: 1px solid rgba(122, 111, 191, 0.18);
+    background: var(--accent-08); border: 1px solid var(--accent-18);
     border-radius: 18px; padding: 14px; margin-bottom: 14px;
     transition: var(--transition-fast);
     cursor: default;
@@ -744,11 +745,11 @@ body {
 .promo-input:focus { border-color: var(--glass-border-hover); }
 .promo-btn {
     padding: 11px 16px;
-    background: linear-gradient(135deg, rgba(122, 111, 191, 0.7), rgba(154, 143, 223, 0.5));
+    background: linear-gradient(135deg, var(--accent-70), rgba(154, 143, 223, 0.5));
     border: none; border-radius: 12px; color: white; font-size: 13px; font-weight: 600;
     cursor: pointer; white-space: nowrap; font-family: var(--font-body); transition: var(--transition);
 }
-.promo-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(122, 111, 191, 0.2); }
+.promo-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px var(--accent-22); }
 
 /* ═══════════════════════════════════════
    SUPPORT
@@ -783,7 +784,7 @@ body {
 }
 .faq:hover {
     /* No transform — overflow:hidden clips children at pre-transform bounds */
-    border-color: rgba(122, 111, 191, 0.3);
+    border-color: var(--accent-30);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 }
 .faq-header { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid rgba(70, 80, 110, 0.12); font-weight: 700; font-size: 13px; color: var(--text-secondary); letter-spacing: 0.04em; text-transform: uppercase; }
@@ -797,32 +798,77 @@ body {
     transition: background 0.2s; min-height: 44px;
     -webkit-tap-highlight-color: transparent; user-select: none;
 }
-.faq-row:hover { background: rgba(122, 111, 191, 0.06); }
+.faq-row:hover { background: var(--accent-06); }
 /* Legacy: keep summary styles for any remaining <details> */
 .faq-item summary { display: flex; align-items: center; gap: 12px; padding: 13px 16px; cursor: pointer; list-style: none; transition: background 0.2s; min-height: 44px; }
 .faq-item summary::-webkit-details-marker { display: none; }
-.faq-item summary:hover { background: rgba(122, 111, 191, 0.06); }
+.faq-item summary:hover { background: var(--accent-06); }
 /* Accordion body */
 .faq-body {
     max-height: 0; overflow: hidden;
     transition: max-height 0.35s ease;
-    will-change: max-height;
     padding: 0 16px;
 }
 .faq-body p { font-size: 12px; line-height: 1.65; color: var(--text-secondary); padding: 12px 0 14px; border-top: 1px solid rgba(70,80,110,0.1); margin: 0; }
 .faq-body p strong { color: var(--text-primary); font-weight: 600; }
 /* Open state */
-.faq-item.open .faq-icon-wrap { background: rgba(122, 111, 191, 0.22); }
+.faq-item.open .faq-icon-wrap { background: var(--accent-22); }
 .faq-item.open .faq-chevron { transform: rotate(180deg); color: var(--accent-bright); }
 .faq-icon-wrap { width: 34px; height: 34px; border-radius: 10px; background: var(--accent-glow); display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--accent-bright); flex-shrink: 0; transition: background 0.2s; }
 .faq-question { flex: 1; font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.4; }
 .faq-chevron { font-size: 11px; color: var(--text-tertiary); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); flex-shrink: 0; }
 
 /* ═══════════════════════════════════════
+   REFERRAL HERO (extracted from inline styles)
+═══════════════════════════════════════ */
+.referral-hero { text-align: center; padding: 20px 0 8px; }
+.referral-hero-icon {
+    width: 64px; height: 64px; border-radius: 18px;
+    background: linear-gradient(135deg, var(--accent-15), var(--accent-05));
+    border: 1px solid var(--accent-border);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 12px;
+    box-shadow: 0 4px 16px var(--accent-12);
+}
+.referral-hero-icon i { font-size: 26px; color: var(--accent-bright); }
+.referral-hero-title { font-size: 18px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.3px; }
+.referral-hero-desc { font-size: 13px; color: var(--text-tertiary); margin-top: 4px; }
+.accent-highlight { color: var(--accent-bright); font-weight: 700; }
+.ref-link-row { display: flex; gap: 6px; align-items: center; }
+
+/* ═══════════════════════════════════════
+   MODAL DETAIL WRAP + PAY METHOD SUMMARY (extracted from inline styles)
+═══════════════════════════════════════ */
+.modal-detail-wrap {
+    background: rgba(0, 0, 0, 0.15); border: 1px solid rgba(70, 80, 110, 0.12);
+    border-radius: 14px; padding: 4px 14px; margin-bottom: 4px;
+}
+.pay-method-summary {
+    padding: 10px 14px 14px;
+    background: var(--accent-07); border: 1px solid var(--accent-14);
+    border-radius: 12px; margin-bottom: 14px;
+}
+.pay-method-summary-title { font-size: 12px; color: var(--text-secondary); margin-bottom: 5px; }
+.pay-method-summary-row { display: flex; justify-content: space-between; align-items: center; }
+.pay-method-summary-row span { font-size: 12px; color: var(--text-secondary); }
+.pay-method-summary-row b { color: var(--text-primary); }
+.pay-method-shortage { font-size: 14px !important; font-weight: 700; color: var(--accent-bright) !important; }
+
+/* ═══════════════════════════════════════
+   HOME — extracted inline styles
+═══════════════════════════════════════ */
+.no-sub-wrap { text-align: center; padding: 4px 0 8px; }
+.sub-title-center { justify-content: center; margin-bottom: 8px; }
+.connect-help-wrap { margin-top: 12px; }
+.connect-help-arrow { font-size: 11px; color: rgba(255, 255, 255, 0.2); }
+.quick-actions-title { margin-top: 16px; }
+.trial-btn-margin { margin-top: 14px; }
+
+/* ═══════════════════════════════════════
    SKELETON LOADER
 ═══════════════════════════════════════ */
 .skeleton {
-    background: linear-gradient(90deg, rgba(20, 25, 45, 0.2) 25%, rgba(122, 111, 191, 0.08) 50%, rgba(20, 25, 45, 0.2) 75%);
+    background: linear-gradient(90deg, rgba(20, 25, 45, 0.2) 25%, var(--accent-08) 50%, rgba(20, 25, 45, 0.2) 75%);
     background-size: 200% 100%; animation: loading 1.2s infinite;
     border-radius: 16px; height: 60px; margin-bottom: 10px;
 }
@@ -881,10 +927,10 @@ body {
 }
 .confirm-btn-cancel:hover { background: rgba(40, 50, 75, 0.5); }
 .confirm-btn-ok {
-    background: linear-gradient(135deg, rgba(122, 111, 191, 0.6), rgba(154, 143, 223, 0.4));
-    color: white; border: 1px solid rgba(122, 111, 191, 0.3);
+    background: linear-gradient(135deg, var(--accent-60), rgba(154, 143, 223, 0.4));
+    color: white; border: 1px solid var(--accent-30);
 }
-.confirm-btn-ok:hover { background: linear-gradient(135deg, rgba(122, 111, 191, 0.8), rgba(154, 143, 223, 0.6)); }
+.confirm-btn-ok:hover { background: linear-gradient(135deg, var(--accent-80), rgba(154, 143, 223, 0.6)); }
 
 /* ═══════════════════════════════════════
    MODAL — bottom sheet style
@@ -903,7 +949,6 @@ body {
     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
 }
 .modal-content:hover {
-    transform: translateY(-2px);
     box-shadow: 0 -12px 50px rgba(0, 0, 0, 0.6);
 }
 .modal-drag { display: flex; justify-content: center; padding: 14px 0 6px; }
@@ -925,7 +970,7 @@ body {
     display: flex; align-items: center; justify-content: center;
     color: var(--text-secondary); font-size: 12px; cursor: pointer; transition: all 0.2s; flex-shrink: 0;
 }
-.modal-close:hover { background: rgba(122, 111, 191, 0.25); color: var(--accent-bright); }
+.modal-close:hover { background: var(--accent-25); color: var(--accent-bright); }
 
 /* Modal tariff name */
 .modal-tariff-name {
@@ -974,7 +1019,7 @@ body {
     text-align: center;
 }
 .modal-btn:hover {
-    background: rgba(122, 111, 191, 0.2); border-color: rgba(122, 111, 191, 0.3);
+    background: var(--accent-22); border-color: var(--accent-30);
     color: var(--accent-bright); transform: translateY(-1px);
 }
 /* Primary modal button — payment CTA */
@@ -987,9 +1032,9 @@ body {
     width: calc(100% - 32px);
     margin: 0 16px 16px 16px;
     letter-spacing: 0.3px;
-    box-shadow: 0 1px 4px rgba(122, 111, 191, 0.2);
-    background: linear-gradient(135deg, rgba(122, 111, 191, 0.55), rgba(154, 143, 223, 0.45));
-    border: 1px solid rgba(122, 111, 191, 0.22);
+    box-shadow: 0 1px 4px var(--accent-22);
+    background: linear-gradient(135deg, var(--accent-55), rgba(154, 143, 223, 0.45));
+    border: 1px solid var(--accent-22);
     color: white;
     cursor: pointer;
     font-family: var(--font-body);
@@ -997,8 +1042,8 @@ body {
     transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 .modal-btn-primary:hover {
-    background: linear-gradient(135deg, rgba(122, 111, 191, 0.7), rgba(154, 143, 223, 0.6));
-    box-shadow: 0 0 20px rgba(122, 111, 191, 0.5), 0 0 8px rgba(122, 111, 191, 0.3);
+    background: linear-gradient(135deg, var(--accent-70), rgba(154, 143, 223, 0.6));
+    box-shadow: 0 0 20px var(--accent-50), 0 0 8px var(--accent-30);
     border-color: var(--glass-border-hover);
     transform: translateY(-1px);
 }
@@ -1033,23 +1078,23 @@ body {
 /* Hover — только десктоп, на тач @media (hover:none) сбросит */
 .nav-item:hover {
     color: var(--accent-bright);
-    background: rgba(122, 111, 191, 0.1);
-    border-color: rgba(122, 111, 191, 0.45);
-    box-shadow: 0 0 10px rgba(122, 111, 191, 0.15),
-                inset 0 0 8px rgba(122, 111, 191, 0.05);
+    background: var(--accent-12);
+    border-color: var(--accent-40);
+    box-shadow: 0 0 10px var(--accent-15),
+                inset 0 0 8px var(--accent-05);
 }
 /* Active: управляется JS transform — CSS :active ненадёжен в Telegram WebView */
 .nav-item.active {
     color: var(--accent-bright);
-    background: rgba(122, 111, 191, 0.18);
-    border-color: rgba(122, 111, 191, 0.4);
-    box-shadow: 0 0 14px rgba(122, 111, 191, 0.12);
+    background: var(--accent-18);
+    border-color: var(--accent-40);
+    box-shadow: 0 0 14px var(--accent-12);
 }
 .nav-item.active::before {
     content: ''; position: absolute; top: -4px; left: 50%;
     transform: translateX(-50%); width: 5px; height: 5px;
     border-radius: 50%; background: var(--accent-bright);
-    box-shadow: 0 0 8px rgba(122, 111, 191, 0.4);
+    box-shadow: 0 0 8px var(--accent-40);
     animation: accentPulse 2s ease-in-out infinite;
 }
 
@@ -1061,6 +1106,9 @@ body {
     display: flex; flex-direction: column; align-items: center; gap: 8px;
 }
 .error-message i { font-size: 22px; color: var(--danger); opacity: 0.8; }
+.error-message-lg { margin-top: 40px; }
+.error-message-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.error-message-action { margin-top: 16px; }
 
 /* ═══════════════════════════════════════
    SPLASH SCREEN — CSS only, no image
@@ -1079,7 +1127,7 @@ body {
     position: absolute;
     width: 340px; height: 340px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(122, 111, 191, 0.18) 0%, transparent 70%);
+    background: radial-gradient(circle, var(--accent-18) 0%, transparent 70%);
     filter: blur(60px);
     animation: splashOrbPulse 3s ease-in-out infinite;
 }
@@ -1104,7 +1152,7 @@ body {
 }
 #nvx-splash-bar-wrap {
     width: 100px; height: 2px; border-radius: 2px;
-    background: rgba(122, 111, 191, 0.12);
+    background: var(--accent-12);
     overflow: hidden;
 }
 #nvx-splash-bar {
@@ -1127,7 +1175,7 @@ body {
 <div id="nvx-splash">
   <div id="nvx-splash-inner">
     <img id="nvx-splash-logo" src="https://i.ibb.co/JWfM8R2f/logo.png" alt="NVX VPN" onerror="this.style.display='none';document.getElementById('nvx-splash-fallback').style.display='flex';">
-    <div id="nvx-splash-fallback" style="display:none;width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,rgba(122,111,191,0.3),rgba(154,143,223,0.15));border:1px solid rgba(122,111,191,0.3);align-items:center;justify-content:center;">
+    <div id="nvx-splash-fallback" style="display:none;width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,var(--accent-30),rgba(154,143,223,0.15));border:1px solid var(--accent-30);align-items:center;justify-content:center;">
       <i class="fas fa-shield-alt" style="font-size:32px;color:var(--accent-bright);"></i>
     </div>
     <div id="nvx-splash-bar-wrap">
@@ -1284,9 +1332,17 @@ function canProceed(actionId) {
 
 /* ═══════════════════════════════════════
    PROMO CODES (test stubs)
-   ⚠️  SECURITY: Перенести на backend перед продакшеном!
-   Клиентская валидация промокодов позволяет пользователям
-   увидеть все коды через DevTools и модифицировать баланс.
+   ╔══════════════════════════════════════════════════════════════╗
+   ║  ⛔  SECURITY CRITICAL — УДАЛИТЬ ПЕРЕД ПРОДАКШЕНОМ!         ║
+   ║  Все промокоды ДОЛЖНЫ валидироваться ТОЛЬКО на сервере.     ║
+   ║  Клиентский код НЕ должен содержать ни кодов, ни бонусов.  ║
+   ║  Пользователь может увидеть коды через DevTools и           ║
+   ║  модифицировать баланс через консоль.                       ║
+   ║  При подключении backend:                                   ║
+   ║  1. Удалить VALID_PROMOS целиком                            ║
+   ║  2. Заменить проверку на API.activatePromo(code)            ║
+   ║  3. Обновить баланс из ответа сервера                       ║
+   ╚══════════════════════════════════════════════════════════════╝
 ═══════════════════════════════════════ */
 const VALID_PROMOS = {
     'NVX2026':  { bonus: 50,  desc: '+50₽ на баланс' },
@@ -1336,6 +1392,90 @@ async function fetchAppData() {
 }
 
 /* ═══════════════════════════════════════
+   API LAYER — готов к подключению backend
+   Замените BASE_URL и уберите заглушки в каждом методе
+═══════════════════════════════════════ */
+const API = {
+    BASE_URL: '/api', // TODO: заменить на реальный URL backend
+    TIMEOUT_MS: 15000,
+
+    async _request(endpoint, options = {}) {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), this.TIMEOUT_MS);
+
+        showLoading(options._loadingMsg || 'Загрузка...');
+        try {
+            const resp = await fetch(this.BASE_URL + endpoint, {
+                ...options,
+                signal: controller.signal,
+                headers: {
+                    'Content-Type': 'application/json',
+                    // TODO: добавить авторизацию через tg.initData
+                    ...(isTelegram && tg.initData ? { 'X-Telegram-Init-Data': tg.initData } : {}),
+                    ...options.headers,
+                },
+            });
+            clearTimeout(timeoutId);
+            if (!resp.ok) {
+                const errBody = await resp.json().catch(() => ({}));
+                throw new Error(errBody.message || `HTTP ${resp.status}`);
+            }
+            return await resp.json();
+        } catch (err) {
+            clearTimeout(timeoutId);
+            if (err.name === 'AbortError') {
+                showToast('Превышено время ожидания', 'error');
+            } else if (!navigator.onLine) {
+                showToast('Нет подключения к интернету', 'error');
+            } else {
+                showToast(err.message || 'Ошибка сервера', 'error');
+            }
+            HapticFeedback.error();
+            throw err;
+        } finally {
+            hideLoading();
+        }
+    },
+
+    /** Получить данные пользователя */
+    getUser() {
+        return this._request('/user', { _loadingMsg: 'Загрузка профиля...' });
+    },
+    /** Получить статус подписки */
+    getSubscription() {
+        return this._request('/subscription');
+    },
+    /** Купить подписку */
+    buySubscription(tariffId) {
+        return this._request('/subscription', {
+            method: 'POST',
+            body: JSON.stringify({ tariff_id: safeInt(tariffId) }),
+            _loadingMsg: 'Оформляем подписку...',
+        });
+    },
+    /** Активировать промокод */
+    activatePromo(code) {
+        return this._request('/promo', {
+            method: 'POST',
+            body: JSON.stringify({ code: String(code).trim() }),
+            _loadingMsg: 'Проверяем промокод...',
+        });
+    },
+    /** Получить реферальную статистику */
+    getReferralStats() {
+        return this._request('/referral');
+    },
+    /** Создать платёж */
+    createPayment(method, amount) {
+        return this._request('/payment', {
+            method: 'POST',
+            body: JSON.stringify({ method, amount: safeFloat(amount) }),
+            _loadingMsg: 'Создаём платёж...',
+        });
+    },
+};
+
+/* ═══════════════════════════════════════
    DOM CACHE
 ═══════════════════════════════════════ */
 const $ = (sel, ctx = document) => ctx.querySelector(sel);
@@ -1365,6 +1505,11 @@ function escapeHtml(str) {
         .replace(/'/g, '&#039;');
 }
 
+/** Coerce to integer — prevents injection via numeric fields from API */
+function safeInt(n) { return parseInt(n, 10) || 0; }
+/** Coerce to float with 2 decimal places */
+function safeFloat(n) { return parseFloat(Number(n).toFixed(2)) || 0; }
+
 /* ═══════════════════════════════════════
    ANIMATION CLEANUP
 ═══════════════════════════════════════ */
@@ -1382,7 +1527,7 @@ function registerAnimCleanup() {
 ═══════════════════════════════════════ */
 let toastTimer = null;
 const TOAST_TYPES = {
-    success: { icon: 'fa-check-circle',        border: 'rgba(122,111,191,0.4)', color: 'var(--accent-bright)' },
+    success: { icon: 'fa-check-circle',        border: 'var(--accent-40)', color: 'var(--accent-bright)' },
     error:   { icon: 'fa-exclamation-circle',   border: 'rgba(255,107,107,0.5)', color: '#ff6b6b' },
     warning: { icon: 'fa-exclamation-triangle', border: 'rgba(255,165,2,0.5)',   color: '#ffa502' },
 };
@@ -1499,10 +1644,21 @@ function hideModal() {
     modalHasInput = false;
 }
 
+function showModal() {
+    modal.classList.add('show');
+    // Auto-detect if modal contains inputs — set flag when user starts typing
+    modalHasInput = false;
+    const inputs = modalBody.querySelectorAll('input, textarea');
+    inputs.forEach(inp => {
+        inp.addEventListener('input', () => { modalHasInput = true; }, { once: true });
+    });
+}
+
 // ARIA: make modal accessible
 modal?.setAttribute('role', 'dialog');
 modal?.setAttribute('aria-modal', 'true');
 modal?.setAttribute('aria-labelledby', 'modal-title');
+modal?.setAttribute('aria-describedby', 'modal-body');
 
 // Drag-to-dismiss for modal
 const modalContent = $('.modal-content');
@@ -1513,6 +1669,11 @@ function onModalDragStart(e) {
     modalDragStartY = touch.clientY;
     modalIsDragging = true;
     modalContent.style.transition = 'none';
+    // Attach global listeners only while dragging
+    document.addEventListener('mousemove', onModalDragMove);
+    document.addEventListener('touchmove', onModalDragMove, { passive: true });
+    document.addEventListener('mouseup', onModalDragEnd);
+    document.addEventListener('touchend', onModalDragEnd);
 }
 
 function onModalDragMove(e) {
@@ -1528,26 +1689,38 @@ function onModalDragEnd() {
     if (!modalIsDragging) return;
     modalIsDragging = false;
     modalContent.style.transition = '';
+    // Always reset transform — if hideModal shows confirm and user cancels,
+    // the modal must snap back to its original position
+    modalContent.style.transform = '';
     if (modalDragCurrentY > 100) {
-        // Use hideModal() to respect unsaved-input confirmation
         hideModal();
-    } else {
-        // Snap back
-        modalContent.style.transform = '';
     }
     modalDragCurrentY = 0;
+    // Remove global listeners when drag ends
+    document.removeEventListener('mousemove', onModalDragMove);
+    document.removeEventListener('touchmove', onModalDragMove);
+    document.removeEventListener('mouseup', onModalDragEnd);
+    document.removeEventListener('touchend', onModalDragEnd);
 }
 
 modalDragBar?.addEventListener('mousedown', onModalDragStart);
 modalDragBar?.addEventListener('touchstart', onModalDragStart, { passive: true });
-document.addEventListener('mousemove', onModalDragMove);
-document.addEventListener('touchmove', onModalDragMove, { passive: true });
-document.addEventListener('mouseup', onModalDragEnd);
-document.addEventListener('touchend', onModalDragEnd);
 
 modalClose?.addEventListener('click', hideModal);
 modal?.addEventListener('click', e => {
     if (e.target.classList.contains('modal-overlay')) hideModal();
+});
+
+// Keyboard trap: keep Tab focus inside modal, Escape closes it
+modal?.addEventListener('keydown', (e) => {
+    if (!modal.classList.contains('show')) return;
+    if (e.key === 'Escape') { hideModal(); return; }
+    if (e.key !== 'Tab') return;
+    const focusable = modal.querySelectorAll('button, input, textarea, [tabindex]:not([tabindex="-1"])');
+    if (!focusable.length) return;
+    const first = focusable[0], last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
 });
 
 /* ═══════════════════════════════════════
@@ -1631,9 +1804,23 @@ const TAB_RENDERERS = {
 let tabTimer = null;
 let pendingRender = null; // Prevent rAF queue buildup on rapid tab switches
 
+// Tab cache: store rendered HTML + scroll position for reuse
+const tabCache = new Map();
+/** Invalidate cache for specific tab(s) or all tabs */
+function invalidateTabCache(...tabs) {
+    if (tabs.length === 0) { tabCache.clear(); return; }
+    tabs.forEach(t => tabCache.delete(t));
+}
+
 function showTab(tab) {
     if (tabTimer) { clearTimeout(tabTimer); tabTimer = null; }
     if (pendingRender) { cancelAnimationFrame(pendingRender); pendingRender = null; }
+
+    // Save scroll position of current tab before switching
+    if (currentTab && contentEl.scrollTop > 0) {
+        const cached = tabCache.get(currentTab);
+        if (cached) cached.scrollTop = contentEl.scrollTop;
+    }
 
     contentEl.style.opacity = '0';
     contentEl.style.transform = 'translateY(10px)';
@@ -1642,14 +1829,26 @@ function showTab(tab) {
 
     tabTimer = setTimeout(() => {
         tabTimer = null;
-        const renderer = TAB_RENDERERS[tab];
-        if (renderer) {
-            try { renderer(); }
-            catch (err) {
-                console.error(`[NVX] Ошибка рендера вкладки "${tab}":`, err);
-                contentEl.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-triangle"></i> Ошибка загрузки. Попробуйте ещё раз.</div>`;
+
+        const cached = tabCache.get(tab);
+        if (cached) {
+            // Restore from cache
+            contentEl.innerHTML = cached.html;
+            contentEl.scrollTop = cached.scrollTop || 0;
+        } else {
+            // Fresh render
+            const renderer = TAB_RENDERERS[tab];
+            if (renderer) {
+                try { renderer(); }
+                catch (err) {
+                    console.error(`[NVX] Ошибка рендера вкладки "${tab}":`, err);
+                    contentEl.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-triangle"></i> Ошибка загрузки. Попробуйте ещё раз.</div>`;
+                }
             }
+            // Cache the rendered HTML (static tabs benefit most)
+            tabCache.set(tab, { html: contentEl.innerHTML, scrollTop: 0 });
         }
+
         // Плавный fade-in нового контента
         requestAnimationFrame(() => {
             contentEl.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
@@ -1693,8 +1892,8 @@ contentEl.addEventListener('click', e => {
     const topupMethod = target.closest('.topup-method[data-method]');
     if (topupMethod && canProceed('topup-' + topupMethod.dataset.method)) {
         HapticFeedback.buttonMedium();
-        const name = PAYMENT_METHODS[topupMethod.dataset.method];
-        showToast(`Переход к оплате через ${name}`);
+        const method = PAYMENT_METHODS[topupMethod.dataset.method];
+        showToast(`Переход к оплате через ${method?.name || 'неизвестный метод'}`);
         return;
     }
 
@@ -1710,20 +1909,28 @@ contentEl.addEventListener('click', e => {
     // Promo button
     if (target.closest('#promoBtn') && canProceed('promo')) {
         HapticFeedback.buttonMedium();
+        const promoBtn = $('#promoBtn');
         const input = $('#promoInput');
         if (!input?.value.trim()) { showToast('Введите промокод', 'warning'); return; }
+
+        // Disable button during processing (important for async backend calls)
+        if (promoBtn) { promoBtn.disabled = true; promoBtn.style.opacity = '0.5'; }
+        const _enableBtn = () => { if (promoBtn) { promoBtn.disabled = false; promoBtn.style.opacity = ''; } };
+
         const code = input.value.trim().toUpperCase();
         const promo = VALID_PROMOS[code];
         if (promo) {
             AppData.user.balance += promo.bonus;
             updateHeader();
-            showToast(`Промокод активирован: ${promo.desc}`, 'success');
+            invalidateTabCache('home', 'referral', 'topup'); // Balance changed
+            showToast(`Промокод активирован: ${escapeHtml(promo.desc)}`, 'success');
             HapticFeedback.success();
             input.value = '';
         } else {
             showToast('Промокод не найден', 'error');
             HapticFeedback.error();
         }
+        _enableBtn();
         return;
     }
 
@@ -1739,6 +1946,7 @@ contentEl.addEventListener('click', e => {
         HapticFeedback.buttonMedium();
         AppData.subscription.trialAvailable = false;
         AppData.subscription.active = true;
+        invalidateTabCache(); // Subscription state changed — clear all
         showToast('Тестовая подписка активирована', 'success');
         renderHome();
         return;
@@ -1775,15 +1983,15 @@ function renderHome() {
 
     if (!subscription.active) {
         subCard.innerHTML = `
-            <div style="text-align:center;padding:4px 0 8px;">
+            <div class="no-sub-wrap">
                 <div class="no-sub-icon">
                     <i class="fas fa-lock-open"></i>
                 </div>
-                <div class="title" style="justify-content:center;margin-bottom:8px;">
+                <div class="title sub-title-center">
                     <i class="fas fa-exclamation-circle"></i> Нет активной подписки
                 </div>
                 <p class="no-sub-text">Активируйте подписку чтобы начать пользоваться VPN</p>
-                <button class="btn primary full-width" id="buySubBtn">
+                <button type="button" class="btn primary full-width" id="buySubBtn">
                     <i class="fas fa-shopping-bag"></i> Выбрать подписку
                 </button>
             </div>
@@ -1791,14 +1999,14 @@ function renderHome() {
 
         if (subscription.trialAvailable) {
             $('#trialBlock').innerHTML = `
-                <div class="subscription-card glass hoverable anim-left anim-left-d2" style="margin-top:0;">
+                <div class="subscription-card glass hoverable anim-left anim-left-d2">
                     <div class="title"><i class="fas fa-flask"></i> Тестовый период</div>
                     <div class="detail"><i class="fas fa-database"></i> Трафик <span class="value">48 ГБ <span class="text-muted">(1.5 ГБ на локацию)</span></span></div>
                     <div class="detail"><i class="fas fa-hourglass-end"></i> Длительность <span class="value">1  день</span></div>
                     <div class="detail"><i class="fas fa-mobile-alt"></i> Устройств <span class="value">32 <span class="text-muted">(1 на локацию)</span></span></div>
                     <div class="detail"><i class="fas fa-globe"></i> Локации <span class="value">Все доступные</span></div>
                     <div class="detail"><i class="fas fa-info-circle"></i> Условие <span class="value">1 раз в 30 дней</span></div>
-                    <button class="btn primary full-width rounded" style="margin-top:14px;" id="trialBtn">
+                    <button type="button" class="btn primary full-width rounded trial-btn-margin" id="trialBtn">
                         <i class="fas fa-bolt"></i> Активировать бесплатно
                     </button>
                 </div>
@@ -1812,24 +2020,24 @@ function renderHome() {
             <div class="detail"><i class="fas fa-database"></i> Трафик всего <span class="value">48 ГБ <span class="text-muted">(1.5 ГБ на лок.)</span></span></div>
             <div class="progress-bar"><div class="progress-fill" style="width:5%"></div></div>
             <div class="detail"><i class="fas fa-mobile-alt"></i> Устройств <span class="value">32 <span class="text-muted">(1 на локацию)</span></span></div>
-            <div style="margin-top:12px;">
+            <div class="connect-help-wrap">
                 <div class="connect-help-card" id="connectHelpCard">
                     <div class="connect-help-icon"><i class="fas fa-rocket"></i></div>
                     <div class="connect-help-text">
                         <span class="label">Как подключиться?</span>
                         <span class="desc">Ссылки, QR-код и приложения</span>
                     </div>
-                    <i class="fas fa-chevron-right" style="font-size:11px;color:rgba(255,255,255,0.2);"></i>
+                    <i class="fas fa-chevron-right connect-help-arrow"></i>
                 </div>
             </div>
-            <div class="section-subtitle" style="margin-top:16px;">Быстрые действия</div>
+            <div class="section-subtitle quick-actions-title">Быстрые действия</div>
             <div class="action-buttons">
-                <button class="btn primary action-row" data-action="renew">
+                <button type="button" class="btn primary action-row" data-action="renew">
                     <div class="action-icon-wrap"><i class="fas fa-rotate-right"></i></div>
                     <div class="action-text-wrap"><span class="action-label">Продлить</span><span class="action-desc">Добавить дни к подписке</span></div>
                     <i class="fas fa-chevron-right action-arrow"></i>
                 </button>
-                <button class="btn primary action-row" data-action="devices">
+                <button type="button" class="btn primary action-row" data-action="devices">
                     <div class="action-icon-wrap"><i class="fas fa-mobile-alt"></i></div>
                     <div class="action-text-wrap"><span class="action-label">Устройства</span><span class="action-desc">Подключить больше девайсов</span></div>
                     <i class="fas fa-chevron-right action-arrow"></i>
@@ -1851,28 +2059,28 @@ function renderTariffs() {
         <div class="section-title anim-title">Выберите тариф</div>
         <div class="tariffs-list">
             ${tariffs.map((t, i) => `
-            <div class="tariff-card anim-up ${delays[i] || ''}" data-id="${t.id}">
+            <div class="tariff-card anim-up ${delays[i] || ''}" data-id="${safeInt(t.id)}">
                 <div class="tariff-card-header">
                     <div class="tariff-card-days">
-                        <span class="tariff-days-num">${t.days}</span>
+                        <span class="tariff-days-num">${safeInt(t.days)}</span>
                         <span class="tariff-days-label">дней</span>
                     </div>
                     <div class="tariff-card-price">
-                        <span class="tariff-price-num">${t.price}</span>
+                        <span class="tariff-price-num">${safeInt(t.price)}</span>
                         <span class="tariff-price-cur">₽</span>
                     </div>
                 </div>
                 <div class="tariff-card-features">
-                    <div class="tariff-feature"><i class="fas fa-database"></i><span>${t.traffic_gb * n} ГБ</span></div>
-                    <div class="tariff-feature"><i class="fas fa-mobile-alt"></i><span>${t.ip_limit * n} уст. <span class="text-muted">(${t.ip_limit} на лок.)</span></span></div>
+                    <div class="tariff-feature"><i class="fas fa-database"></i><span>${safeInt(t.traffic_gb) * n} ГБ</span></div>
+                    <div class="tariff-feature"><i class="fas fa-mobile-alt"></i><span>${safeInt(t.ip_limit) * n} уст. <span class="text-muted">(${safeInt(t.ip_limit)} на лок.)</span></span></div>
                     <div class="tariff-feature"><i class="fas fa-bolt"></i><span>VLESS</span></div>
                 </div>
                 <div class="tariff-locations">
                     <div class="tariff-locations-label"><i class="fas fa-map-marker-alt"></i> Страны в подписке</div>
-                    <div class="tariff-countries">${locations.map(l => `<span class="country-flag" title="${l.code}">${l.flag}</span>`).join('')}</div>
-                    <div class="tariff-locations-note"><i class="fas fa-info-circle"></i> ${t.traffic_gb} ГБ на локацию · всего ${t.traffic_gb * n} ГБ</div>
+                    <div class="tariff-countries">${locations.map(l => `<span class="country-flag" title="${escapeHtml(l.code)}">${escapeHtml(l.flag)}</span>`).join('')}</div>
+                    <div class="tariff-locations-note"><i class="fas fa-info-circle"></i> ${safeInt(t.traffic_gb)} ГБ на локацию · всего ${safeInt(t.traffic_gb) * n} ГБ</div>
                 </div>
-                <div class="tariff-card-btn">Выбрать <i class="fas fa-arrow-right"></i></div>
+                <button type="button" class="tariff-card-btn">Выбрать <i class="fas fa-arrow-right"></i></button>
             </div>`).join('')}
         </div>
     `;
@@ -1894,35 +2102,36 @@ function openTariffModal(tariffId) {
 
     modalTitle.textContent = 'Подтверждение покупки';
     modalBody.innerHTML = `
-        <div class="modal-tariff-name">${t.days} дней доступа</div>
-        <div style="background:rgba(0,0,0,0.15);border:1px solid rgba(70,80,110,0.12);border-radius:14px;padding:4px 14px;margin-bottom:4px;">
+        <div class="modal-tariff-name">${safeInt(t.days)} дней доступа</div>
+        <div class="modal-detail-wrap">
             <div class="modal-detail-row">
                 <span class="modal-detail-label">Трафик</span>
-                <span class="modal-detail-value">${t.traffic_gb * n} ГБ <span class="text-muted">(${t.traffic_gb} ГБ на лок.)</span></span>
+                <span class="modal-detail-value">${safeInt(t.traffic_gb) * n} ГБ <span class="text-muted">(${safeInt(t.traffic_gb)} ГБ на лок.)</span></span>
             </div>
             <div class="modal-detail-row">
                 <span class="modal-detail-label">Устройства</span>
-                <span class="modal-detail-value">${t.ip_limit * n} <span class="text-muted">(${t.ip_limit} на лок.)</span></span>
+                <span class="modal-detail-value">${safeInt(t.ip_limit) * n} <span class="text-muted">(${safeInt(t.ip_limit)} на лок.)</span></span>
             </div>
             <div class="modal-detail-row">
                 <span class="modal-detail-label">Стоимость</span>
-                <span class="modal-detail-value accent">${t.price}₽</span>
+                <span class="modal-detail-value accent">${safeInt(t.price)}₽</span>
             </div>
         </div>
         ${notEnough ? `
         <div class="modal-balance-warn">
             <i class="fas fa-wallet"></i>
-            <span>На балансе <span class="warn-balance">${bal.toFixed(2)}₽</span> — не хватает <span class="warn-short">${diff}₽</span></span>
+            <span>На балансе <span class="warn-balance">${safeFloat(bal)}₽</span> — не хватает <span class="warn-short">${safeInt(diff)}₽</span></span>
         </div>` : ''}
     `;
 
     // CTA button
     modalButtons.innerHTML = '';
     const btn = document.createElement('button');
+    btn.type = 'button';
     btn.className = 'modal-btn-primary';
     btn.innerHTML = notEnough
-        ? `<i class="fas fa-credit-card"></i> Доплатить ${diff}₽`
-        : `<i class="fas fa-check"></i> Оплатить ${t.price}₽`;
+        ? `<i class="fas fa-credit-card"></i> Доплатить ${safeInt(diff)}₽`
+        : `<i class="fas fa-check"></i> Оплатить ${safeInt(t.price)}₽`;
 
     btn.addEventListener('click', () => {
         HapticFeedback.buttonMedium();
@@ -1934,7 +2143,7 @@ function openTariffModal(tariffId) {
         }
     });
     modalButtons.appendChild(btn);
-    modal.classList.add('show');
+    showModal();
 }
 
 /* ── Модальное окно выбора способа оплаты (аналог showDirectPayModal референса) ── */
@@ -1948,39 +2157,41 @@ function showPayMethodModal({ shortage, tariff }) {
 
     modalTitle.textContent = 'Выберите способ оплаты';
     modalBody.innerHTML = `
-        <div style="padding:10px 14px 14px;background:rgba(122,111,191,0.07);border:1px solid rgba(122,111,191,0.14);border-radius:12px;margin-bottom:14px;">
-            <div style="font-size:12px;color:var(--text-secondary);margin-bottom:5px;">
-                Подписка ${tariff.days} дней (${tariff.price}₽)
+        <div class="pay-method-summary">
+            <div class="pay-method-summary-title">
+                Подписка ${safeInt(tariff.days)} дней (${safeInt(tariff.price)}₽)
             </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-                <span style="font-size:12px;color:var(--text-secondary);">Баланс: <b style="color:var(--text-primary);">${bal.toFixed(2)}₽</b></span>
-                <span style="font-size:14px;font-weight:700;color:var(--accent-bright);">Доплатить: ${shortage}₽</span>
+            <div class="pay-method-summary-row">
+                <span>Баланс: <b>${safeFloat(bal)}₽</b></span>
+                <span class="pay-method-shortage">Доплатить: ${safeInt(shortage)}₽</span>
             </div>
         </div>
         ${PAY_METHODS.map(m => `
-        <div class="pay-method-row topup-method" data-method="${m.key}" style="margin-bottom:8px;">
-            <i class="fas ${m.icon}"></i>
+        <div class="pay-method-row topup-method" data-method="${escapeHtml(m.key)}">
+            <i class="fas ${escapeHtml(m.icon)}"></i>
             <div class="topup-method-text">
-                <span class="topup-method-name">${m.name}</span>
-                <span class="topup-method-desc">${m.desc}</span>
+                <span class="topup-method-name">${escapeHtml(m.name)}</span>
+                <span class="topup-method-desc">${escapeHtml(m.desc)}</span>
             </div>
             <i class="fas fa-chevron-right topup-method-arrow"></i>
         </div>`).join('')}
     `;
     modalButtons.innerHTML = '';
-    modal.classList.add('show');
-
-    modalBody.querySelectorAll('.pay-method-row').forEach(row => {
-        row.addEventListener('click', () => {
-            HapticFeedback.buttonLight();
-            hideModal();
-            // TODO: после подключения backend — вызвать API оплаты с нужным методом
-            showToast('Доступно после подключения backend', 'warning');
-            switchTab('topup');
-        });
-    });
+    showModal();
 // (закрывающая скобка openTariffModal убрана — она уже выше)
 }
+
+// Delegated click handler for modal body (prevents listener leaks)
+modalBody?.addEventListener('click', (e) => {
+    const payRow = e.target.closest('.pay-method-row[data-method]');
+    if (payRow && canProceed('payMethod-' + payRow.dataset.method)) {
+        HapticFeedback.buttonLight();
+        hideModal();
+        // TODO: после подключения backend — вызвать API оплаты с нужным методом
+        showToast('Доступно после подключения backend', 'warning');
+        switchTab('topup');
+    }
+});
 
 /* ═══════════════════════════════════════
    RENDER: REFERRAL
@@ -1988,44 +2199,39 @@ function showPayMethodModal({ shortage, tariff }) {
 function renderReferral() {
     const r = AppData.referral;
     contentEl.innerHTML = `
-        <div style="text-align:center;padding:20px 0 8px;" class="anim-fade anim-d0">
-            <div style="width:64px;height:64px;border-radius:18px;
-                background:linear-gradient(135deg,rgba(122,111,191,0.15),rgba(122,111,191,0.05));
-                border:1px solid rgba(122,111,191,0.2);
-                display:flex;align-items:center;justify-content:center;
-                margin:0 auto 12px;
-                box-shadow:0 4px 16px rgba(122,111,191,0.12);">
-                <i class="fas fa-gift" style="font-size:26px;color:var(--accent-bright);"></i>
+        <div class="referral-hero anim-fade anim-d0">
+            <div class="referral-hero-icon">
+                <i class="fas fa-gift"></i>
             </div>
-            <div style="font-size:18px;font-weight:800;color:var(--text-primary);letter-spacing:-0.3px;">
+            <div class="referral-hero-title">
                 Реферальная программа
             </div>
-            <div style="font-size:13px;color:var(--text-tertiary);margin-top:4px;">
-                Приглашайте друзей - получайте <span style="color:var(--accent-bright);font-weight:700;">${r.percent}%</span> с их пополнений
+            <div class="referral-hero-desc">
+                Приглашайте друзей - получайте <span class="accent-highlight">${safeInt(r.percent)}%</span> с их пополнений
             </div>
         </div>
         <div class="stats-grid">
             <div class="stat-card anim-down anim-down-d1">
                 <div class="stat-icon"><i class="fas fa-user-plus"></i></div>
                 <span class="stat-label">Приглашено</span>
-                <span class="stat-value">${r.total}</span>
+                <span class="stat-value">${safeInt(r.total)}</span>
             </div>
             <div class="stat-card anim-down anim-down-d2">
                 <div class="stat-icon"><i class="fas fa-money-bill-wave"></i></div>
                 <span class="stat-label">Заработано</span>
-                <span class="stat-value">${r.earned.toFixed(2)}₽</span>
+                <span class="stat-value">${safeFloat(r.earned)}₽</span>
             </div>
             <div class="stat-card anim-down anim-down-d3">
                 <div class="stat-icon"><i class="fas fa-percent"></i></div>
                 <span class="stat-label">Процент</span>
-                <span class="stat-value">${r.percent}%</span>
+                <span class="stat-value">${safeInt(r.percent)}%</span>
             </div>
         </div>
         <div class="ref-link glass anim-up anim-up-d2">
             <p><i class="fas fa-link"></i> Ваша реферальная ссылка</p>
-            <div style="display:flex;gap:6px;align-items:center;">
+            <div class="ref-link-row">
                 <div class="ref-link-input">${escapeHtml(r.link)}</div>
-                <button class="copy-btn" id="copyRef"><i class="fas fa-copy"></i></button>
+                <button type="button" class="copy-btn" id="copyRef"><i class="fas fa-copy"></i></button>
             </div>
         </div>
         <div class="info-hint anim-up anim-up-d3">
@@ -2034,12 +2240,12 @@ function renderReferral() {
         </div>
         <div class="section-subtitle anim-up anim-up-d4">Вывод средств</div>
         <div class="action-buttons anim-up anim-up-d5">
-            <button class="btn primary action-row" id="withdrawCard">
+            <button type="button" class="btn primary action-row" id="withdrawCard">
                 <div class="action-icon-wrap"><i class="fas fa-credit-card"></i></div>
                 <div class="action-text-wrap"><span class="action-label">На карту</span><span class="action-desc">Вывод на банковскую карту (от 500₽)</span></div>
                 <i class="fas fa-chevron-right action-arrow"></i>
             </button>
-            <button class="btn secondary action-row" id="withdrawBalance">
+            <button type="button" class="btn secondary action-row" id="withdrawBalance">
                 <div class="action-icon-wrap"><i class="fas fa-wallet"></i></div>
                 <div class="action-text-wrap"><span class="action-label">На баланс</span><span class="action-desc">Перевести на баланс бота (от 1₽)</span></div>
                 <i class="fas fa-chevron-right action-arrow"></i>
@@ -2059,7 +2265,7 @@ function renderTopUp() {
             <p><i class="fas fa-ticket-alt"></i> Активировать промокод</p>
             <div class="promo-row">
                 <input class="promo-input" placeholder="ВВЕДИТЕ ПРОМОКОД" id="promoInput">
-                <button class="promo-btn" id="promoBtn">Активировать</button>
+                <button type="button" class="promo-btn" id="promoBtn">Активировать</button>
             </div>
         </div>
         <div class="info-hint info-lg anim-up anim-up-d2">
@@ -2068,11 +2274,11 @@ function renderTopUp() {
         </div>
         <div class="section-subtitle anim-up anim-up-d3">Доступные способы</div>
         ${Object.entries(PAYMENT_METHODS).map(([key, m], i) => `
-            <div class="topup-method anim-up anim-up-d${Math.min(i + 3, 6)}" data-method="${key}">
-                <i class="fas ${m.icon}"></i>
+            <div class="topup-method anim-up anim-up-d${Math.min(i + 3, 6)}" data-method="${escapeHtml(key)}">
+                <i class="fas ${escapeHtml(m.icon)}"></i>
                 <div class="topup-method-text">
-                    <span class="topup-method-name">${m.name}</span>
-                    <span class="topup-method-desc">${m.desc}</span>
+                    <span class="topup-method-name">${escapeHtml(m.name)}</span>
+                    <span class="topup-method-desc">${escapeHtml(m.desc)}</span>
                 </div>
                 <i class="fas fa-chevron-right topup-method-arrow"></i>
             </div>`).join('')}
@@ -2100,7 +2306,7 @@ function renderSupport() {
         <div class="support-card glass anim-fade anim-fade-d1">
             <i class="fas fa-headset support-icon"></i>
             <p>Есть вопросы? Свяжитесь с нами 24/7</p>
-            <button class="btn primary" id="supportChatBtn">
+            <button type="button" class="btn primary" id="supportChatBtn">
                 <i class="fab fa-telegram"></i> Открыть чат
             </button>
         </div>
@@ -2237,7 +2443,7 @@ function initApp() {
         #loading-overlay.visible { opacity: 1; }
         #loading-overlay .lo-spinner {
             width: 52px; height: 52px;
-            border: 3px solid rgba(122,111,191,0.15);
+            border: 3px solid var(--accent-15);
             border-top-color: var(--accent-bright);
             border-radius: 50%;
             animation: loading-spin 0.8s linear infinite;
@@ -2292,7 +2498,20 @@ function _hideSplash() {
 }
 
 // Call init then hide splash
-initApp();
+try {
+    initApp();
+} catch (err) {
+    console.error('[NVX] Критическая ошибка инициализации:', err);
+    contentEl.innerHTML = `
+        <div class="error-message error-message-lg">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div class="error-message-title">Ошибка загрузки</div>
+            <div>Не удалось инициализировать приложение. Попробуйте перезагрузить.</div>
+            <button type="button" class="btn primary error-message-action" onclick="location.reload()">
+                <i class="fas fa-redo"></i> Перезагрузить
+            </button>
+        </div>`;
+}
 _hideSplash();
 </script>
 </body>
