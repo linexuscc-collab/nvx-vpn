@@ -1517,11 +1517,6 @@ function registerAnimCleanup() {
     if (cleanupTimer) clearTimeout(cleanupTimer);
     cleanupTimer = setTimeout(() => {
         $$(ANIM_SELECTORS).forEach(el => el.classList.add('anim-done'));
-        // FIX N2: Update tabCache with anim-done state so cached HTML has correct classes
-        if (currentTab) {
-            const cached = tabCache.get(currentTab);
-            if (cached) cached.html = contentEl.innerHTML;
-        }
         cleanupTimer = null;
     }, ANIM_CLEANUP_MS);
 }
@@ -2505,13 +2500,14 @@ function _hideSplash() {
     }
 }
 
-// FIX v3-14: Splash tied to initApp completion, not fixed timeout
+// FIX v3-14: Splash waits for BOTH initApp completion AND splash animation (1.55s)
+const _splashMinTime = new Promise(r => setTimeout(r, 1550));
+let _initOk = true;
 try {
     initApp();
-    _hideSplash();
 } catch (err) {
+    _initOk = false;
     console.error('[NVX] Критическая ошибка инициализации:', err);
-    _hideSplash();
     contentEl.innerHTML = `
         <div class="error-message error-message-lg">
             <i class="fas fa-exclamation-triangle"></i>
@@ -2522,6 +2518,8 @@ try {
             </button>
         </div>`;
 }
+// Hide splash after animation finishes (regardless of init success/failure)
+_splashMinTime.then(() => _hideSplash());
 </script>
 </body>
 </html>
