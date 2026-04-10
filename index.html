@@ -328,23 +328,23 @@ body {
    GLASS EFFECT
 ═══════════════════════════════════════ */
 .glass {
-    background: rgba(12, 15, 35, 0.33);
-    backdrop-filter: blur(20px) saturate(200%);
-    -webkit-backdrop-filter: blur(20px) saturate(200%);
-    border: 1px solid rgba(90, 105, 150, 0.4);
+    background: rgba(12, 15, 35, 0.18);
+    backdrop-filter: blur(24px) saturate(220%);
+    -webkit-backdrop-filter: blur(24px) saturate(220%);
+    border: 1px solid rgba(120, 130, 180, 0.25);
     border-radius: 20px;
     transition: var(--transition);
     box-shadow:
         0 4px 16px rgba(0, 0, 0, 0.35),
-        0 1px 0 rgba(255, 255, 255, 0.05) inset;
+        0 1px 0 rgba(255, 255, 255, 0.08) inset;
 }
 .glass:hover {
     border-color: var(--accent-55);
-    background: rgba(16, 20, 48, 0.40);
+    background: rgba(16, 20, 48, 0.28);
     box-shadow:
         0 8px 28px rgba(0, 0, 0, 0.45),
         0 0 0 1px var(--accent-12),
-        0 1px 0 rgba(255, 255, 255, 0.06) inset;
+        0 1px 0 rgba(255, 255, 255, 0.1) inset;
     transform: translateY(-1px);
 }
 
@@ -389,10 +389,10 @@ body {
 .subscription-card {
     padding: 16px; margin-bottom: 12px;
     position: relative; overflow: hidden;
-    background: rgba(15, 18, 40, 0.33);
+    background: rgba(15, 18, 40, 0.18);
     border: 1px solid rgba(80, 90, 130, 0.25);
     border-radius: 20px;
-    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(24px) saturate(220%); -webkit-backdrop-filter: blur(24px) saturate(220%);
 }
 .subscription-card::before {
     content: ''; position: absolute;
@@ -403,7 +403,7 @@ body {
     pointer-events: none; opacity: 0.6;
 }
 .subscription-card:hover {
-    background: rgba(20, 25, 50, 0.40);
+    background: rgba(20, 25, 50, 0.28);
 }
 .subscription-card .title {
     font-family: var(--font-display); font-size: 16px; font-weight: 700;
