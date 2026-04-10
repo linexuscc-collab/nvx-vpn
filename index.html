@@ -234,7 +234,7 @@ body {
 .anim-fade-d5 { animation-delay: 0.25s; } .anim-fade-d6 { animation-delay: 0.3s; }
 
 /* After animation completes — clean state for hover */
-/* FIX: Do NOT reset transform here — it breaks hover transitions */
+/* FIX: Do NOT set transform:none — it breaks CSS hover transitions */
 .anim-done {
     animation: none;
     opacity: 1;
@@ -357,22 +357,31 @@ body {
                 box-shadow 0.28s ease,
                 background 0.28s ease;
     cursor: default;
+    /* FIX: Force GPU compositing layer — Chromium drops hover on backdrop-filter elements */
+    transform: translateZ(0);
 }
-.hoverable:hover,
-.hoverable.js-hover {
-    transform: translateY(-2px);
+.hoverable:hover {
+    transform: translateY(-2px) translateZ(0);
     border-color: var(--card-border-hover);
     box-shadow: var(--card-shadow-hover);
 }
 
-/* FIX: any-hover ensures hover works on hybrid devices with both touch and mouse */
-@media (any-hover: hover) {
-    .hoverable:hover {
-        transform: translateY(-2px);
-        border-color: var(--card-border-hover);
-        box-shadow: var(--card-shadow-hover);
-    }
+/* FIX: Force GPU layers on all backdrop-filter elements that need hover */
+.tariff-card, .topup-method, .stat-card, .ref-link,
+.promo-section, .connect-help-card, .header, .faq,
+.support-card, .subscription-card {
+    transform: translateZ(0);
 }
+.tariff-card:hover { transform: translateY(-2px) translateZ(0); }
+.topup-method:hover { transform: translateX(3px) translateZ(0); }
+.stat-card:hover { transform: translateY(-2px) translateZ(0); }
+.ref-link:hover { transform: translateY(-2px) translateZ(0); }
+.promo-section:hover { transform: translateY(-2px) translateZ(0); }
+.connect-help-card:hover { transform: translateY(-1px) translateZ(0); }
+.header:hover { transform: translateY(-2px) translateZ(0); }
+.faq:hover { transform: translateZ(0); }
+.support-card:hover { transform: translateY(-2px) translateZ(0); }
+.subscription-card:hover { transform: translateZ(0); }
 
 /* ═══════════════════════════════════════
    SUBSCRIPTION CARD
@@ -2389,48 +2398,6 @@ function _hideSplash() {
         }
     }, 1550);
 }
-
-/* ═══════════════════════════════════════
-   FIX: Restore hover on hybrid/touch devices
-   Chromium suppresses :hover after touch.
-   We detect mouse movement and use .js-hover class instead.
-═══════════════════════════════════════ */
-(function _restoreHoverOnHybrid() {
-    let hoverActive = false;
-    let lastHovered = null;
-
-    document.addEventListener('mousemove', (e) => {
-        if (hoverActive) return;
-        hoverActive = true;
-        // Remove all stale .js-hover classes
-        document.querySelectorAll('.js-hover').forEach(el => el.classList.remove('js-hover'));
-    });
-
-    document.addEventListener('mouseenter', (e) => {
-        const card = e.target.closest('.hoverable');
-        if (card && hoverActive) {
-            if (lastHovered && lastHovered !== card) {
-                lastHovered.classList.remove('js-hover');
-            }
-            card.classList.add('js-hover');
-            lastHovered = card;
-        }
-    }, true);
-
-    document.addEventListener('mouseleave', (e) => {
-        const card = e.target.closest('.hoverable');
-        if (card) {
-            card.classList.remove('js-hover');
-            if (lastHovered === card) lastHovered = null;
-        }
-    }, true);
-
-    // Reset hoverActive on touch start (user switched back to touch)
-    document.addEventListener('touchstart', () => {
-        hoverActive = false;
-        document.querySelectorAll('.js-hover').forEach(el => el.classList.remove('js-hover'));
-    }, { passive: true });
-})();
 
 try {
     initApp();
