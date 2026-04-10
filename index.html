@@ -1473,11 +1473,6 @@ function registerAnimCleanup() {
     if (cleanupTimer) clearTimeout(cleanupTimer);
     cleanupTimer = setTimeout(() => {
         $$(ANIM_SELECTORS).forEach(el => el.classList.add('anim-done'));
-        // FIX: Update tab cache with anim-done classes so cached HTML has hover-ready state
-        if (currentTab && contentEl) {
-            const cached = tabCache.get(currentTab);
-            if (cached) cached.html = contentEl.innerHTML;
-        }
         cleanupTimer = null;
     }, ANIM_CLEANUP_MS);
 }
@@ -1771,9 +1766,8 @@ function showTab(tab) {
         const cached = tabCache.get(tab);
         if (cached) {
             contentEl.innerHTML = cached.html;
-            // FIX: Immediately add anim-done to all animated elements from cache
-            // This skips re-animation and unblocks CSS hover transitions
-            $$(ANIM_SELECTORS, contentEl).forEach(el => el.classList.add('anim-done'));
+            // FIX: Re-run animation cleanup so hover is enabled after animations finish
+            registerAnimCleanup();
             // FIX v3 #7: Restore scrollTop via rAF to ensure layout is ready
             requestAnimationFrame(() => {
                 contentEl.scrollTop = cached.scrollTop || 0;
