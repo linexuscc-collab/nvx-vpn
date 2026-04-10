@@ -328,7 +328,7 @@ body {
    GLASS EFFECT
 ═══════════════════════════════════════ */
 .glass {
-    background: rgba(12, 15, 35, 0.55);
+    background: rgba(12, 15, 35, 0.33);
     backdrop-filter: blur(20px) saturate(200%);
     -webkit-backdrop-filter: blur(20px) saturate(200%);
     border: 1px solid rgba(90, 105, 150, 0.4);
@@ -340,7 +340,7 @@ body {
 }
 .glass:hover {
     border-color: var(--accent-55);
-    background: rgba(16, 20, 48, 0.65);
+    background: rgba(16, 20, 48, 0.40);
     box-shadow:
         0 8px 28px rgba(0, 0, 0, 0.45),
         0 0 0 1px var(--accent-12),
@@ -389,7 +389,7 @@ body {
 .subscription-card {
     padding: 16px; margin-bottom: 12px;
     position: relative; overflow: hidden;
-    background: rgba(15, 18, 40, 0.55);
+    background: rgba(15, 18, 40, 0.33);
     border: 1px solid rgba(80, 90, 130, 0.25);
     border-radius: 20px;
     backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
@@ -403,7 +403,7 @@ body {
     pointer-events: none; opacity: 0.6;
 }
 .subscription-card:hover {
-    background: rgba(20, 25, 50, 0.65);
+    background: rgba(20, 25, 50, 0.40);
 }
 .subscription-card .title {
     font-family: var(--font-display); font-size: 16px; font-weight: 700;
@@ -1073,9 +1073,11 @@ body {
 .nav-item:hover {
     color: var(--accent-bright);
     background: var(--accent-10);
-    border-color: var(--accent-45);
-    box-shadow: 0 0 10px var(--accent-15),
+    border-color: var(--card-border-hover);
+    box-shadow: 0 0 14px var(--accent-20),
+                0 4px 16px rgba(0, 0, 0, 0.2),
                 inset 0 0 8px var(--accent-05);
+    transform: translateY(-2px);
 }
 .nav-item.active {
     color: var(--accent-bright);
