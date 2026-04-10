@@ -365,36 +365,14 @@ body {
 }
 
 /* Disable hover on touch devices to prevent sticky states */
+/* FIX: Removed !important overrides that were killing hover on hybrid devices */
 @media (hover: none) {
-    .hoverable:hover,
-    .header:hover,
-    .glass:hover,
-    [class*="card"]:hover,
-    [class*="btn"]:hover,
-    .ref-link:hover,
-    .promo-section:hover,
-    .faq:hover,
-    .modal-content:hover,
-    .topup-method:hover,
-    .copy-btn:hover,
-    .promo-btn:hover,
-    .modal-close:hover,
-    .country-flag:hover {
-        transform: none !important;
-        box-shadow: none !important;
-    }
-    .nav-item:hover {
-        background: none !important;
-        border-color: transparent !important;
-        box-shadow: none !important;
-        color: var(--text-secondary) !important;
-    }
     .nav-item.active,
     .nav-item.active:hover {
-        color: var(--accent-bright) !important;
-        background: var(--accent-18) !important;
-        border-color: var(--accent-40) !important;
-        box-shadow: 0 0 14px var(--accent-12) !important;
+        color: var(--accent-bright);
+        background: var(--accent-18);
+        border-color: var(--accent-40);
+        box-shadow: 0 0 14px var(--accent-12);
     }
 }
 
