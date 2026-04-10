@@ -1338,6 +1338,16 @@ const AppData = {
     subscription: {
         active: false,
         trialAvailable: true,
+        // FIX N8: Subscription details — will come from backend
+        planName: 'Тестовая подписка',
+        expiresAt: '31 марта 2026 09:12',
+        daysLeft: 1,
+        daysLeftLabel: '1  день',
+        trafficTotalGb: 48,
+        trafficPerLocGb: 1.5,
+        trafficUsedPercent: 5,
+        devicesTotal: 32,
+        devicesPerLoc: 1,
     },
     referral: {
         total: 0,
@@ -1360,7 +1370,19 @@ const AppData = {
     get nodesCount() { return this.locations.length; },
 };
 
+// FIX: fetchAppData — готов к замене на реальные API-вызовы
 async function fetchAppData() {
+    // TODO: Replace with real API calls when backend is ready:
+    // const [user, sub, tariffs, referral] = await Promise.all([
+    //     API.getUser(),
+    //     API.getSubscription(),
+    //     API._request('/tariffs'),
+    //     API.getReferralStats(),
+    // ]);
+    // Object.assign(AppData.user, user);
+    // Object.assign(AppData.subscription, sub);
+    // AppData.tariffs = tariffs;
+    // Object.assign(AppData.referral, referral);
     return AppData;
 }
 
@@ -1370,42 +1392,62 @@ async function fetchAppData() {
 const API = {
     BASE_URL: '/api',
     TIMEOUT_MS: 15000,
+    MAX_RETRIES: 3,
+    RETRY_BASE_MS: 1000,
 
     async _request(endpoint, options = {}) {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), this.TIMEOUT_MS);
+        const maxRetries = options._noRetry ? 0 : this.MAX_RETRIES;
+        let lastErr;
 
-        showLoading(options._loadingMsg || 'Загрузка...');
-        try {
-            const resp = await fetch(this.BASE_URL + endpoint, {
-                ...options,
-                signal: controller.signal,
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...(isTelegram && tg.initData ? { 'X-Telegram-Init-Data': tg.initData } : {}),
-                    ...options.headers,
-                },
-            });
-            clearTimeout(timeoutId);
-            if (!resp.ok) {
-                const errBody = await resp.json().catch(() => ({}));
-                throw new Error(errBody.message || `HTTP ${resp.status}`);
+        for (let attempt = 0; attempt <= maxRetries; attempt++) {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), this.TIMEOUT_MS);
+
+            if (attempt === 0) showLoading(options._loadingMsg || 'Загрузка...');
+
+            try {
+                const resp = await fetch(this.BASE_URL + endpoint, {
+                    ...options,
+                    signal: controller.signal,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(isTelegram && tg.initData ? { 'X-Telegram-Init-Data': tg.initData } : {}),
+                        ...options.headers,
+                    },
+                });
+                clearTimeout(timeoutId);
+                if (!resp.ok) {
+                    const errBody = await resp.json().catch(() => ({}));
+                    throw new Error(errBody.message || `HTTP ${resp.status}`);
+                }
+                hideLoading();
+                return await resp.json();
+            } catch (err) {
+                clearTimeout(timeoutId);
+                lastErr = err;
+                // Don't retry on client errors (4xx) or abort
+                if (err.name === 'AbortError' || (err.message && /^HTTP 4\d\d$/.test(err.message))) {
+                    break;
+                }
+                if (attempt < maxRetries) {
+                    const delay = this.RETRY_BASE_MS * Math.pow(2, attempt);
+                    await new Promise(r => setTimeout(r, delay));
+                    continue;
+                }
             }
-            return await resp.json();
-        } catch (err) {
-            clearTimeout(timeoutId);
-            if (err.name === 'AbortError') {
-                showToast('Превышено время ожидания', 'error');
-            } else if (!navigator.onLine) {
-                showToast('Нет подключения к интернету', 'error');
-            } else {
-                showToast(err.message || 'Ошибка сервера', 'error');
-            }
-            HapticFeedback.error();
-            throw err;
-        } finally {
-            hideLoading();
         }
+
+        // All retries failed
+        hideLoading();
+        if (lastErr.name === 'AbortError') {
+            showToast('Превышено время ожидания', 'error');
+        } else if (!navigator.onLine) {
+            showToast('Нет подключения к интернету', 'error');
+        } else {
+            showToast(lastErr.message || 'Ошибка сервера', 'error');
+        }
+        HapticFeedback.error();
+        throw lastErr;
     },
 
     getUser() { return this._request('/user', { _loadingMsg: 'Загрузка профиля...' }); },
@@ -1475,6 +1517,11 @@ function registerAnimCleanup() {
     if (cleanupTimer) clearTimeout(cleanupTimer);
     cleanupTimer = setTimeout(() => {
         $$(ANIM_SELECTORS).forEach(el => el.classList.add('anim-done'));
+        // FIX N2: Update tabCache with anim-done state so cached HTML has correct classes
+        if (currentTab) {
+            const cached = tabCache.get(currentTab);
+            if (cached) cached.html = contentEl.innerHTML;
+        }
         cleanupTimer = null;
     }, ANIM_CLEANUP_MS);
 }
@@ -1638,14 +1685,18 @@ function onModalDragEnd() {
     if (!modalIsDragging) return;
     modalIsDragging = false;
     modalContent.style.transition = '';
-    // FIX v3 #9: Always reset transform regardless of confirm result
-    modalContent.style.transform = '';
     document.removeEventListener('mousemove', onModalDragMove);
     document.removeEventListener('touchmove', onModalDragMove);
     document.removeEventListener('mouseup', onModalDragEnd);
     document.removeEventListener('touchend', onModalDragEnd);
+    // FIX N6: Check threshold BEFORE resetting transform so modal stays
+    // in dragged position while confirm dialog is shown
     if (modalDragCurrentY > 100) {
         hideModal();
+        // Reset transform after hideModal (if confirm canceled, modal snaps back)
+        modalContent.style.transform = '';
+    } else {
+        modalContent.style.transform = '';
     }
     modalDragCurrentY = 0;
 }
@@ -1690,6 +1741,12 @@ $('#balanceDisplay')?.addEventListener('click', () => {
    NAVIGATION
 ═══════════════════════════════════════ */
 function switchTab(tab) {
+    // FIX N5: Save scroll position for the OLD tab before switching
+    if (currentTab && contentEl.scrollTop > 0) {
+        const cached = tabCache.get(currentTab);
+        if (cached) cached.scrollTop = contentEl.scrollTop;
+    }
+
     $$('.nav-item').forEach(b => {
         const isActive = b.dataset.tab === tab;
         b.classList.toggle('active', isActive);
@@ -1750,12 +1807,8 @@ function invalidateTabCache(...tabs) {
 function showTab(tab) {
     if (tabTimer) { clearTimeout(tabTimer); tabTimer = null; }
     if (pendingRender) { cancelAnimationFrame(pendingRender); pendingRender = null; }
-
-    // Save scroll position
-    if (currentTab && contentEl.scrollTop > 0) {
-        const cached = tabCache.get(currentTab);
-        if (cached) cached.scrollTop = contentEl.scrollTop;
-    }
+    // FIX N3: Cancel pending animation cleanup to prevent race condition
+    if (cleanupTimer) { clearTimeout(cleanupTimer); cleanupTimer = null; }
 
     contentEl.style.opacity = '0';
     contentEl.style.transform = 'translateY(10px)';
@@ -1777,14 +1830,53 @@ function showTab(tab) {
         } else {
             const renderer = TAB_RENDERERS[tab];
             if (renderer) {
-                try { renderer(); }
+                try {
+                    // FIX N10: Support async renderers for backend integration
+                    const result = renderer();
+                    if (result && typeof result.then === 'function') {
+                        // Show skeleton while async renderer loads
+                        contentEl.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
+                        result.then(() => {
+                            tabCache.set(tab, { html: contentEl.innerHTML, scrollTop: 0 });
+                        }).catch(err => {
+                            console.error(`[NVX] Ошибка загрузки вкладки "${tab}":`, err);
+                            contentEl.innerHTML = `
+                                <div class="error-message">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <div class="error-message-title">Ошибка загрузки</div>
+                                    <div>${escapeHtml(err.message || 'Попробуйте ещё раз')}</div>
+                                    <button type="button" class="btn primary error-message-action" id="retryTab">
+                                        <i class="fas fa-redo"></i> Повторить
+                                    </button>
+                                </div>`;
+                            const retryBtn = $('#retryTab');
+                            if (retryBtn) retryBtn.addEventListener('click', () => {
+                                invalidateTabCache(tab);
+                                showTab(tab);
+                            });
+                        });
+                    } else {
+                        tabCache.set(tab, { html: contentEl.innerHTML, scrollTop: 0 });
+                    }
+                }
                 catch (err) {
                     console.error(`[NVX] Ошибка рендера вкладки "${tab}":`, err);
-                    contentEl.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-triangle"></i> Ошибка загрузки. Попробуйте ещё раз.</div>`;
+                    contentEl.innerHTML = `
+                        <div class="error-message">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div class="error-message-title">Ошибка загрузки</div>
+                            <div>Попробуйте ещё раз</div>
+                            <button type="button" class="btn primary error-message-action" id="retryTab">
+                                <i class="fas fa-redo"></i> Повторить
+                            </button>
+                        </div>`;
+                    const retryBtn = $('#retryTab');
+                    if (retryBtn) retryBtn.addEventListener('click', () => {
+                        invalidateTabCache(tab);
+                        showTab(tab);
+                    });
                 }
             }
-            // Cache will be updated after animation cleanup to include anim-done
-            tabCache.set(tab, { html: contentEl.innerHTML, scrollTop: 0 });
         }
 
         requestAnimationFrame(() => {
@@ -1940,13 +2032,15 @@ function renderHome() {
             `;
         }
     } else {
+        // FIX N8: Use AppData.subscription fields instead of hardcoded values
+        const s = subscription;
         subCard.innerHTML = `
-            <div class="title"><i class="fas fa-shield-alt"></i> Тестовая подписка</div>
-            <div class="detail"><i class="fas fa-calendar"></i> Действительна до <span class="value">31 марта 2026 09:12</span></div>
-            <div class="detail"><i class="fas fa-hourglass-end"></i> Дней осталось <span class="value">1  день</span></div>
-            <div class="detail"><i class="fas fa-database"></i> Трафик всего <span class="value">48 ГБ <span class="text-muted">(1.5 ГБ на лок.)</span></span></div>
-            <div class="progress-bar"><div class="progress-fill" style="width:5%"></div></div>
-            <div class="detail"><i class="fas fa-mobile-alt"></i> Устройств <span class="value">32 <span class="text-muted">(1 на локацию)</span></span></div>
+            <div class="title"><i class="fas fa-shield-alt"></i> ${escapeHtml(s.planName)}</div>
+            <div class="detail"><i class="fas fa-calendar"></i> Действительна до <span class="value">${escapeHtml(s.expiresAt)}</span></div>
+            <div class="detail"><i class="fas fa-hourglass-end"></i> Дней осталось <span class="value">${escapeHtml(s.daysLeftLabel)}</span></div>
+            <div class="detail"><i class="fas fa-database"></i> Трафик всего <span class="value">${safeInt(s.trafficTotalGb)} ГБ <span class="text-muted">(${safeFloat(s.trafficPerLocGb)} ГБ на лок.)</span></span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:${safeInt(s.trafficUsedPercent)}%"></div></div>
+            <div class="detail"><i class="fas fa-mobile-alt"></i> Устройств <span class="value">${safeInt(s.devicesTotal)} <span class="text-muted">(${safeInt(s.devicesPerLoc)} на локацию)</span></span></div>
             <div class="connect-help-wrap">
                 <div class="connect-help-card" id="connectHelpCard">
                     <div class="connect-help-icon"><i class="fas fa-rocket"></i></div>
@@ -2065,6 +2159,9 @@ function openTariffModal(tariffId) {
         if (notEnough) {
             showPayMethodModal({ shortage: diff, tariff: t });
         } else {
+            // FIX v3-6: Invalidate tab cache after purchase
+            // TODO: Replace with actual API.buySubscription(t.id) call
+            invalidateTabCache('home', 'tariffs');
             showToast('Доступно после подключения backend', 'warning');
         }
     });
@@ -2107,6 +2204,8 @@ modalBody?.addEventListener('click', (e) => {
     if (payRow && canProceed('payMethod-' + payRow.dataset.method)) {
         HapticFeedback.buttonLight();
         hideModal();
+        // FIX v3-6: Invalidate tab cache after payment
+        invalidateTabCache('home', 'tariffs', 'topup');
         showToast('Доступно после подключения backend', 'warning');
         switchTab('topup');
     }
@@ -2308,7 +2407,11 @@ function initApp() {
                 if (tg.isExpanded) {
                     content.style.height = '';
                 } else {
-                    content.style.height = `${tg.viewportStableHeight - 120}px`;
+                    // FIX v3-15: Calculate offset dynamically instead of hardcoded 120px
+                    const header = $('.header');
+                    const nav = $('.bottom-nav');
+                    const offset = (header?.offsetHeight || 60) + (nav?.offsetHeight || 60) + 20;
+                    content.style.height = `${tg.viewportStableHeight - offset}px`;
                 }
             }
         });
@@ -2395,19 +2498,20 @@ function hideLoading() {
 }
 
 function _hideSplash() {
-    setTimeout(() => {
-        const splash = document.getElementById('nvx-splash');
-        if (splash) {
-            splash.classList.add('hidden');
-            setTimeout(() => { splash.style.display = 'none'; }, 500);
-        }
-    }, 1550);
+    const splash = document.getElementById('nvx-splash');
+    if (splash) {
+        splash.classList.add('hidden');
+        setTimeout(() => { splash.style.display = 'none'; }, 500);
+    }
 }
 
+// FIX v3-14: Splash tied to initApp completion, not fixed timeout
 try {
     initApp();
+    _hideSplash();
 } catch (err) {
     console.error('[NVX] Критическая ошибка инициализации:', err);
+    _hideSplash();
     contentEl.innerHTML = `
         <div class="error-message error-message-lg">
             <i class="fas fa-exclamation-triangle"></i>
@@ -2418,7 +2522,6 @@ try {
             </button>
         </div>`;
 }
-_hideSplash();
 </script>
 </body>
 </html>
