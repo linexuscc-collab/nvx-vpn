@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#1a1635">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: blob:; connect-src 'self' https://telegram.org https://api.telegram.org;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: blob:; connect-src 'self' https://telegram.org https://api.telegram.org;">
 <title>NVX VPN</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔒</text></svg>">
@@ -170,10 +170,6 @@ body {
 @media (max-width: 400px) {
     .space-orb-3, .space-orb-4 { display: none; }
 }
-/* FIX v3 #22: Hide orb-3 on medium screens too */
-@media (max-width: 600px) {
-    .space-orb-3 { display: none; }
-}
 /* Optimize backdrop-filter for mobile devices to save GPU */
 @media (max-width: 480px) {
     .glass, .subscription-card, .ref-link, .promo-section,
@@ -234,10 +230,10 @@ body {
 .anim-fade-d5 { animation-delay: 0.25s; } .anim-fade-d6 { animation-delay: 0.3s; }
 
 /* After animation completes — clean state for hover */
-/* FIX: Do NOT set transform:none — it breaks CSS hover transitions */
 .anim-done {
     animation: none;
     opacity: 1;
+    transform: none;
 }
 
 /* ═══════════════════════════════════════
@@ -328,6 +324,8 @@ body {
    GLASS EFFECT
 ═══════════════════════════════════════ */
 .glass {
+    /* Референс: glass-bg = rgba(15,15,30,0.3) + blur(12px) + border rgba(80,90,120,0.25) */
+    /* Адаптировано: увеличена непрозрачность для нашего более светлого фона */
     background: rgba(12, 15, 35, 0.55);
     backdrop-filter: blur(20px) saturate(200%);
     -webkit-backdrop-filter: blur(20px) saturate(200%);
@@ -357,31 +355,49 @@ body {
                 box-shadow 0.28s ease,
                 background 0.28s ease;
     cursor: default;
-    /* FIX: Force GPU compositing layer — Chromium drops hover on backdrop-filter elements */
-    transform: translateZ(0);
 }
 .hoverable:hover {
-    transform: translateY(-2px) translateZ(0);
+    transform: translateY(-2px);
     border-color: var(--card-border-hover);
     box-shadow: var(--card-shadow-hover);
 }
 
-/* FIX: Force GPU layers on all backdrop-filter elements that need hover */
-.tariff-card, .topup-method, .stat-card, .ref-link,
-.promo-section, .connect-help-card, .header, .faq,
-.support-card, .subscription-card {
-    transform: translateZ(0);
+/* Disable hover on touch devices to prevent sticky states */
+@media (hover: none) {
+    .hoverable:hover,
+    .header:hover,
+    .glass:hover,
+    [class*="card"]:hover,
+    [class*="btn"]:hover,
+    .ref-link:hover,
+    .promo-section:hover,
+    .faq:hover,
+    .modal-content:hover,
+    .topup-method:hover,
+    .copy-btn:hover,
+    .promo-btn:hover,
+    .modal-close:hover,
+    .country-flag:hover {
+        transform: none !important;
+        box-shadow: none !important;
+    }
+    /* На тач — убираем hover у nav полностью */
+    .nav-item:hover {
+        background: none !important;
+        border-color: transparent !important;
+        box-shadow: none !important;
+        color: var(--text-secondary) !important;
+    }
+    /* Исключение: active остаётся видимым */
+    .nav-item.active,
+    .nav-item.active:hover {
+        color: var(--accent-bright) !important;
+        background: var(--accent-18) !important;
+        border-color: var(--accent-40) !important;
+        box-shadow: 0 0 14px var(--accent-12) !important;
+    }
+
 }
-.tariff-card:hover { transform: translateY(-2px) translateZ(0); }
-.topup-method:hover { transform: translateX(3px) translateZ(0); }
-.stat-card:hover { transform: translateY(-2px) translateZ(0); }
-.ref-link:hover { transform: translateY(-2px) translateZ(0); }
-.promo-section:hover { transform: translateY(-2px) translateZ(0); }
-.connect-help-card:hover { transform: translateY(-1px) translateZ(0); }
-.header:hover { transform: translateY(-2px) translateZ(0); }
-.faq:hover { transform: translateZ(0); }
-.support-card:hover { transform: translateY(-2px) translateZ(0); }
-.subscription-card:hover { transform: translateZ(0); }
 
 /* ═══════════════════════════════════════
    SUBSCRIPTION CARD
@@ -481,15 +497,6 @@ body {
 .btn.secondary:hover { background: rgba(40, 50, 75, 0.4); color: var(--accent-bright); }
 .btn.full-width { width: 100%; }
 .btn.rounded { border-radius: 26px; }
-
-/* FIX v3 #23: focus-visible styles for keyboard navigation */
-.btn:focus-visible, .nav-item:focus-visible, .topup-method:focus-visible,
-.copy-btn:focus-visible, .promo-btn:focus-visible, .modal-close:focus-visible,
-.modal-btn:focus-visible, .modal-btn-primary:focus-visible,
-.faq-row:focus-visible, .connect-help-card:focus-visible {
-    outline: 2px solid var(--accent-bright);
-    outline-offset: 2px;
-}
 
 .progress-bar { height: 4px; background: rgba(70, 80, 110, 0.15); border-radius: 2px; margin: 8px 0 6px; overflow: hidden; }
 .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-60), rgba(154, 143, 223, 0.4)); border-radius: 2px; transition: width 0.4s ease; }
@@ -612,7 +619,6 @@ body {
     background: linear-gradient(135deg, var(--accent-50), rgba(154, 143, 223, 0.3));
     border: 1px solid var(--accent-30); border-radius: 11px;
     font-size: 13px; font-weight: 700; color: white; transition: all 0.2s;
-    cursor: pointer; border: none; font-family: var(--font-body);
 }
 .tariff-card:hover .tariff-card-btn {
     background: linear-gradient(135deg, var(--accent-70), rgba(154, 143, 223, 0.5));
@@ -709,12 +715,14 @@ body {
 .topup-method-name { font-weight: 700; color: var(--text-primary); font-size: 14px; }
 .topup-method-desc { font-size: 11px; color: var(--text-secondary); font-weight: 400; line-height: 1.4; }
 .topup-method-arrow { font-size: 12px; color: var(--text-tertiary); flex-shrink: 0; }
+/* Override specificity: these must beat .topup-method span */
 .topup-method .topup-method-name { font-weight: 700; font-size: 14px; color: var(--text-primary); }
 .topup-method .topup-method-desc { font-size: 11px; font-weight: 400; color: var(--text-secondary); }
 
 /* ═══════════════════════════════════════
    REFERRAL HERO CARD
 ═══════════════════════════════════════ */
+/* referral-hero: inline styles (matched to reference) */
 
 /* PROMO */
 .promo-section {
@@ -746,7 +754,6 @@ body {
     cursor: pointer; white-space: nowrap; font-family: var(--font-body); transition: var(--transition);
 }
 .promo-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px var(--accent-20); }
-.promo-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 
 /* ═══════════════════════════════════════
    SUPPORT
@@ -780,6 +787,7 @@ body {
     cursor: default;
 }
 .faq:hover {
+    /* No transform — overflow:hidden clips children at pre-transform bounds */
     border-color: var(--accent-30);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 }
@@ -795,6 +803,7 @@ body {
     -webkit-tap-highlight-color: transparent; user-select: none;
 }
 .faq-row:hover { background: var(--accent-06); }
+/* Legacy: keep summary styles for any remaining <details> */
 .faq-item summary { display: flex; align-items: center; gap: 12px; padding: 13px 16px; cursor: pointer; list-style: none; transition: background 0.2s; min-height: 44px; }
 .faq-item summary::-webkit-details-marker { display: none; }
 .faq-item summary:hover { background: var(--accent-06); }
@@ -943,7 +952,6 @@ body {
     animation: modalSlideUp 0.35s cubic-bezier(0.22, 1, 0.36, 1);
     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
 }
-/* FIX v3 #8: Removed transform from hover to avoid conflict with drag-to-dismiss */
 .modal-content:hover {
     box-shadow: 0 -12px 50px rgba(0, 0, 0, 0.6);
 }
@@ -1018,6 +1026,7 @@ body {
     background: var(--accent-20); border-color: var(--accent-30);
     color: var(--accent-bright); transform: translateY(-1px);
 }
+/* Primary modal button — payment CTA */
 .modal-btn-primary {
     height: 50px;
     border-radius: 14px;
@@ -1070,6 +1079,7 @@ body {
     -webkit-user-select: none;
 }
 .nav-item i { font-size: 18px; }
+/* Hover — только десктоп, на тач @media (hover:none) сбросит */
 .nav-item:hover {
     color: var(--accent-bright);
     background: var(--accent-10);
@@ -1077,6 +1087,7 @@ body {
     box-shadow: 0 0 10px var(--accent-15),
                 inset 0 0 8px var(--accent-05);
 }
+/* Active: управляется JS transform — CSS :active ненадёжен в Telegram WebView */
 .nav-item.active {
     color: var(--accent-bright);
     background: var(--accent-18);
@@ -1114,6 +1125,7 @@ body {
     will-change: opacity;
     overflow: hidden;
 }
+/* Ambient orb behind spinner */
 #nvx-splash::before {
     content: '';
     position: absolute;
@@ -1132,6 +1144,7 @@ body {
     display: flex; flex-direction: column; align-items: center; gap: 32px;
     position: relative; z-index: 1;
 }
+/* Logo image */
 #nvx-splash-logo {
     width: 100px; height: 100px; object-fit: contain;
     border-radius: 20px;
@@ -1189,7 +1202,7 @@ body {
   <header class="header">
     <div class="user-info">
       <div class="avatar" id="avatarContainer">
-        <img id="avatarImage" loading="lazy">
+        <img id="avatarImage">
         <span id="userInitial"><i class="fas fa-user" style="font-size:18px;color:rgba(255,255,255,0.6);"></i></span>
       </div>
       <div class="user-details">
@@ -1240,11 +1253,10 @@ body {
    CONSTANTS
 ═══════════════════════════════════════ */
 const SKELETON_DELAY_MS   = 250;
-// FIX v3 #20: Increased from 950 to 1200ms for slow devices
-const ANIM_CLEANUP_MS     = 1200;
+const ANIM_CLEANUP_MS     = 950;  // max-delay(0.3s) + duration(0.6s) + buffer
 const TOAST_DURATION_MS   = 3000;
 const ANIM_SELECTORS      = '.anim-title,.anim-left,.anim-up,.anim-down,.anim-fade';
-const DOUBLE_CLICK_PREVENT_MS = 500;
+const DOUBLE_CLICK_PREVENT_MS = 500; // Защита от двойных кликов
 
 const PAYMENT_METHODS = {
     sbp:    { name: 'СБП',             desc: 'Система быстрых платежей',                icon: 'fa-university' },
@@ -1271,27 +1283,41 @@ if (tg) {
    HAPTIC FEEDBACK MODULE
 ═══════════════════════════════════════ */
 const HapticFeedback = {
-    buttonLight() { tg?.HapticFeedback?.impactOccurred?.('light'); },
-    buttonMedium() { tg?.HapticFeedback?.impactOccurred?.('medium'); },
-    navigation() { tg?.HapticFeedback?.impactOccurred?.('light'); },
-    success() { tg?.HapticFeedback?.notificationOccurred?.('success'); },
-    error() { tg?.HapticFeedback?.notificationOccurred?.('error'); },
-    warning() { tg?.HapticFeedback?.notificationOccurred?.('warning'); },
-    selection() { tg?.HapticFeedback?.selectionChanged?.(); }
+    /** Вибрация при клике на кнопку (лёгкая) */
+    buttonLight() {
+        tg?.HapticFeedback?.impactOccurred?.('light');
+    },
+    /** Вибрация при важном действии (средняя) */
+    buttonMedium() {
+        tg?.HapticFeedback?.impactOccurred?.('medium');
+    },
+    /** Вибрация при навигации */
+    navigation() {
+        tg?.HapticFeedback?.impactOccurred?.('light');
+    },
+    /** Вибрация при успехе */
+    success() {
+        tg?.HapticFeedback?.notificationOccurred?.('success');
+    },
+    /** Вибрация при ошибке */
+    error() {
+        tg?.HapticFeedback?.notificationOccurred?.('error');
+    },
+    /** Вибрация при предупреждении */
+    warning() {
+        tg?.HapticFeedback?.notificationOccurred?.('warning');
+    },
+    /** Вибрация при выборе (селект) */
+    selection() {
+        tg?.HapticFeedback?.selectionChanged?.();
+    }
 };
 
 /* ═══════════════════════════════════════
    DOUBLE-CLICK PREVENTION (with TTL cleanup)
 ═══════════════════════════════════════ */
 const clickTimestamps = new Map();
-const CLICK_TTL_MS = 10000;
-// FIX v3 #8: Periodic cleanup every 5 seconds
-setInterval(() => {
-    const now = Date.now();
-    for (const [key, ts] of clickTimestamps) {
-        if (now - ts > CLICK_TTL_MS) clickTimestamps.delete(key);
-    }
-}, 5000);
+const CLICK_TTL_MS = 10000; // Очистка записей старше 10 секунд
 
 function canProceed(actionId) {
     const now = Date.now();
@@ -1300,6 +1326,11 @@ function canProceed(actionId) {
         return false;
     }
     clickTimestamps.set(actionId, now);
+
+    // TTL cleanup — удаляем старые записи
+    for (const [key, ts] of clickTimestamps) {
+        if (now - ts > CLICK_TTL_MS) clickTimestamps.delete(key);
+    }
     return true;
 }
 
@@ -1341,7 +1372,7 @@ const AppData = {
         total: 0,
         earned: 0,
         percent: 25,
-        link: '',
+        link: '', // Генерируется динамически в initApp()
     },
     tariffs: [
         { id: 1, days: 30,  price: 129, traffic_gb: 60,  ip_limit: 1 },
@@ -1358,15 +1389,18 @@ const AppData = {
     get nodesCount() { return this.locations.length; },
 };
 
+// Будущий API-слой: заменить на реальные fetch-вызовы
 async function fetchAppData() {
+    // TODO: const resp = await fetch('/api/user'); return resp.json();
     return AppData;
 }
 
 /* ═══════════════════════════════════════
    API LAYER — готов к подключению backend
+   Замените BASE_URL и уберите заглушки в каждом методе
 ═══════════════════════════════════════ */
 const API = {
-    BASE_URL: '/api',
+    BASE_URL: '/api', // TODO: заменить на реальный URL backend
     TIMEOUT_MS: 15000,
 
     async _request(endpoint, options = {}) {
@@ -1380,6 +1414,7 @@ const API = {
                 signal: controller.signal,
                 headers: {
                     'Content-Type': 'application/json',
+                    // TODO: добавить авторизацию через tg.initData
                     ...(isTelegram && tg.initData ? { 'X-Telegram-Init-Data': tg.initData } : {}),
                     ...options.headers,
                 },
@@ -1406,8 +1441,15 @@ const API = {
         }
     },
 
-    getUser() { return this._request('/user', { _loadingMsg: 'Загрузка профиля...' }); },
-    getSubscription() { return this._request('/subscription'); },
+    /** Получить данные пользователя */
+    getUser() {
+        return this._request('/user', { _loadingMsg: 'Загрузка профиля...' });
+    },
+    /** Получить статус подписки */
+    getSubscription() {
+        return this._request('/subscription');
+    },
+    /** Купить подписку */
     buySubscription(tariffId) {
         return this._request('/subscription', {
             method: 'POST',
@@ -1415,6 +1457,7 @@ const API = {
             _loadingMsg: 'Оформляем подписку...',
         });
     },
+    /** Активировать промокод */
     activatePromo(code) {
         return this._request('/promo', {
             method: 'POST',
@@ -1422,7 +1465,11 @@ const API = {
             _loadingMsg: 'Проверяем промокод...',
         });
     },
-    getReferralStats() { return this._request('/referral'); },
+    /** Получить реферальную статистику */
+    getReferralStats() {
+        return this._request('/referral');
+    },
+    /** Создать платёж */
     createPayment(method, amount) {
         return this._request('/payment', {
             method: 'POST',
@@ -1451,7 +1498,7 @@ const modalClose   = $('#modal-close');
 let currentTab = 'home';
 
 /* ═══════════════════════════════════════
-   XSS PROTECTION
+   XSS PROTECTION — escape user data before innerHTML
 ═══════════════════════════════════════ */
 function escapeHtml(str) {
     return String(str)
@@ -1462,7 +1509,9 @@ function escapeHtml(str) {
         .replace(/'/g, '&#039;');
 }
 
+/** Coerce to integer — prevents injection via numeric fields from API */
 function safeInt(n) { return parseInt(n, 10) || 0; }
+/** Coerce to float with 2 decimal places */
 function safeFloat(n) { return parseFloat(Number(n).toFixed(2)) || 0; }
 
 /* ═══════════════════════════════════════
@@ -1500,15 +1549,19 @@ function showToast(msg, type = 'success') {
 }
 
 /* ═══════════════════════════════════════
-   CLIPBOARD HELPER
+   CLIPBOARD HELPER — navigator.clipboard.writeText primary
 ═══════════════════════════════════════ */
 async function copyToClipboard(text) {
     try {
+        // Primary: modern Clipboard API
         if (navigator.clipboard?.writeText) {
             await navigator.clipboard.writeText(text);
             return true;
         }
-    } catch { /* fall through */ }
+    } catch {
+        // Fall through to fallback
+    }
+    // Fallback for older WebViews
     try {
         const ta = document.createElement('textarea');
         ta.value = text;
@@ -1524,10 +1577,12 @@ async function copyToClipboard(text) {
 }
 
 /* ═══════════════════════════════════════
-   CUSTOM CONFIRM DIALOG
+   CUSTOM CONFIRM DIALOG — replaces native confirm()
+   Returns Promise<boolean>, non-blocking
 ═══════════════════════════════════════ */
 function showConfirmDialog(message) {
     return new Promise((resolve) => {
+        // Remove any existing confirm dialog
         const existing = document.getElementById('confirmDialog');
         if (existing) existing.remove();
 
@@ -1545,10 +1600,7 @@ function showConfirmDialog(message) {
         `;
         document.body.appendChild(overlay);
 
-        // FIX v3 #24: Add ARIA attributes to confirm dialog
-        overlay.setAttribute('role', 'alertdialog');
-        overlay.setAttribute('aria-modal', 'true');
-
+        // Trigger animation
         requestAnimationFrame(() => overlay.classList.add('show'));
 
         const cleanup = (result) => {
@@ -1572,15 +1624,16 @@ function showConfirmDialog(message) {
 }
 
 /* ═══════════════════════════════════════
-   MODAL
+   MODAL (with drag-to-dismiss + ARIA + close confirmation)
 ═══════════════════════════════════════ */
-let modalHasInput = false;
+let modalHasInput = false; // Track if modal has unsaved input
 let modalDragStartY = 0;
 let modalDragCurrentY = 0;
 let modalIsDragging = false;
 
 function hideModal() {
     if (modalHasInput) {
+        // Use custom non-blocking confirm dialog
         showConfirmDialog('Закрыть? Введённые данные будут потеряны.').then(ok => {
             if (ok) {
                 HapticFeedback.buttonLight();
@@ -1597,6 +1650,7 @@ function hideModal() {
 
 function showModal() {
     modal.classList.add('show');
+    // Auto-detect if modal contains inputs — set flag when user starts typing
     modalHasInput = false;
     const inputs = modalBody.querySelectorAll('input, textarea');
     inputs.forEach(inp => {
@@ -1604,11 +1658,13 @@ function showModal() {
     });
 }
 
+// ARIA: make modal accessible
 modal?.setAttribute('role', 'dialog');
 modal?.setAttribute('aria-modal', 'true');
 modal?.setAttribute('aria-labelledby', 'modal-title');
 modal?.setAttribute('aria-describedby', 'modal-body');
 
+// Drag-to-dismiss for modal
 const modalContent = $('.modal-content');
 const modalDragBar = $('.modal-drag-bar');
 
@@ -1617,6 +1673,7 @@ function onModalDragStart(e) {
     modalDragStartY = touch.clientY;
     modalIsDragging = true;
     modalContent.style.transition = 'none';
+    // Attach global listeners only while dragging
     document.addEventListener('mousemove', onModalDragMove);
     document.addEventListener('touchmove', onModalDragMove, { passive: true });
     document.addEventListener('mouseup', onModalDragEnd);
@@ -1636,16 +1693,18 @@ function onModalDragEnd() {
     if (!modalIsDragging) return;
     modalIsDragging = false;
     modalContent.style.transition = '';
-    // FIX v3 #9: Always reset transform regardless of confirm result
+    // Always reset transform — if hideModal shows confirm and user cancels,
+    // the modal must snap back to its original position
     modalContent.style.transform = '';
-    document.removeEventListener('mousemove', onModalDragMove);
-    document.removeEventListener('touchmove', onModalDragMove);
-    document.removeEventListener('mouseup', onModalDragEnd);
-    document.removeEventListener('touchend', onModalDragEnd);
     if (modalDragCurrentY > 100) {
         hideModal();
     }
     modalDragCurrentY = 0;
+    // Remove global listeners when drag ends
+    document.removeEventListener('mousemove', onModalDragMove);
+    document.removeEventListener('touchmove', onModalDragMove);
+    document.removeEventListener('mouseup', onModalDragEnd);
+    document.removeEventListener('touchend', onModalDragEnd);
 }
 
 modalDragBar?.addEventListener('mousedown', onModalDragStart);
@@ -1656,7 +1715,7 @@ modal?.addEventListener('click', e => {
     if (e.target.classList.contains('modal-overlay')) hideModal();
 });
 
-// Keyboard trap
+// Keyboard trap: keep Tab focus inside modal, Escape closes it
 modal?.addEventListener('keydown', (e) => {
     if (!modal.classList.contains('show')) return;
     if (e.key === 'Escape') { hideModal(); return; }
@@ -1679,13 +1738,14 @@ function updateHeader() {
 }
 updateHeader();
 
+/* Header balance click with haptic */
 $('#balanceDisplay')?.addEventListener('click', () => {
     HapticFeedback.buttonLight();
     switchTab('topup');
 });
 
 /* ═══════════════════════════════════════
-   NAVIGATION
+   NAVIGATION — event delegation
 ═══════════════════════════════════════ */
 function switchTab(tab) {
     $$('.nav-item').forEach(b => {
@@ -1695,17 +1755,24 @@ function switchTab(tab) {
     });
     currentTab = tab;
     showTab(tab);
+    // BackButton: show on all tabs except home
     if (isTelegram && tg.BackButton) {
         if (tab === 'home') tg.BackButton.hide();
         else tg.BackButton.show();
     }
 }
 
+/* ── Nav: touchend+preventDefault (Telegram WebApp proven pattern) ──
+   touchend с preventDefault: мгновенный отклик + блокировка ghost-click на iOS
+   click: fallback для десктопа и устройств без touch */
 function _navHandleTap(btn) {
     if (!btn || !btn.dataset.tab) return;
     HapticFeedback.navigation();
+    // Scale сразу — GPU-слой уже выделен через will-change
     btn.style.transform = 'scale(0.90)';
     setTimeout(() => { btn.style.transform = ''; }, 150);
+    // switchTab через rAF: браузер коммитит кадр с nav-анимацией
+    // ДО того как начнётся тяжёлая DOM-работа content-перехода
     requestAnimationFrame(() => {
         switchTab(btn.dataset.tab);
     });
@@ -1713,14 +1780,16 @@ function _navHandleTap(btn) {
 
 $$('.nav-item').forEach(btn => {
     let _touchHandled = false;
+
     btn.addEventListener('touchend', function(e) {
-        e.preventDefault();
+        e.preventDefault(); // блокирует ghost-click (300ms задержку) на iOS/Android
         _touchHandled = true;
         _navHandleTap(this);
         setTimeout(() => { _touchHandled = false; }, 500);
-    }, { passive: false });
+    }, { passive: false }); // passive:false обязателен для e.preventDefault()
+
     btn.addEventListener('click', function() {
-        if (_touchHandled) return;
+        if (_touchHandled) return; // touchend уже обработал
         _navHandleTap(this);
     });
 });
@@ -1737,9 +1806,11 @@ const TAB_RENDERERS = {
 };
 
 let tabTimer = null;
-let pendingRender = null;
+let pendingRender = null; // Prevent rAF queue buildup on rapid tab switches
 
+// Tab cache: store rendered HTML + scroll position for reuse
 const tabCache = new Map();
+/** Invalidate cache for specific tab(s) or all tabs */
 function invalidateTabCache(...tabs) {
     if (tabs.length === 0) { tabCache.clear(); return; }
     tabs.forEach(t => tabCache.delete(t));
@@ -1749,7 +1820,7 @@ function showTab(tab) {
     if (tabTimer) { clearTimeout(tabTimer); tabTimer = null; }
     if (pendingRender) { cancelAnimationFrame(pendingRender); pendingRender = null; }
 
-    // Save scroll position
+    // Save scroll position of current tab before switching
     if (currentTab && contentEl.scrollTop > 0) {
         const cached = tabCache.get(currentTab);
         if (cached) cached.scrollTop = contentEl.scrollTop;
@@ -1765,12 +1836,11 @@ function showTab(tab) {
 
         const cached = tabCache.get(tab);
         if (cached) {
+            // Restore from cache
             contentEl.innerHTML = cached.html;
-            // FIX v3 #7: Restore scrollTop via rAF to ensure layout is ready
-            requestAnimationFrame(() => {
-                contentEl.scrollTop = cached.scrollTop || 0;
-            });
+            contentEl.scrollTop = cached.scrollTop || 0;
         } else {
+            // Fresh render
             const renderer = TAB_RENDERERS[tab];
             if (renderer) {
                 try { renderer(); }
@@ -1779,9 +1849,11 @@ function showTab(tab) {
                     contentEl.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-triangle"></i> Ошибка загрузки. Попробуйте ещё раз.</div>`;
                 }
             }
+            // Cache the rendered HTML (static tabs benefit most)
             tabCache.set(tab, { html: contentEl.innerHTML, scrollTop: 0 });
         }
 
+        // Плавный fade-in нового контента
         requestAnimationFrame(() => {
             contentEl.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
             contentEl.style.opacity = '1';
@@ -1792,11 +1864,12 @@ function showTab(tab) {
 }
 
 /* ═══════════════════════════════════════
-   CONTENT — event delegation
+   CONTENT — event delegation on #content
 ═══════════════════════════════════════ */
 contentEl.addEventListener('click', e => {
     const target = e.target;
 
+    // Action row buttons (renew, devices)
     const actionBtn = target.closest('.btn.action-row[data-action]');
     if (actionBtn && canProceed('action-' + actionBtn.dataset.action)) {
         HapticFeedback.buttonMedium();
@@ -1804,12 +1877,14 @@ contentEl.addEventListener('click', e => {
         return;
     }
 
+    // Connect help card
     if (target.closest('#connectHelpCard') && canProceed('connectHelp')) {
         HapticFeedback.buttonLight();
         showToast('Функция подключится после настройки backend');
         return;
     }
 
+    // Tariff card click
     const tariffCard = target.closest('.tariff-card[data-id]');
     if (tariffCard && canProceed('tariff-' + tariffCard.dataset.id)) {
         HapticFeedback.buttonMedium();
@@ -1817,15 +1892,16 @@ contentEl.addEventListener('click', e => {
         return;
     }
 
+    // Topup method
     const topupMethod = target.closest('.topup-method[data-method]');
     if (topupMethod && canProceed('topup-' + topupMethod.dataset.method)) {
         HapticFeedback.buttonMedium();
         const method = PAYMENT_METHODS[topupMethod.dataset.method];
-        // FIX v3 #7 (original): Use method?.name instead of method object
         showToast(`Переход к оплате через ${method?.name || 'неизвестный метод'}`);
         return;
     }
 
+    // Copy referral link
     if (target.closest('#copyRef') && canProceed('copyRef')) {
         HapticFeedback.buttonLight();
         copyToClipboard(AppData.referral.link).then(ok => {
@@ -1834,12 +1910,14 @@ contentEl.addEventListener('click', e => {
         return;
     }
 
+    // Promo button
     if (target.closest('#promoBtn') && canProceed('promo')) {
         HapticFeedback.buttonMedium();
         const promoBtn = $('#promoBtn');
         const input = $('#promoInput');
         if (!input?.value.trim()) { showToast('Введите промокод', 'warning'); return; }
 
+        // Disable button during processing (important for async backend calls)
         if (promoBtn) { promoBtn.disabled = true; promoBtn.style.opacity = '0.5'; }
         const _enableBtn = () => { if (promoBtn) { promoBtn.disabled = false; promoBtn.style.opacity = ''; } };
 
@@ -1848,7 +1926,7 @@ contentEl.addEventListener('click', e => {
         if (promo) {
             AppData.user.balance += promo.bonus;
             updateHeader();
-            invalidateTabCache('home', 'referral', 'topup');
+            invalidateTabCache('home', 'referral', 'topup'); // Balance changed
             showToast(`Промокод активирован: ${escapeHtml(promo.desc)}`, 'success');
             HapticFeedback.success();
             input.value = '';
@@ -1860,28 +1938,32 @@ contentEl.addEventListener('click', e => {
         return;
     }
 
+    // Buy subscription
     if (target.closest('#buySubBtn') && canProceed('buySub')) {
         HapticFeedback.buttonMedium();
         switchTab('tariffs');
         return;
     }
 
+    // Trial activation
     if (target.closest('#trialBtn') && canProceed('trial')) {
         HapticFeedback.buttonMedium();
         AppData.subscription.trialAvailable = false;
         AppData.subscription.active = true;
-        invalidateTabCache();
+        invalidateTabCache(); // Subscription state changed — clear all
         showToast('Тестовая подписка активирована', 'success');
         renderHome();
         return;
     }
 
+    // Withdraw buttons
     if ((target.closest('#withdrawCard') || target.closest('#withdrawBalance')) && canProceed('withdraw')) {
         HapticFeedback.buttonMedium();
         showToast('Доступно после подключения backend', 'warning');
         return;
     }
 
+    // Support chat
     if (target.closest('#supportChatBtn') && canProceed('support')) {
         HapticFeedback.buttonMedium();
         showToast('Открываем чат поддержки');
@@ -2046,6 +2128,7 @@ function openTariffModal(tariffId) {
         </div>` : ''}
     `;
 
+    // CTA button
     modalButtons.innerHTML = '';
     const btn = document.createElement('button');
     btn.type = 'button';
@@ -2067,8 +2150,13 @@ function openTariffModal(tariffId) {
     showModal();
 }
 
-/* FIX v3 #5: Use PAYMENT_METHODS constant instead of duplicating */
+/* ── Модальное окно выбора способа оплаты (аналог showDirectPayModal референса) ── */
 function showPayMethodModal({ shortage, tariff }) {
+    const PAY_METHODS = [
+        { key: 'sbp',    icon: 'fa-university', name: 'СБП',            desc: 'Система быстрых платежей' },
+        { key: 'crypto', icon: 'fa-coins',      name: 'CryptoBot',      desc: 'Криптовалютные платежи' },
+        { key: 'stars',  icon: 'fa-star',       name: 'Telegram Stars', desc: 'Встроенная платёжная система Telegram' },
+    ];
     const bal = AppData.user.balance;
 
     modalTitle.textContent = 'Выберите способ оплаты';
@@ -2082,8 +2170,8 @@ function showPayMethodModal({ shortage, tariff }) {
                 <span class="pay-method-shortage">Доплатить: ${safeInt(shortage)}₽</span>
             </div>
         </div>
-        ${Object.entries(PAYMENT_METHODS).map(([key, m]) => `
-        <div class="pay-method-row topup-method" data-method="${escapeHtml(key)}">
+        ${PAY_METHODS.map(m => `
+        <div class="pay-method-row topup-method" data-method="${escapeHtml(m.key)}">
             <i class="fas ${escapeHtml(m.icon)}"></i>
             <div class="topup-method-text">
                 <span class="topup-method-name">${escapeHtml(m.name)}</span>
@@ -2094,14 +2182,16 @@ function showPayMethodModal({ shortage, tariff }) {
     `;
     modalButtons.innerHTML = '';
     showModal();
+// (закрывающая скобка openTariffModal убрана — она уже выше)
 }
 
-// Delegated click handler for modal body
+// Delegated click handler for modal body (prevents listener leaks)
 modalBody?.addEventListener('click', (e) => {
     const payRow = e.target.closest('.pay-method-row[data-method]');
     if (payRow && canProceed('payMethod-' + payRow.dataset.method)) {
         HapticFeedback.buttonLight();
         hideModal();
+        // TODO: после подключения backend — вызвать API оплаты с нужным методом
         showToast('Доступно после подключения backend', 'warning');
         switchTab('topup');
     }
@@ -2198,13 +2288,15 @@ function renderTopUp() {
             </div>`).join('')}
     `;
     registerAnimCleanup();
+    // Promo code handler — делегируется через contentEl.addEventListener (см. выше)
+    // Topup method handler — делегируется через contentEl.addEventListener (см. выше)
 }
 
 /* ═══════════════════════════════════════
    RENDER: SUPPORT
 ═══════════════════════════════════════ */
 const FAQ_ITEMS = [
-    ['fa-sync-alt',              'Как продлить подписку?',                             'Перейдите на главную вкладку и нажмите <strong>«Продлить»</strong>. Выберите нужное количество дней. Средства списываются с баланса мгновенно.'],
+    ['fa-sync-alt',              'Как продлить подписку?',                             'Перейдите на главную вкладку и нажмите кнопку <strong>«Продлить»</strong>. Выберите нужное количество дней. Средства списываются с баланса мгновенно.'],
     ['fa-mobile-alt',            'Как подключить дополнительное устройство?',           'На главной вкладке нажмите <strong>«Устройства»</strong> и выберите количество новых слотов. Один слот — ещё одно одновременное подключение.'],
     ['fa-exclamation-triangle',  'VPN не подключается или работает нестабильно',        'Убедитесь, что подписка активна. Переподключитесь или обновите конфигурацию. Попробуйте сменить сервер. Если проблема сохраняется — обратитесь в поддержку.'],
     ['fa-wallet',                'Какие способы пополнения баланса доступны?',          'Поддерживаются: <strong>Telegram Stars</strong>, <strong>CryptoBot</strong> (USDT, TON), <strong>Lolz Market</strong>, <strong>СБП</strong>.'],
@@ -2239,6 +2331,7 @@ function renderSupport() {
     `;
     registerAnimCleanup();
 
+    // Cache heights before any max-height CSS kicks in, then init accordion
     const items = $$('.faq-item', contentEl);
     const heightCache = new Map();
     items.forEach(item => {
@@ -2250,10 +2343,12 @@ function renderSupport() {
         const body = item.querySelector('.faq-body');
         item.querySelector('.faq-row').addEventListener('click', () => {
             const isOpen = item.classList.contains('open');
+            // Close all
             items.forEach(o => {
                 o.classList.remove('open');
                 o.querySelector('.faq-body').style.maxHeight = '0';
             });
+            // Open clicked if it was closed
             if (!isOpen) {
                 item.classList.add('open');
                 body.style.maxHeight = (heightCache.get(item) || 200) + 'px';
@@ -2263,9 +2358,10 @@ function renderSupport() {
 }
 
 /* ═══════════════════════════════════════
-   INIT
+   INIT — Avatar, Referral Link, BackButton, Keyboard
 ═══════════════════════════════════════ */
 function initApp() {
+    // 1. Load avatar from Telegram
     if (isTelegram && tg.initDataUnsafe?.user) {
         const tgUser = tg.initDataUnsafe.user;
         if (tgUser.username) AppData.user.name = tgUser.username;
@@ -2282,9 +2378,13 @@ function initApp() {
         }
     }
 
+    // 2. Generate dynamic referral link
     AppData.referral.link = `https://t.me/NVXvpn_bot?start=ref${AppData.user.id}`;
+
+    // 3. Update header with potentially new data
     updateHeader();
 
+    // 4. Setup Telegram BackButton
     if (isTelegram && tg.BackButton) {
         tg.BackButton.onClick(() => {
             HapticFeedback.navigation();
@@ -2295,13 +2395,15 @@ function initApp() {
         });
     }
 
+    // 5. Handle Telegram keyboard (viewport changes)
     if (isTelegram) {
         tg.onEvent('viewportChanged', ({ isStateStable }) => {
+            // Only adjust on stable viewport to avoid layout thrash
             if (!isStateStable) return;
             const content = $('.content');
             if (content) {
                 if (tg.isExpanded) {
-                    content.style.height = '';
+                    content.style.height = '';  // Reset to CSS flex
                 } else {
                     content.style.height = `${tg.viewportStableHeight - 120}px`;
                 }
@@ -2309,6 +2411,7 @@ function initApp() {
         });
     }
 
+    // 6. Determine initial tab
     const _startParam = tg?.initDataUnsafe?.start_param || new URLSearchParams(window.location.search).get('tab');
     const _validTabs = Object.keys(TAB_RENDERERS);
     const _initTab = (_startParam && _validTabs.includes(_startParam)) ? _startParam : 'home';
@@ -2371,11 +2474,9 @@ function showLoading(message = 'Загрузка...') {
     } else {
         const msgEl = overlay.querySelector('.lo-msg');
         if (msgEl) msgEl.textContent = message;
-        // FIX v3 #13: Don't clone spinner if already visible (prevents blink)
-        if (!overlay.classList.contains('visible')) {
-            const old = overlay.querySelector('.lo-spinner');
-            if (old) old.replaceWith(old.cloneNode(true));
-        }
+        // Restart spinner animation
+        const old = overlay.querySelector('.lo-spinner');
+        if (old) old.replaceWith(old.cloneNode(true));
     }
     overlay.style.display = 'flex';
     requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('visible')));
@@ -2389,6 +2490,7 @@ function hideLoading() {
     }
 }
 
+// Splash: hide after app initialises (extracted from initApp rewrite pattern)
 function _hideSplash() {
     setTimeout(() => {
         const splash = document.getElementById('nvx-splash');
@@ -2396,9 +2498,10 @@ function _hideSplash() {
             splash.classList.add('hidden');
             setTimeout(() => { splash.style.display = 'none'; }, 500);
         }
-    }, 1550);
+    }, 1550); // bar animation (1.4s delay 0.15s) + tiny buffer
 }
 
+// Call init then hide splash
 try {
     initApp();
 } catch (err) {
