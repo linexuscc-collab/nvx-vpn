@@ -234,10 +234,10 @@ body {
 .anim-fade-d5 { animation-delay: 0.25s; } .anim-fade-d6 { animation-delay: 0.3s; }
 
 /* After animation completes — clean state for hover */
+/* FIX: Do NOT reset transform here — it breaks hover transitions */
 .anim-done {
     animation: none;
     opacity: 1;
-    transform: none;
 }
 
 /* ═══════════════════════════════════════
@@ -358,21 +358,19 @@ body {
                 background 0.28s ease;
     cursor: default;
 }
-.hoverable:hover {
+.hoverable:hover,
+.hoverable.js-hover {
     transform: translateY(-2px);
     border-color: var(--card-border-hover);
     box-shadow: var(--card-shadow-hover);
 }
 
-/* Disable hover on touch devices to prevent sticky states */
-/* FIX: Removed !important overrides that were killing hover on hybrid devices */
-@media (hover: none) {
-    .nav-item.active,
-    .nav-item.active:hover {
-        color: var(--accent-bright);
-        background: var(--accent-18);
-        border-color: var(--accent-40);
-        box-shadow: 0 0 14px var(--accent-12);
+/* FIX: any-hover ensures hover works on hybrid devices with both touch and mouse */
+@media (any-hover: hover) {
+    .hoverable:hover {
+        transform: translateY(-2px);
+        border-color: var(--card-border-hover);
+        box-shadow: var(--card-shadow-hover);
     }
 }
 
@@ -2391,6 +2389,48 @@ function _hideSplash() {
         }
     }, 1550);
 }
+
+/* ═══════════════════════════════════════
+   FIX: Restore hover on hybrid/touch devices
+   Chromium suppresses :hover after touch.
+   We detect mouse movement and use .js-hover class instead.
+═══════════════════════════════════════ */
+(function _restoreHoverOnHybrid() {
+    let hoverActive = false;
+    let lastHovered = null;
+
+    document.addEventListener('mousemove', (e) => {
+        if (hoverActive) return;
+        hoverActive = true;
+        // Remove all stale .js-hover classes
+        document.querySelectorAll('.js-hover').forEach(el => el.classList.remove('js-hover'));
+    });
+
+    document.addEventListener('mouseenter', (e) => {
+        const card = e.target.closest('.hoverable');
+        if (card && hoverActive) {
+            if (lastHovered && lastHovered !== card) {
+                lastHovered.classList.remove('js-hover');
+            }
+            card.classList.add('js-hover');
+            lastHovered = card;
+        }
+    }, true);
+
+    document.addEventListener('mouseleave', (e) => {
+        const card = e.target.closest('.hoverable');
+        if (card) {
+            card.classList.remove('js-hover');
+            if (lastHovered === card) lastHovered = null;
+        }
+    }, true);
+
+    // Reset hoverActive on touch start (user switched back to touch)
+    document.addEventListener('touchstart', () => {
+        hoverActive = false;
+        document.querySelectorAll('.js-hover').forEach(el => el.classList.remove('js-hover'));
+    }, { passive: true });
+})();
 
 try {
     initApp();
