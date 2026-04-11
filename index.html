@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#1a1635">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://telegram.org; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: blob:; connect-src 'self' https://telegram.org https://api.telegram.org;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: blob:; connect-src 'self' https://telegram.org https://api.telegram.org;">
 <title>NVX VPN</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔒</text></svg>">
@@ -32,8 +32,8 @@
     --safe-bottom: env(safe-area-inset-bottom, 0px);
     --safe-left: env(safe-area-inset-left, 0px);
     --safe-right: env(safe-area-inset-right, 0px);
-    --transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    --transition-fast: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+    --transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    --transition-fast: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
     --glass-border-hover: var(--accent-40);
     --card-bg: rgba(20, 25, 45, 0.25);
     --card-border: rgba(70, 80, 110, 0.15);
@@ -2542,10 +2542,12 @@ try {
             <i class="fas fa-exclamation-triangle"></i>
             <div class="error-message-title">Ошибка загрузки</div>
             <div>Не удалось инициализировать приложение. Попробуйте перезагрузить.</div>
-            <button type="button" class="btn primary error-message-action" onclick="location.reload()">
+            <button type="button" class="btn primary error-message-action" id="errorReloadBtn">
                 <i class="fas fa-redo"></i> Перезагрузить
             </button>
         </div>`;
+    const _reloadBtn = document.getElementById('errorReloadBtn');
+    if (_reloadBtn) _reloadBtn.addEventListener('click', () => location.reload());
 }
 // Hide splash after animation finishes (regardless of init success/failure)
 _splashMinTime.then(() => _hideSplash());
