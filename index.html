@@ -2388,29 +2388,31 @@ function renderSupport() {
         </div>
     `;
     registerAnimCleanup();
-
-    const items = $$('.faq-item', contentEl);
-    const heightCache = new Map();
-    items.forEach(item => {
-        const p = item.querySelector('.faq-body p');
-        if (p) heightCache.set(item, p.scrollHeight + 28);
-    });
-
-    items.forEach(item => {
-        const body = item.querySelector('.faq-body');
-        item.querySelector('.faq-row').addEventListener('click', () => {
-            const isOpen = item.classList.contains('open');
-            items.forEach(o => {
-                o.classList.remove('open');
-                o.querySelector('.faq-body').style.maxHeight = '0';
-            });
-            if (!isOpen) {
-                item.classList.add('open');
-                body.style.maxHeight = (heightCache.get(item) || 200) + 'px';
-            }
-        });
-    });
 }
+
+/* FAQ click handler — delegated on contentEl so it survives tab cache restore */
+contentEl.addEventListener('click', function(e) {
+    const row = e.target.closest('.faq-row');
+    if (!row) return;
+    const item = row.closest('.faq-item');
+    if (!item) return;
+    const body = item.querySelector('.faq-body');
+    if (!body) return;
+
+    const isOpen = item.classList.contains('open');
+    // Close all
+    $$('.faq-item.open', contentEl).forEach(o => {
+        o.classList.remove('open');
+        o.querySelector('.faq-body').style.maxHeight = '0';
+    });
+    // Open clicked (if it was closed)
+    if (!isOpen) {
+        const p = body.querySelector('p');
+        const h = p ? (p.scrollHeight + 28) : 200;
+        item.classList.add('open');
+        body.style.maxHeight = h + 'px';
+    }
+});
 
 /* ═══════════════════════════════════════
    INIT
