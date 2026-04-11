@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#1a1635">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: blob:; connect-src 'self' https://telegram.org https://api.telegram.org;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://telegram.org; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: blob:; connect-src 'self' https://telegram.org https://api.telegram.org;">
 <title>NVX VPN</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔒</text></svg>">
@@ -34,9 +34,6 @@
     --safe-right: env(safe-area-inset-right, 0px);
     --transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     --transition-fast: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
-    --glass-bg: rgba(18, 22, 48, 0.35);
-    --glass-bg-hover: rgba(22, 28, 58, 0.45);
-    --glass-border: rgba(100, 115, 155, 0.2);
     --glass-border-hover: var(--accent-40);
     --card-bg: rgba(20, 25, 45, 0.25);
     --card-border: rgba(70, 80, 110, 0.15);
@@ -62,18 +59,12 @@
     --accent-30: rgba(122, 111, 191, 0.30);
     --accent-35: rgba(122, 111, 191, 0.35);
     --accent-40: rgba(122, 111, 191, 0.40);
-    --accent-45: rgba(122, 111, 191, 0.45);
     --accent-50: rgba(122, 111, 191, 0.50);
     --accent-55: rgba(122, 111, 191, 0.55);
     --accent-60: rgba(122, 111, 191, 0.60);
     --accent-70: rgba(122, 111, 191, 0.70);
     --accent-80: rgba(122, 111, 191, 0.80);
     /* Semantic color tokens */
-    --danger-bg: rgba(255, 80, 80, 0.07);
-    --danger-border: rgba(255, 80, 80, 0.18);
-    --warning-border: rgba(255, 165, 2, 0.5);
-    --card-bg-dark: rgba(10, 14, 39, 0.75);
-    --overlay-bg: rgba(0, 0, 0, 0.6);
     --modal-bg: rgba(14, 18, 38, 0.97);
 }
 
@@ -163,7 +154,8 @@ body {
 
 /* Reduce animation load for users who prefer reduced motion or low-end devices */
 @media (prefers-reduced-motion: reduce) {
-    .space-orb, .space-stars, #space-bg::before { animation: none !important; }
+    .space-orb { display: none !important; }
+    .space-stars, #space-bg::before { animation: none !important; }
     .support-icon { animation: none !important; }
 }
 /* Hide extra orbs on small/low-end screens to save GPU */
@@ -175,7 +167,7 @@ body {
     .space-orb-3 { display: none; }
 }
 /* Optimize backdrop-filter for mobile devices to save GPU */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     .glass, .subscription-card, .ref-link, .promo-section,
     .support-card, .faq, .stat-card, .topup-method,
     .header, .bottom-nav, .modal-content, .modal-overlay,
@@ -258,7 +250,7 @@ body {
     cursor: default;
 }
 .header:hover {
-    transform: translateY(-2px);
+    transform: translateY(-2px) translateZ(0);
     border-color: var(--card-border-hover);
     background: rgba(25, 32, 58, 0.35);
     box-shadow: var(--card-shadow-hover);
@@ -403,6 +395,7 @@ body {
     pointer-events: none; opacity: 0.6;
 }
 .subscription-card:hover {
+    transform: translateY(-2px) translateZ(0);
     background: rgba(20, 25, 50, 0.28);
 }
 .subscription-card .title {
@@ -596,7 +589,7 @@ body {
     width: 32px; height: 32px; border-radius: 8px;
     background: rgba(30, 35, 55, 0.4);
     border: 1px solid var(--card-border);
-    transition: all 0.22s;
+    transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease;
     cursor: default; line-height: 1;
 }
 .country-flag:hover { background: var(--accent-15); border-color: var(--accent-30); transform: scale(1.12); }
@@ -610,9 +603,9 @@ body {
     display: flex; align-items: center; justify-content: center; gap: 6px;
     padding: 9px;
     background: linear-gradient(135deg, var(--accent-50), rgba(154, 143, 223, 0.3));
-    border: 1px solid var(--accent-30); border-radius: 11px;
-    font-size: 13px; font-weight: 700; color: white; transition: all 0.2s;
-    cursor: pointer; border: none; font-family: var(--font-body);
+    border: none; border-radius: 11px;
+    font-size: 13px; font-weight: 700; color: white; transition: background 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer; font-family: var(--font-body);
 }
 .tariff-card:hover .tariff-card-btn {
     background: linear-gradient(135deg, var(--accent-70), rgba(154, 143, 223, 0.5));
@@ -709,8 +702,6 @@ body {
 .topup-method-name { font-weight: 700; color: var(--text-primary); font-size: 14px; }
 .topup-method-desc { font-size: 11px; color: var(--text-secondary); font-weight: 400; line-height: 1.4; }
 .topup-method-arrow { font-size: 12px; color: var(--text-tertiary); flex-shrink: 0; }
-.topup-method .topup-method-name { font-weight: 700; font-size: 14px; color: var(--text-primary); }
-.topup-method .topup-method-desc { font-size: 11px; font-weight: 400; color: var(--text-secondary); }
 
 /* ═══════════════════════════════════════
    REFERRAL HERO CARD
@@ -795,9 +786,6 @@ body {
     -webkit-tap-highlight-color: transparent; user-select: none;
 }
 .faq-row:hover { background: var(--accent-06); }
-.faq-item summary { display: flex; align-items: center; gap: 12px; padding: 13px 16px; cursor: pointer; list-style: none; transition: background 0.2s; min-height: 44px; }
-.faq-item summary::-webkit-details-marker { display: none; }
-.faq-item summary:hover { background: var(--accent-06); }
 /* Accordion body */
 .faq-body {
     max-height: 0; overflow: hidden;
@@ -964,7 +952,7 @@ body {
     background: rgba(30, 35, 55, 0.5); border: 1px solid rgba(70, 80, 110, 0.2);
     border-radius: 50%; width: 32px; height: 32px;
     display: flex; align-items: center; justify-content: center;
-    color: var(--text-secondary); font-size: 12px; cursor: pointer; transition: all 0.2s; flex-shrink: 0;
+    color: var(--text-secondary); font-size: 12px; cursor: pointer; transition: background 0.2s ease, color 0.2s ease; flex-shrink: 0;
 }
 .modal-close:hover { background: var(--accent-25); color: var(--accent-bright); }
 
@@ -1006,7 +994,7 @@ body {
 .modal-buttons { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
 .modal-btn {
     border-radius: 14px; padding: 12px 16px; font-size: 14px; font-weight: 600;
-    color: var(--text-primary); cursor: pointer; transition: all 0.25s;
+    color: var(--text-primary); cursor: pointer; transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
     width: 100%; font-family: var(--font-body);
     display: flex; align-items: center; justify-content: center; gap: 8px;
     min-height: 46px;
@@ -1148,6 +1136,22 @@ body {
     background: var(--accent-12);
     overflow: hidden;
 }
+/* FIX B-H1: splash-fallback — extracted from inline styles */
+#nvx-splash-fallback {
+    display: none;
+    width: 80px; height: 80px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--accent-30), rgba(154, 143, 223, 0.15));
+    border: 1px solid var(--accent-30);
+    align-items: center; justify-content: center;
+}
+#nvx-splash-fallback i {
+    font-size: 32px; color: var(--accent-bright);
+}
+/* FIX B-H2: userInitial icon — extracted from inline styles */
+#userInitial i {
+    font-size: 18px; color: rgba(255, 255, 255, 0.6);
+}
 #nvx-splash-bar {
     height: 100%; width: 0%;
     background: linear-gradient(90deg, var(--accent), var(--accent-bright));
@@ -1160,6 +1164,37 @@ body {
     from { width: 0%; }
     to   { width: 100%; }
 }
+
+/* ═══════════════════════════════════════
+   LOADING OVERLAY (moved from JS inject)
+═══════════════════════════════════════ */
+@keyframes loading-spin { to { transform: rotate(360deg); } }
+@keyframes loading-pulse { 0%,100%{opacity:0.6;} 50%{opacity:1;} }
+#loading-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    background: rgba(10, 14, 39, 0.75);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 16px; pointer-events: all;
+    opacity: 0; transition: opacity 0.25s ease;
+    backdrop-filter: blur(4px);
+}
+#loading-overlay.visible { opacity: 1; }
+#loading-overlay .lo-spinner {
+    width: 52px; height: 52px;
+    border: 3px solid var(--accent-15);
+    border-top-color: var(--accent-bright);
+    border-radius: 50%;
+    animation: loading-spin 0.8s linear infinite;
+    will-change: transform;
+}
+#loading-overlay .lo-msg {
+    color: #c8c2f0; font-size: 14px; font-weight: 500;
+    letter-spacing: 0.3px; text-align: center;
+    max-width: 220px; line-height: 1.5;
+    animation: loading-pulse 2s ease-in-out infinite;
+    font-family: var(--font-body);
+}
 </style>
 </head>
 <body>
@@ -1167,9 +1202,9 @@ body {
 <!-- ═══════ SPLASH SCREEN ═══════ -->
 <div id="nvx-splash">
   <div id="nvx-splash-inner">
-    <img id="nvx-splash-logo" src="https://i.ibb.co/JWfM8R2f/logo.png" alt="NVX VPN" onerror="this.style.display='none';document.getElementById('nvx-splash-fallback').style.display='flex';">
-    <div id="nvx-splash-fallback" style="display:none;width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,var(--accent-30),rgba(154,143,223,0.15));border:1px solid var(--accent-30);align-items:center;justify-content:center;">
-      <i class="fas fa-shield-alt" style="font-size:32px;color:var(--accent-bright);"></i>
+    <img id="nvx-splash-logo" src="https://i.ibb.co/JWfM8R2f/logo.png" alt="NVX VPN">
+    <div id="nvx-splash-fallback">
+      <i class="fas fa-shield-alt"></i>
     </div>
     <div id="nvx-splash-bar-wrap">
       <div id="nvx-splash-bar"></div>
@@ -1192,7 +1227,7 @@ body {
     <div class="user-info">
       <div class="avatar" id="avatarContainer">
         <img id="avatarImage" loading="lazy">
-        <span id="userInitial"><i class="fas fa-user" style="font-size:18px;color:rgba(255,255,255,0.6);"></i></span>
+        <span id="userInitial"><i class="fas fa-user"></i></span>
       </div>
       <div class="user-details">
         <span class="user-name" id="userName">Пользователь</span>
@@ -1418,7 +1453,9 @@ const API = {
                 clearTimeout(timeoutId);
                 if (!resp.ok) {
                     const errBody = await resp.json().catch(() => ({}));
-                    throw new Error(errBody.message || `HTTP ${resp.status}`);
+                    const err = new Error(errBody.message || `HTTP ${resp.status}`);
+                    err.status = resp.status;
+                    throw err;
                 }
                 hideLoading();
                 return await resp.json();
@@ -1426,7 +1463,7 @@ const API = {
                 clearTimeout(timeoutId);
                 lastErr = err;
                 // Don't retry on client errors (4xx) or abort
-                if (err.name === 'AbortError' || (err.message && /^HTTP 4\d\d$/.test(err.message))) {
+                if (err.name === 'AbortError' || (err.status && err.status >= 400 && err.status < 500)) {
                     break;
                 }
                 if (attempt < maxRetries) {
@@ -2311,6 +2348,20 @@ const FAQ_ITEMS = [
     ['fa-globe',                 'Сколько серверов и в каких странах?',                 'Сеть охватывает <strong>9+ стран</strong>: LV, NL, RU, US, PL, KZ, SE, TR, UA. Список постоянно расширяется.'],
 ];
 
+/* ═══════════════════════════════════════
+   FAQ SANITIZER (whitelist: strong, em, code)
+═══════════════════════════════════════ */
+function sanitizeFaqHtml(html) {
+    // Allow only <strong>, <em>, <code> and their closing tags
+    return String(html)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/&lt;\/?(strong|em|code)(\s[^&;]*)?&gt;/gi, function(match) {
+            return match.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+        });
+}
+
 function renderSupport() {
     contentEl.innerHTML = `
         <div class="section-title anim-title">Служба поддержки</div>
@@ -2331,7 +2382,7 @@ function renderSupport() {
                         <span class="faq-question">${q}</span>
                         <i class="fas fa-chevron-down faq-chevron"></i>
                     </div>
-                    <div class="faq-body"><p>${a}</p></div>
+                    <div class="faq-body"><p>${sanitizeFaqHtml(a)}</p></div>
                 </div>`).join('')}
             </div>
         </div>
@@ -2426,44 +2477,8 @@ function initApp() {
 }
 
 /* ═══════════════════════════════════════
-   LOADING OVERLAY
+   LOADING OVERLAY (styles in main <style>)
 ═══════════════════════════════════════ */
-(function _injectLoadingStyles() {
-    if (document.getElementById('loading-overlay-styles')) return;
-    const s = document.createElement('style');
-    s.id = 'loading-overlay-styles';
-    s.textContent = `
-        @keyframes loading-spin { to { transform: rotate(360deg); } }
-        @keyframes loading-pulse { 0%,100%{opacity:0.6;} 50%{opacity:1;} }
-        #loading-overlay {
-            position: fixed; inset: 0; z-index: 9999;
-            background: rgba(10, 14, 39, 0.75);
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            gap: 16px; pointer-events: all;
-            opacity: 0; transition: opacity 0.25s ease;
-            backdrop-filter: blur(4px);
-        }
-        #loading-overlay.visible { opacity: 1; }
-        #loading-overlay .lo-spinner {
-            width: 52px; height: 52px;
-            border: 3px solid var(--accent-15);
-            border-top-color: var(--accent-bright);
-            border-radius: 50%;
-            animation: loading-spin 0.8s linear infinite;
-            will-change: transform;
-        }
-        #loading-overlay .lo-msg {
-            color: #c8c2f0; font-size: 14px; font-weight: 500;
-            letter-spacing: 0.3px; text-align: center;
-            max-width: 220px; line-height: 1.5;
-            animation: loading-pulse 2s ease-in-out infinite;
-            font-family: var(--font-body);
-        }
-    `;
-    document.head.appendChild(s);
-})();
-
 function showLoading(message = 'Загрузка...') {
     let overlay = document.getElementById('loading-overlay');
     if (!overlay) {
@@ -2499,6 +2514,20 @@ function _hideSplash() {
         setTimeout(() => { splash.style.display = 'none'; }, 500);
     }
 }
+
+/* ═══════════════════════════════════════
+   SPLASH LOGO ERROR HANDLER (replaces inline onerror)
+═══════════════════════════════════════ */
+(function _initSplashErrorHandler() {
+    const logo = document.getElementById('nvx-splash-logo');
+    const fallback = document.getElementById('nvx-splash-fallback');
+    if (logo && fallback) {
+        logo.addEventListener('error', function() {
+            logo.style.display = 'none';
+            fallback.style.display = 'flex';
+        });
+    }
+})();
 
 // FIX v3-14: Splash waits for BOTH initApp completion AND splash animation (1.55s)
 const _splashMinTime = new Promise(r => setTimeout(r, 1550));
