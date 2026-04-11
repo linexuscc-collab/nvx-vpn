@@ -42,7 +42,6 @@
     --accent-glow: var(--accent-12);
     --accent-border: var(--accent-20);
     --danger: #ff6b6b;
-    --warning: #ffa502;
     /* Opacity variants for accent color */
     --accent-05: rgba(122, 111, 191, 0.05);
     --accent-06: rgba(122, 111, 191, 0.06);
@@ -248,6 +247,7 @@ body {
     -webkit-backdrop-filter: blur(10px);
     transition: var(--transition);
     cursor: default;
+    transform: translateZ(0);
 }
 .header:hover {
     transform: translateY(-2px) translateZ(0);
@@ -358,22 +358,6 @@ body {
     box-shadow: var(--card-shadow-hover);
 }
 
-/* FIX: Force GPU layers on all backdrop-filter elements that need hover */
-.tariff-card, .topup-method, .stat-card, .ref-link,
-.promo-section, .connect-help-card, .header, .faq,
-.support-card, .subscription-card {
-    transform: translateZ(0);
-}
-.tariff-card:hover { transform: translateY(-2px) translateZ(0); }
-.topup-method:hover { transform: translateX(3px) translateZ(0); }
-.stat-card:hover { transform: translateY(-2px) translateZ(0); }
-.ref-link:hover { transform: translateY(-2px) translateZ(0); }
-.promo-section:hover { transform: translateY(-2px) translateZ(0); }
-.connect-help-card:hover { transform: translateY(-1px) translateZ(0); }
-.header:hover { transform: translateY(-2px) translateZ(0); }
-.faq:hover { transform: translateZ(0); }
-.support-card:hover { transform: translateY(-2px) translateZ(0); }
-.subscription-card:hover { transform: translateY(-2px) translateZ(0); }
 
 /* ═══════════════════════════════════════
    SUBSCRIPTION CARD
@@ -431,10 +415,11 @@ body {
     border-radius: 14px;
     cursor: pointer;
     transition: var(--transition);
+    transform: translateZ(0);
 }
 .connect-help-card:hover {
     border-color: var(--accent-30);
-    transform: translateY(-1px);
+    transform: translateY(-1px) translateZ(0);
     background: rgba(25, 32, 58, 0.4);
 }
 .connect-help-icon {
@@ -550,11 +535,12 @@ body {
     border-radius: 18px; backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     display: flex; flex-direction: column; gap: 9px;
+    transform: translateZ(0);
 }
 .tariff-card:hover {
     background: rgba(30, 40, 65, 0.35);
     border-color: var(--card-border-hover);
-    transform: translateY(-2px);
+    transform: translateY(-2px) translateZ(0);
     box-shadow: var(--card-shadow-hover);
 }
 .tariff-card-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
@@ -621,9 +607,10 @@ body {
     backdrop-filter: blur(8px);
     display: flex; flex-direction: column; align-items: center; gap: 4px;
     cursor: default;
+    transform: translateZ(0);
 }
 .stat-card:hover {
-    transform: translateY(-2px);
+    transform: translateY(-2px) translateZ(0);
     border-color: var(--card-border-hover);
     background: rgba(25, 32, 58, 0.35);
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
@@ -638,9 +625,10 @@ body {
     background: rgba(20, 25, 45, 0.2); border: 1px solid var(--card-border);
     border-radius: 18px; backdrop-filter: blur(8px);
     cursor: default;
+    transform: translateZ(0);
 }
 .ref-link:hover {
-    transform: translateY(-2px);
+    transform: translateY(-2px) translateZ(0);
     border-color: var(--card-border-hover);
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
 }
@@ -681,6 +669,7 @@ body {
     transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
     cursor: pointer; position: relative; overflow: hidden;
     backdrop-filter: blur(8px); min-height: 48px; margin-bottom: 8px;
+    transform: translateZ(0);
 }
 .topup-method::after {
     content: ''; position: absolute; left: 0; top: 0;
@@ -692,7 +681,7 @@ body {
 .topup-method:hover {
     border-color: var(--accent-30);
     background: rgba(30, 40, 60, 0.35);
-    transform: translateX(3px);
+    transform: translateX(3px) translateZ(0);
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
 }
 .topup-method:hover::after { transform: scaleY(1); }
@@ -713,9 +702,10 @@ body {
     border-radius: 18px; padding: 14px; margin-bottom: 14px;
     transition: var(--transition-fast);
     cursor: default;
+    transform: translateZ(0);
 }
 .promo-section:hover {
-    transform: translateY(-2px);
+    transform: translateY(-2px) translateZ(0);
     border-color: var(--card-border-hover);
     background: var(--accent-glow);
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
@@ -747,9 +737,10 @@ body {
     background: rgba(20, 25, 45, 0.2); border: 1px solid var(--card-border);
     border-radius: 18px; backdrop-filter: blur(8px);
     cursor: default;
+    transform: translateZ(0);
 }
 .support-card:hover {
-    transform: translateY(-2px);
+    transform: translateY(-2px) translateZ(0);
     border-color: var(--card-border-hover);
     background: rgba(25, 32, 58, 0.3);
     box-shadow: var(--card-shadow-hover);
@@ -769,6 +760,7 @@ body {
     background: rgba(20, 25, 45, 0.2); border: 1px solid var(--card-border);
     border-radius: 18px; backdrop-filter: blur(8px); overflow: hidden;
     cursor: default;
+    transform: translateZ(0);
 }
 .faq:hover {
     border-color: var(--accent-30);
@@ -1243,11 +1235,11 @@ body {
   <main class="content" id="content"></main>
 
   <nav class="bottom-nav" id="bottomNav">
-    <button type="button" class="nav-item active" data-tab="home"><i class="fas fa-home"></i><span>Главная</span></button>
-    <button type="button" class="nav-item" data-tab="tariffs"><i class="fas fa-tags"></i><span>Тарифы</span></button>
-    <button type="button" class="nav-item" data-tab="referral"><i class="fas fa-users"></i><span>Рефералы</span></button>
-    <button type="button" class="nav-item" data-tab="topup"><i class="fas fa-wallet"></i><span>Пополнить</span></button>
-    <button type="button" class="nav-item" data-tab="support"><i class="fas fa-headset"></i><span>Поддержка</span></button>
+    <button type="button" class="nav-item active" data-tab="home" aria-label="Главная"><i class="fas fa-home"></i><span>Главная</span></button>
+    <button type="button" class="nav-item" data-tab="tariffs" aria-label="Тарифы"><i class="fas fa-tags"></i><span>Тарифы</span></button>
+    <button type="button" class="nav-item" data-tab="referral" aria-label="Рефералы"><i class="fas fa-users"></i><span>Рефералы</span></button>
+    <button type="button" class="nav-item" data-tab="topup" aria-label="Пополнить"><i class="fas fa-wallet"></i><span>Пополнить</span></button>
+    <button type="button" class="nav-item" data-tab="support" aria-label="Поддержка"><i class="fas fa-headset"></i><span>Поддержка</span></button>
   </nav>
 </div>
 </div>
@@ -1322,16 +1314,15 @@ const HapticFeedback = {
 ═══════════════════════════════════════ */
 const clickTimestamps = new Map();
 const CLICK_TTL_MS = 10000;
-// FIX v3 #8: Periodic cleanup every 5 seconds
-setInterval(() => {
-    const now = Date.now();
-    for (const [key, ts] of clickTimestamps) {
-        if (now - ts > CLICK_TTL_MS) clickTimestamps.delete(key);
-    }
-}, 5000);
 
 function canProceed(actionId) {
     const now = Date.now();
+    // Inline cleanup — remove expired entries when map grows
+    if (clickTimestamps.size > 10) {
+        for (const [key, ts] of clickTimestamps) {
+            if (now - ts > CLICK_TTL_MS) clickTimestamps.delete(key);
+        }
+    }
     const lastClick = clickTimestamps.get(actionId) || 0;
     if (now - lastClick < DOUBLE_CLICK_PREVENT_MS) {
         return false;
@@ -1384,6 +1375,14 @@ const AppData = {
         devicesTotal: 32,
         devicesPerLoc: 1,
     },
+    trial: {
+        trafficGb: 48,
+        trafficPerLocGb: 1.5,
+        days: 1,
+        devices: 32,
+        devicesPerLoc: 1,
+        cooldownDays: 30,
+    },
     referral: {
         total: 0,
         earned: 0,
@@ -1404,22 +1403,6 @@ const AppData = {
     ],
     get nodesCount() { return this.locations.length; },
 };
-
-// FIX: fetchAppData — готов к замене на реальные API-вызовы
-async function fetchAppData() {
-    // TODO: Replace with real API calls when backend is ready:
-    // const [user, sub, tariffs, referral] = await Promise.all([
-    //     API.getUser(),
-    //     API.getSubscription(),
-    //     API._request('/tariffs'),
-    //     API.getReferralStats(),
-    // ]);
-    // Object.assign(AppData.user, user);
-    // Object.assign(AppData.subscription, sub);
-    // AppData.tariffs = tariffs;
-    // Object.assign(AppData.referral, referral);
-    return AppData;
-}
 
 /* ═══════════════════════════════════════
    API LAYER — готов к подключению backend
@@ -1666,6 +1649,7 @@ function hideModal() {
             if (ok) {
                 HapticFeedback.buttonLight();
                 modal.classList.remove('show');
+                modalContent.style.transform = '';
                 modalHasInput = false;
             }
         });
@@ -1673,6 +1657,7 @@ function hideModal() {
     }
     HapticFeedback.buttonLight();
     modal.classList.remove('show');
+    modalContent.style.transform = '';
     modalHasInput = false;
 }
 
@@ -1699,13 +1684,14 @@ function onModalDragStart(e) {
     modalIsDragging = true;
     modalContent.style.transition = 'none';
     document.addEventListener('mousemove', onModalDragMove);
-    document.addEventListener('touchmove', onModalDragMove, { passive: true });
+    document.addEventListener('touchmove', onModalDragMove, { passive: false });
     document.addEventListener('mouseup', onModalDragEnd);
     document.addEventListener('touchend', onModalDragEnd);
 }
 
 function onModalDragMove(e) {
     if (!modalIsDragging) return;
+    if (e.cancelable) e.preventDefault();
     const touch = e.touches?.[0] || e;
     modalDragCurrentY = touch.clientY - modalDragStartY;
     if (modalDragCurrentY > 0) {
@@ -1836,10 +1822,62 @@ function invalidateTabCache(...tabs) {
     tabs.forEach(t => tabCache.delete(t));
 }
 
+function _renderTabError(tab, message) {
+    console.error(`[NVX] Ошибка вкладки "${tab}":`, message);
+    contentEl.innerHTML = `
+        <div class="error-message">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div class="error-message-title">Ошибка загрузки</div>
+            <div>${escapeHtml(message || 'Попробуйте ещё раз')}</div>
+            <button type="button" class="btn primary error-message-action" id="retryTab">
+                <i class="fas fa-redo"></i> Повторить
+            </button>
+        </div>`;
+    const retryBtn = $('#retryTab');
+    if (retryBtn) retryBtn.addEventListener('click', () => {
+        invalidateTabCache(tab);
+        showTab(tab);
+    });
+}
+
+function _renderTabContent(tab) {
+    const cached = tabCache.get(tab);
+    if (cached) {
+        contentEl.innerHTML = cached.html;
+        registerAnimCleanup();
+        requestAnimationFrame(() => {
+            contentEl.scrollTop = cached.scrollTop || 0;
+        });
+    } else {
+        const renderer = TAB_RENDERERS[tab];
+        if (renderer) {
+            try {
+                const result = renderer();
+                if (result && typeof result.then === 'function') {
+                    contentEl.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
+                    result.then(() => {
+                        tabCache.set(tab, { html: contentEl.innerHTML, scrollTop: 0 });
+                    }).catch(err => _renderTabError(tab, err.message));
+                } else {
+                    tabCache.set(tab, { html: contentEl.innerHTML, scrollTop: 0 });
+                }
+            } catch (err) {
+                _renderTabError(tab, err.message);
+            }
+        }
+    }
+
+    requestAnimationFrame(() => {
+        contentEl.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
+        contentEl.style.opacity = '1';
+        contentEl.style.transform = 'translateY(0)';
+        setTimeout(() => { contentEl.style.transition = ''; }, 250);
+    });
+}
+
 function showTab(tab) {
     if (tabTimer) { clearTimeout(tabTimer); tabTimer = null; }
     if (pendingRender) { cancelAnimationFrame(pendingRender); pendingRender = null; }
-    // FIX N3: Cancel pending animation cleanup to prevent race condition
     if (cleanupTimer) { clearTimeout(cleanupTimer); cleanupTimer = null; }
 
     contentEl.style.opacity = '0';
@@ -1847,77 +1885,15 @@ function showTab(tab) {
     contentEl.style.transition = 'none';
     contentEl.innerHTML = '';
 
-    tabTimer = setTimeout(() => {
-        tabTimer = null;
-
-        const cached = tabCache.get(tab);
-        if (cached) {
-            contentEl.innerHTML = cached.html;
-            // FIX: Re-run animation cleanup so hover is enabled after animations finish
-            registerAnimCleanup();
-            // FIX v3 #7: Restore scrollTop via rAF to ensure layout is ready
-            requestAnimationFrame(() => {
-                contentEl.scrollTop = cached.scrollTop || 0;
-            });
-        } else {
-            const renderer = TAB_RENDERERS[tab];
-            if (renderer) {
-                try {
-                    // FIX N10: Support async renderers for backend integration
-                    const result = renderer();
-                    if (result && typeof result.then === 'function') {
-                        // Show skeleton while async renderer loads
-                        contentEl.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
-                        result.then(() => {
-                            tabCache.set(tab, { html: contentEl.innerHTML, scrollTop: 0 });
-                        }).catch(err => {
-                            console.error(`[NVX] Ошибка загрузки вкладки "${tab}":`, err);
-                            contentEl.innerHTML = `
-                                <div class="error-message">
-                                    <i class="fas fa-exclamation-triangle"></i>
-                                    <div class="error-message-title">Ошибка загрузки</div>
-                                    <div>${escapeHtml(err.message || 'Попробуйте ещё раз')}</div>
-                                    <button type="button" class="btn primary error-message-action" id="retryTab">
-                                        <i class="fas fa-redo"></i> Повторить
-                                    </button>
-                                </div>`;
-                            const retryBtn = $('#retryTab');
-                            if (retryBtn) retryBtn.addEventListener('click', () => {
-                                invalidateTabCache(tab);
-                                showTab(tab);
-                            });
-                        });
-                    } else {
-                        tabCache.set(tab, { html: contentEl.innerHTML, scrollTop: 0 });
-                    }
-                }
-                catch (err) {
-                    console.error(`[NVX] Ошибка рендера вкладки "${tab}":`, err);
-                    contentEl.innerHTML = `
-                        <div class="error-message">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <div class="error-message-title">Ошибка загрузки</div>
-                            <div>Попробуйте ещё раз</div>
-                            <button type="button" class="btn primary error-message-action" id="retryTab">
-                                <i class="fas fa-redo"></i> Повторить
-                            </button>
-                        </div>`;
-                    const retryBtn = $('#retryTab');
-                    if (retryBtn) retryBtn.addEventListener('click', () => {
-                        invalidateTabCache(tab);
-                        showTab(tab);
-                    });
-                }
-            }
-        }
-
-        requestAnimationFrame(() => {
-            contentEl.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
-            contentEl.style.opacity = '1';
-            contentEl.style.transform = 'translateY(0)';
-            setTimeout(() => { contentEl.style.transition = ''; }, 250);
-        });
-    }, SKELETON_DELAY_MS);
+    // Cached tabs render instantly; fresh renders get skeleton delay
+    if (tabCache.has(tab)) {
+        _renderTabContent(tab);
+    } else {
+        tabTimer = setTimeout(() => {
+            tabTimer = null;
+            _renderTabContent(tab);
+        }, SKELETON_DELAY_MS);
+    }
 }
 
 /* ═══════════════════════════════════════
@@ -2001,7 +1977,7 @@ contentEl.addEventListener('click', e => {
         AppData.subscription.active = true;
         invalidateTabCache();
         showToast('Тестовая подписка активирована', 'success');
-        renderHome();
+        showTab('home');
         return;
     }
 
@@ -2049,14 +2025,15 @@ function renderHome() {
         `;
 
         if (subscription.trialAvailable) {
+            const tr = AppData.trial;
             $('#trialBlock').innerHTML = `
                 <div class="subscription-card glass hoverable anim-left anim-left-d2">
                     <div class="title"><i class="fas fa-flask"></i> Тестовый период</div>
-                    <div class="detail"><i class="fas fa-database"></i> Трафик <span class="value">48 ГБ <span class="text-muted">(1.5 ГБ на локацию)</span></span></div>
-                    <div class="detail"><i class="fas fa-hourglass-end"></i> Длительность <span class="value">1  день</span></div>
-                    <div class="detail"><i class="fas fa-mobile-alt"></i> Устройств <span class="value">32 <span class="text-muted">(1 на локацию)</span></span></div>
+                    <div class="detail"><i class="fas fa-database"></i> Трафик <span class="value">${safeInt(tr.trafficGb)} ГБ <span class="text-muted">(${safeFloat(tr.trafficPerLocGb)} ГБ на локацию)</span></span></div>
+                    <div class="detail"><i class="fas fa-hourglass-end"></i> Длительность <span class="value">${safeInt(tr.days)} день</span></div>
+                    <div class="detail"><i class="fas fa-mobile-alt"></i> Устройств <span class="value">${safeInt(tr.devices)} <span class="text-muted">(${safeInt(tr.devicesPerLoc)} на локацию)</span></span></div>
                     <div class="detail"><i class="fas fa-globe"></i> Локации <span class="value">Все доступные</span></div>
-                    <div class="detail"><i class="fas fa-info-circle"></i> Условие <span class="value">1 раз в 30 дней</span></div>
+                    <div class="detail"><i class="fas fa-info-circle"></i> Условие <span class="value">1 раз в ${safeInt(tr.cooldownDays)} дней</span></div>
                     <button type="button" class="btn primary full-width rounded trial-btn-margin" id="trialBtn">
                         <i class="fas fa-bolt"></i> Активировать бесплатно
                     </button>
