@@ -19,7 +19,6 @@
    CSS VARIABLES
 ═══════════════════════════════════════ */
 :root {
-    --bg-dark: #0a0e27;
     --bg-body: #1a1635;
     --accent: #7a6fbf;
     --accent-bright: #9a8fdf;
@@ -32,8 +31,9 @@
     --safe-bottom: env(safe-area-inset-bottom, 0px);
     --safe-left: env(safe-area-inset-left, 0px);
     --safe-right: env(safe-area-inset-right, 0px);
-    --transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    --transition-fast: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --transition: transform 0.3s var(--ease-bounce), background 0.3s var(--ease-bounce), border-color 0.3s var(--ease-bounce), box-shadow 0.3s var(--ease-bounce), color 0.3s var(--ease-bounce);
+    --transition-fast: transform 0.18s var(--ease-bounce), background 0.18s var(--ease-bounce), border-color 0.18s var(--ease-bounce), box-shadow 0.18s var(--ease-bounce), color 0.18s var(--ease-bounce);
     --glass-border-hover: var(--accent-40);
     --card-bg: rgba(20, 25, 45, 0.25);
     --card-border: rgba(70, 80, 110, 0.15);
@@ -156,6 +156,7 @@ body {
     .space-orb { display: none !important; }
     .space-stars, #space-bg::before { animation: none !important; }
     .support-icon { animation: none !important; }
+    .section-title::after { animation: none !important; }
 }
 /* Hide extra orbs on small/low-end screens to save GPU */
 @media (max-width: 400px) {
@@ -165,8 +166,9 @@ body {
 @media (max-width: 600px) {
     .space-orb-3 { display: none; }
 }
-/* Optimize backdrop-filter for mobile devices to save GPU */
-@media (max-width: 768px) {
+/* FIX v9: Hide orbs + disable backdrop-filter on tablets */
+@media (max-width: 1024px) {
+    .space-orb-3, .space-orb-4 { display: none; }
     .glass, .subscription-card, .ref-link, .promo-section,
     .support-card, .faq, .stat-card, .topup-method,
     .header, .bottom-nav, .modal-content, .modal-overlay,
@@ -174,6 +176,10 @@ body {
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
     }
+}
+@media (hover: none) {
+    .space-orb { animation-duration: 60s; }
+    #space-bg::before { animation: none; }
 }
 
 /* ═══════════════════════════════════════
@@ -1232,19 +1238,19 @@ body {
     </div>
   </header>
 
-  <main class="content" id="content"></main>
+  <main class="content" id="content" role="tabpanel"></main>
 
-  <nav class="bottom-nav" id="bottomNav">
-    <button type="button" class="nav-item active" data-tab="home" aria-label="Главная"><i class="fas fa-home"></i><span>Главная</span></button>
-    <button type="button" class="nav-item" data-tab="tariffs" aria-label="Тарифы"><i class="fas fa-tags"></i><span>Тарифы</span></button>
-    <button type="button" class="nav-item" data-tab="referral" aria-label="Рефералы"><i class="fas fa-users"></i><span>Рефералы</span></button>
-    <button type="button" class="nav-item" data-tab="topup" aria-label="Пополнить"><i class="fas fa-wallet"></i><span>Пополнить</span></button>
-    <button type="button" class="nav-item" data-tab="support" aria-label="Поддержка"><i class="fas fa-headset"></i><span>Поддержка</span></button>
+  <nav class="bottom-nav" id="bottomNav" role="tablist">
+    <button type="button" class="nav-item active" data-tab="home" role="tab" aria-selected="true" aria-label="Главная"><i class="fas fa-home"></i><span>Главная</span></button>
+    <button type="button" class="nav-item" data-tab="tariffs" role="tab" aria-selected="false" aria-label="Тарифы"><i class="fas fa-tags"></i><span>Тарифы</span></button>
+    <button type="button" class="nav-item" data-tab="referral" role="tab" aria-selected="false" aria-label="Рефералы"><i class="fas fa-users"></i><span>Рефералы</span></button>
+    <button type="button" class="nav-item" data-tab="topup" role="tab" aria-selected="false" aria-label="Пополнить"><i class="fas fa-wallet"></i><span>Пополнить</span></button>
+    <button type="button" class="nav-item" data-tab="support" role="tab" aria-selected="false" aria-label="Поддержка"><i class="fas fa-headset"></i><span>Поддержка</span></button>
   </nav>
 </div>
 </div>
 
-<div id="custom-toast" class="toast">
+<div id="custom-toast" class="toast" role="status" aria-live="polite" aria-atomic="true">
   <i class="fas fa-check-circle" id="toast-icon"></i>
   <span id="toast-message"></span>
 </div>
@@ -1402,6 +1408,14 @@ const AppData = {
         { code: 'UA', flag: '🇺🇦' },
     ],
     get nodesCount() { return this.locations.length; },
+    faqItems: [
+        ['fa-sync-alt',              'Как продлить подписку?',                             'Перейдите на главную вкладку и нажмите <strong>«Продлить»</strong>. Выберите нужное количество дней. Средства списываются с баланса мгновенно.'],
+        ['fa-mobile-alt',            'Как подключить дополнительное устройство?',           'На главной вкладке нажмите <strong>«Устройства»</strong> и выберите количество новых слотов. Один слот — ещё одно одновременное подключение.'],
+        ['fa-exclamation-triangle',  'VPN не подключается или работает нестабильно',        'Убедитесь, что подписка активна. Переподключитесь или обновите конфигурацию. Попробуйте сменить сервер. Если проблема сохраняется — обратитесь в поддержку.'],
+        ['fa-wallet',                'Какие способы пополнения баланса доступны?',          'Поддерживаются: <strong>Telegram Stars</strong>, <strong>CryptoBot</strong> (USDT, TON), <strong>Lolz Market</strong>, <strong>СБП</strong>.'],
+        ['fa-flask',                 'Как получить тестовый период?',                       'Тестовая подписка — <strong>один раз в 30 дней</strong>: 1 день, 1.5 ГБ на локацию, 1 устройство на локацию. Баннер появится на главной вкладке.'],
+        ['fa-globe',                 'Сколько серверов и в каких странах?',                 'Сеть охватывает <strong>9+ стран</strong>: LV, NL, RU, US, PL, KZ, SE, TR, UA. Список постоянно расширяется.'],
+    ],
 };
 
 /* ═══════════════════════════════════════
@@ -1632,6 +1646,23 @@ function showConfirmDialog(message) {
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay) cleanup(false);
         });
+
+        // Focus trap + keyboard handling
+        overlay.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') { cleanup(false); return; }
+            if (e.key !== 'Tab') return;
+            const btns = overlay.querySelectorAll('button');
+            if (!btns.length) return;
+            const first = btns[0], last = btns[btns.length - 1];
+            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        });
+
+        // Auto-focus OK button
+        requestAnimationFrame(() => {
+            const okBtn = $('#confirmOk', overlay);
+            if (okBtn) okBtn.focus();
+        });
     });
 }
 
@@ -1673,7 +1704,6 @@ function showModal() {
 modal?.setAttribute('role', 'dialog');
 modal?.setAttribute('aria-modal', 'true');
 modal?.setAttribute('aria-labelledby', 'modal-title');
-modal?.setAttribute('aria-describedby', 'modal-body');
 
 const modalContent = $('.modal-content');
 const modalDragBar = $('.modal-drag-bar');
@@ -1720,7 +1750,7 @@ function onModalDragEnd() {
 }
 
 modalDragBar?.addEventListener('mousedown', onModalDragStart);
-modalDragBar?.addEventListener('touchstart', onModalDragStart, { passive: true });
+modalDragBar?.addEventListener('touchstart', onModalDragStart, { passive: false });
 
 modalClose?.addEventListener('click', hideModal);
 modal?.addEventListener('click', e => {
@@ -1768,7 +1798,7 @@ function switchTab(tab) {
     $$('.nav-item').forEach(b => {
         const isActive = b.dataset.tab === tab;
         b.classList.toggle('active', isActive);
-        b.setAttribute('aria-current', isActive ? 'page' : 'false');
+        b.setAttribute('aria-selected', String(isActive));
     });
     currentTab = tab;
     showTab(tab);
@@ -1805,6 +1835,14 @@ $$('.nav-item').forEach(btn => {
 /* ═══════════════════════════════════════
    TAB ROUTER
 ═══════════════════════════════════════ */
+const TAB_SKELETONS = {
+    home:     '<div class="skeleton" style="height:36px;width:60%;margin-bottom:14px"></div><div class="skeleton" style="height:180px;border-radius:20px"></div><div class="skeleton" style="height:140px;border-radius:20px"></div>',
+    tariffs:  '<div class="skeleton" style="height:36px;width:50%;margin-bottom:14px"></div><div class="skeleton" style="height:160px;border-radius:18px"></div><div class="skeleton" style="height:160px;border-radius:18px"></div><div class="skeleton" style="height:160px;border-radius:18px"></div>',
+    referral: '<div class="skeleton" style="height:100px;border-radius:18px;margin-bottom:12px"></div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px"><div class="skeleton" style="height:80px"></div><div class="skeleton" style="height:80px"></div><div class="skeleton" style="height:80px"></div></div><div class="skeleton" style="height:70px;border-radius:18px"></div>',
+    topup:    '<div class="skeleton" style="height:36px;width:55%;margin-bottom:14px"></div><div class="skeleton" style="height:80px;border-radius:18px"></div><div class="skeleton" style="height:50px"></div><div class="skeleton" style="height:50px"></div><div class="skeleton" style="height:50px"></div>',
+    support:  '<div class="skeleton" style="height:36px;width:55%;margin-bottom:14px"></div><div class="skeleton" style="height:120px;border-radius:18px"></div><div class="skeleton" style="height:200px;border-radius:18px"></div>',
+};
+
 const TAB_RENDERERS = {
     home:     renderHome,
     tariffs:  renderTariffs,
@@ -1854,7 +1892,7 @@ function _renderTabContent(tab) {
             try {
                 const result = renderer();
                 if (result && typeof result.then === 'function') {
-                    contentEl.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
+                    contentEl.innerHTML = TAB_SKELETONS[tab] || '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
                     result.then(() => {
                         tabCache.set(tab, { html: contentEl.innerHTML, scrollTop: 0 });
                     }).catch(err => _renderTabError(tab, err.message));
@@ -2316,26 +2354,20 @@ function renderTopUp() {
 /* ═══════════════════════════════════════
    RENDER: SUPPORT
 ═══════════════════════════════════════ */
-const FAQ_ITEMS = [
-    ['fa-sync-alt',              'Как продлить подписку?',                             'Перейдите на главную вкладку и нажмите <strong>«Продлить»</strong>. Выберите нужное количество дней. Средства списываются с баланса мгновенно.'],
-    ['fa-mobile-alt',            'Как подключить дополнительное устройство?',           'На главной вкладке нажмите <strong>«Устройства»</strong> и выберите количество новых слотов. Один слот — ещё одно одновременное подключение.'],
-    ['fa-exclamation-triangle',  'VPN не подключается или работает нестабильно',        'Убедитесь, что подписка активна. Переподключитесь или обновите конфигурацию. Попробуйте сменить сервер. Если проблема сохраняется — обратитесь в поддержку.'],
-    ['fa-wallet',                'Какие способы пополнения баланса доступны?',          'Поддерживаются: <strong>Telegram Stars</strong>, <strong>CryptoBot</strong> (USDT, TON), <strong>Lolz Market</strong>, <strong>СБП</strong>.'],
-    ['fa-flask',                 'Как получить тестовый период?',                       'Тестовая подписка — <strong>один раз в 30 дней</strong>: 1 день, 1.5 ГБ на локацию, 1 устройство на локацию. Баннер появится на главной вкладке.'],
-    ['fa-globe',                 'Сколько серверов и в каких странах?',                 'Сеть охватывает <strong>9+ стран</strong>: LV, NL, RU, US, PL, KZ, SE, TR, UA. Список постоянно расширяется.'],
-];
+/* FIX v9: FAQ_ITEMS moved to AppData.faqItems for unified data layer */
+const FAQ_ITEMS = AppData.faqItems;
 
 /* ═══════════════════════════════════════
    FAQ SANITIZER (whitelist: strong, em, code)
 ═══════════════════════════════════════ */
 function sanitizeFaqHtml(html) {
-    // Allow only <strong>, <em>, <code> and their closing tags
+    // Allow only <strong>, <em>, <code> and their closing tags — NO attributes allowed
     return String(html)
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
-        .replace(/&lt;\/?(strong|em|code)(\s[^&;]*)?&gt;/gi, function(match) {
-            return match.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+        .replace(/&lt;(\/?(strong|em|code))&gt;/gi, function(_, tag) {
+            return '<' + tag + '>';
         });
 }
 
@@ -2355,8 +2387,8 @@ function renderSupport() {
                 ${FAQ_ITEMS.map(([icon, q, a], i) => `
                 <div class="faq-item" data-i="${i}">
                     <div class="faq-row">
-                        <div class="faq-icon-wrap"><i class="fas ${icon}"></i></div>
-                        <span class="faq-question">${q}</span>
+                        <div class="faq-icon-wrap"><i class="fas ${escapeHtml(icon)}"></i></div>
+                        <span class="faq-question">${escapeHtml(q)}</span>
                         <i class="fas fa-chevron-down faq-chevron"></i>
                     </div>
                     <div class="faq-body"><p>${sanitizeFaqHtml(a)}</p></div>
