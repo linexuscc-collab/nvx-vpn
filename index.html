@@ -1789,12 +1789,6 @@ $('#balanceDisplay')?.addEventListener('click', () => {
    NAVIGATION
 ═══════════════════════════════════════ */
 function switchTab(tab) {
-    // FIX N5: Save scroll position for the OLD tab before switching
-    if (currentTab && contentEl.scrollTop > 0) {
-        const cached = tabCache.get(currentTab);
-        if (cached) cached.scrollTop = contentEl.scrollTop;
-    }
-
     $$('.nav-item').forEach(b => {
         const isActive = b.dataset.tab === tab;
         b.classList.toggle('active', isActive);
@@ -1884,7 +1878,7 @@ function _renderTabContent(tab) {
         contentEl.innerHTML = cached.html;
         registerAnimCleanup();
         requestAnimationFrame(() => {
-            contentEl.scrollTop = cached.scrollTop || 0;
+            contentEl.scrollTop = 0;
         });
     } else {
         const renderer = TAB_RENDERERS[tab];
