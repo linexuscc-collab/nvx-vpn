@@ -158,15 +158,7 @@ body {
     .support-icon { animation: none !important; }
     .section-title::after { animation: none !important; }
 }
-/* Hide extra orbs on small/low-end screens to save GPU */
-@media (max-width: 400px) {
-    .space-orb-3, .space-orb-4 { display: none; }
-}
-/* FIX v3 #22: Hide orb-3 on medium screens too */
-@media (max-width: 600px) {
-    .space-orb-3 { display: none; }
-}
-/* FIX v9: Hide orbs + disable backdrop-filter on tablets */
+/* FIX v5.5 #1: Consolidated media queries — 400px and 600px rules were absorbed by 1024px */
 @media (max-width: 1024px) {
     .space-orb-3, .space-orb-4 { display: none; }
     .glass, .subscription-card, .ref-link, .promo-section,
@@ -362,6 +354,7 @@ body {
     transform: translateY(-2px) translateZ(0);
     border-color: var(--card-border-hover);
     box-shadow: var(--card-shadow-hover);
+    background: rgba(25, 32, 58, 0.35);
 }
 
 
@@ -615,12 +608,7 @@ body {
     cursor: default;
     transform: translateZ(0);
 }
-.stat-card:hover {
-    transform: translateY(-2px) translateZ(0);
-    border-color: var(--card-border-hover);
-    background: rgba(25, 32, 58, 0.35);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
-}
+/* FIX v5.5 #2: stat-card hover unified via .hoverable class in HTML */
 .stat-icon { font-size: 20px; color: var(--accent-bright); }
 .stat-label { font-size: 9px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
 .stat-value { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--accent-bright); }
@@ -633,11 +621,7 @@ body {
     cursor: default;
     transform: translateZ(0);
 }
-.ref-link:hover {
-    transform: translateY(-2px) translateZ(0);
-    border-color: var(--card-border-hover);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
-}
+/* FIX v5.5 #2: ref-link hover unified via .hoverable class in HTML */
 .ref-link p { font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; font-weight: 600; }
 .ref-link-input {
     flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
@@ -745,12 +729,7 @@ body {
     cursor: default;
     transform: translateZ(0);
 }
-.support-card:hover {
-    transform: translateY(-2px) translateZ(0);
-    border-color: var(--card-border-hover);
-    background: rgba(25, 32, 58, 0.3);
-    box-shadow: var(--card-shadow-hover);
-}
+/* FIX v5.5 #2: support-card hover unified via .hoverable class in HTML */
 @keyframes float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-6px); }
@@ -833,7 +812,8 @@ body {
 .pay-method-summary-row { display: flex; justify-content: space-between; align-items: center; }
 .pay-method-summary-row span { font-size: 12px; color: var(--text-secondary); }
 .pay-method-summary-row b { color: var(--text-primary); }
-.pay-method-shortage { font-size: 14px !important; font-weight: 700; color: var(--accent-bright) !important; }
+/* FIX v5.5 #3: Removed !important — raised specificity instead */
+.pay-method-summary .pay-method-summary-row .pay-method-shortage { font-size: 14px; font-weight: 700; color: var(--accent-bright); }
 
 /* ═══════════════════════════════════════
    HOME — extracted inline styles
@@ -1241,11 +1221,11 @@ body {
   <main class="content" id="content" role="tabpanel"></main>
 
   <nav class="bottom-nav" id="bottomNav" role="tablist">
-    <button type="button" class="nav-item active" data-tab="home" role="tab" aria-selected="true" aria-label="Главная"><i class="fas fa-home"></i><span>Главная</span></button>
-    <button type="button" class="nav-item" data-tab="tariffs" role="tab" aria-selected="false" aria-label="Тарифы"><i class="fas fa-tags"></i><span>Тарифы</span></button>
-    <button type="button" class="nav-item" data-tab="referral" role="tab" aria-selected="false" aria-label="Рефералы"><i class="fas fa-users"></i><span>Рефералы</span></button>
-    <button type="button" class="nav-item" data-tab="topup" role="tab" aria-selected="false" aria-label="Пополнить"><i class="fas fa-wallet"></i><span>Пополнить</span></button>
-    <button type="button" class="nav-item" data-tab="support" role="tab" aria-selected="false" aria-label="Поддержка"><i class="fas fa-headset"></i><span>Поддержка</span></button>
+    <button type="button" class="nav-item active" data-tab="home" role="tab" aria-selected="true" aria-controls="content" aria-label="Главная"><i class="fas fa-home"></i><span>Главная</span></button>
+    <button type="button" class="nav-item" data-tab="tariffs" role="tab" aria-selected="false" aria-controls="content" aria-label="Тарифы"><i class="fas fa-tags"></i><span>Тарифы</span></button>
+    <button type="button" class="nav-item" data-tab="referral" role="tab" aria-selected="false" aria-controls="content" aria-label="Рефералы"><i class="fas fa-users"></i><span>Рефералы</span></button>
+    <button type="button" class="nav-item" data-tab="topup" role="tab" aria-selected="false" aria-controls="content" aria-label="Пополнить"><i class="fas fa-wallet"></i><span>Пополнить</span></button>
+    <button type="button" class="nav-item" data-tab="support" role="tab" aria-selected="false" aria-controls="content" aria-label="Поддержка"><i class="fas fa-headset"></i><span>Поддержка</span></button>
   </nav>
 </div>
 </div>
@@ -1258,10 +1238,10 @@ body {
 <div id="custom-modal" class="modal">
   <div class="modal-overlay"></div>
   <div class="modal-content">
-    <div class="modal-drag"><div class="modal-drag-bar"></div></div>
+    <div class="modal-drag" aria-hidden="true"><div class="modal-drag-bar"></div></div>
     <div class="modal-header">
       <h3 id="modal-title"></h3>
-      <button type="button" class="modal-close" id="modal-close"><i class="fas fa-times"></i></button>
+      <button type="button" class="modal-close" id="modal-close" aria-label="Закрыть"><i class="fas fa-times"></i></button>
     </div>
     <div id="modal-body"></div>
     <div id="modal-buttons" class="modal-buttons"></div>
@@ -1447,7 +1427,7 @@ const API = {
                         ...options.headers,
                     },
                 });
-                clearTimeout(timeoutId);
+                /* FIX v5.5 #12: clearTimeout moved to finally */
                 if (!resp.ok) {
                     const errBody = await resp.json().catch(() => ({}));
                     const err = new Error(errBody.message || `HTTP ${resp.status}`);
@@ -1457,7 +1437,6 @@ const API = {
                 hideLoading();
                 return await resp.json();
             } catch (err) {
-                clearTimeout(timeoutId);
                 lastErr = err;
                 // Don't retry on client errors (4xx) or abort
                 if (err.name === 'AbortError' || (err.status && err.status >= 400 && err.status < 500)) {
@@ -1468,6 +1447,8 @@ const API = {
                     await new Promise(r => setTimeout(r, delay));
                     continue;
                 }
+            } finally {
+                clearTimeout(timeoutId);
             }
         }
 
@@ -1541,17 +1522,49 @@ function escapeHtml(str) {
 }
 
 function safeInt(n) { return parseInt(n, 10) || 0; }
-function safeFloat(n) { return parseFloat(Number(n).toFixed(2)) || 0; }
+/* FIX v5.5 #13: Simplified — single conversion path */
+function safeFloat(n) { const v = Number(n); return Number.isFinite(v) ? Math.round(v * 100) / 100 : 0; }
 
 /* ═══════════════════════════════════════
    ANIMATION CLEANUP
 ═══════════════════════════════════════ */
+/* FIX v5.5 #8: Animation cleanup via animationend + fallback timer
+   Uses animationend for accuracy, keeps fallback timer as safety net */
 let cleanupTimer = null;
+let _animPendingCount = 0;
+
+function _markAnimDone(el) {
+    el.classList.add('anim-done');
+    el.removeEventListener('animationend', _onAnimEnd);
+}
+
+function _onAnimEnd(e) {
+    // Only react to our entrance animations, not child animations
+    if (e.target !== e.currentTarget) return;
+    _animPendingCount--;
+    _markAnimDone(e.currentTarget);
+    // If all done early, clear the fallback timer
+    if (_animPendingCount <= 0 && cleanupTimer) {
+        clearTimeout(cleanupTimer);
+        cleanupTimer = null;
+    }
+}
+
 function registerAnimCleanup() {
     if (cleanupTimer) clearTimeout(cleanupTimer);
+    const animEls = $$(ANIM_SELECTORS);
+    _animPendingCount = animEls.length;
+
+    animEls.forEach(el => {
+        el.removeEventListener('animationend', _onAnimEnd); // prevent duplicates
+        el.addEventListener('animationend', _onAnimEnd, { once: true });
+    });
+
+    // Fallback timer in case animationend never fires (e.g. display:none)
     cleanupTimer = setTimeout(() => {
-        $$(ANIM_SELECTORS).forEach(el => el.classList.add('anim-done'));
+        $$(ANIM_SELECTORS).forEach(el => _markAnimDone(el));
         cleanupTimer = null;
+        _animPendingCount = 0;
     }, ANIM_CLEANUP_MS);
 }
 
@@ -1708,11 +1721,21 @@ modal?.setAttribute('aria-labelledby', 'modal-title');
 const modalContent = $('.modal-content');
 const modalDragBar = $('.modal-drag-bar');
 
+/* FIX v5.5 #11: Centralized drag listener cleanup to prevent leaks */
+function _cleanupDragListeners() {
+    document.removeEventListener('mousemove', onModalDragMove);
+    document.removeEventListener('touchmove', onModalDragMove);
+    document.removeEventListener('mouseup', onModalDragEnd);
+    document.removeEventListener('touchend', onModalDragEnd);
+}
+
 function onModalDragStart(e) {
     const touch = e.touches?.[0] || e;
     modalDragStartY = touch.clientY;
     modalIsDragging = true;
     modalContent.style.transition = 'none';
+    // Clean up any stale listeners from a previous incomplete drag
+    _cleanupDragListeners();
     document.addEventListener('mousemove', onModalDragMove);
     document.addEventListener('touchmove', onModalDragMove, { passive: false });
     document.addEventListener('mouseup', onModalDragEnd);
@@ -1733,10 +1756,7 @@ function onModalDragEnd() {
     if (!modalIsDragging) return;
     modalIsDragging = false;
     modalContent.style.transition = '';
-    document.removeEventListener('mousemove', onModalDragMove);
-    document.removeEventListener('touchmove', onModalDragMove);
-    document.removeEventListener('mouseup', onModalDragEnd);
-    document.removeEventListener('touchend', onModalDragEnd);
+    _cleanupDragListeners();
     // FIX N6: Check threshold BEFORE resetting transform so modal stays
     // in dragged position while confirm dialog is shown
     if (modalDragCurrentY > 100) {
@@ -1915,12 +1935,13 @@ function showTab(tab) {
     contentEl.style.opacity = '0';
     contentEl.style.transform = 'translateY(10px)';
     contentEl.style.transition = 'none';
-    contentEl.innerHTML = '';
 
-    // Cached tabs render instantly; fresh renders get skeleton delay
+    /* FIX v5.5 #9: Only clear innerHTML for non-cached tabs to prevent flash.
+       Cached tabs replace content inside _renderTabContent instantly. */
     if (tabCache.has(tab)) {
         _renderTabContent(tab);
     } else {
+        contentEl.innerHTML = '';
         tabTimer = setTimeout(() => {
             tabTimer = null;
             _renderTabContent(tab);
@@ -2270,27 +2291,27 @@ function renderReferral() {
             </div>
         </div>
         <div class="stats-grid">
-            <div class="stat-card anim-down anim-down-d1">
+            <div class="stat-card hoverable anim-down anim-down-d1">
                 <div class="stat-icon"><i class="fas fa-user-plus"></i></div>
                 <span class="stat-label">Приглашено</span>
                 <span class="stat-value">${safeInt(r.total)}</span>
             </div>
-            <div class="stat-card anim-down anim-down-d2">
+            <div class="stat-card hoverable anim-down anim-down-d2">
                 <div class="stat-icon"><i class="fas fa-money-bill-wave"></i></div>
                 <span class="stat-label">Заработано</span>
                 <span class="stat-value">${safeFloat(r.earned)}₽</span>
             </div>
-            <div class="stat-card anim-down anim-down-d3">
+            <div class="stat-card hoverable anim-down anim-down-d3">
                 <div class="stat-icon"><i class="fas fa-percent"></i></div>
                 <span class="stat-label">Процент</span>
                 <span class="stat-value">${safeInt(r.percent)}%</span>
             </div>
         </div>
-        <div class="ref-link glass anim-up anim-up-d2">
+        <div class="ref-link glass hoverable anim-up anim-up-d2">
             <p><i class="fas fa-link"></i> Ваша реферальная ссылка</p>
             <div class="ref-link-row">
                 <div class="ref-link-input">${escapeHtml(r.link)}</div>
-                <button type="button" class="copy-btn" id="copyRef"><i class="fas fa-copy"></i></button>
+                <button type="button" class="copy-btn" id="copyRef" aria-label="Скопировать ссылку"><i class="fas fa-copy"></i></button>
             </div>
         </div>
         <div class="info-hint anim-up anim-up-d3">
@@ -2349,7 +2370,8 @@ function renderTopUp() {
    RENDER: SUPPORT
 ═══════════════════════════════════════ */
 /* FIX v9: FAQ_ITEMS moved to AppData.faqItems for unified data layer */
-const FAQ_ITEMS = AppData.faqItems;
+/* FIX v5.5 #14: Frozen copy instead of direct reference to prevent mutation */
+const FAQ_ITEMS = Object.freeze(AppData.faqItems.map(Object.freeze));
 
 /* ═══════════════════════════════════════
    FAQ SANITIZER (whitelist: strong, em, code)
@@ -2368,7 +2390,7 @@ function sanitizeFaqHtml(html) {
 function renderSupport() {
     contentEl.innerHTML = `
         <div class="section-title anim-title">Служба поддержки</div>
-        <div class="support-card glass anim-fade anim-fade-d1">
+        <div class="support-card glass hoverable anim-fade anim-fade-d1">
             <i class="fas fa-headset support-icon"></i>
             <p>Есть вопросы? Свяжитесь с нами 24/7</p>
             <button type="button" class="btn primary" id="supportChatBtn">
@@ -2380,7 +2402,7 @@ function renderSupport() {
             <div class="faq-list" id="faqList">
                 ${FAQ_ITEMS.map(([icon, q, a], i) => `
                 <div class="faq-item" data-i="${i}">
-                    <div class="faq-row">
+                    <div class="faq-row" role="button" tabindex="0" aria-expanded="false">
                         <div class="faq-icon-wrap"><i class="fas ${escapeHtml(icon)}"></i></div>
                         <span class="faq-question">${escapeHtml(q)}</span>
                         <i class="fas fa-chevron-down faq-chevron"></i>
@@ -2393,9 +2415,8 @@ function renderSupport() {
     registerAnimCleanup();
 }
 
-/* FAQ click handler — delegated on contentEl so it survives tab cache restore */
-contentEl.addEventListener('click', function(e) {
-    const row = e.target.closest('.faq-row');
+/* FAQ toggle — shared logic for click and keyboard */
+function _toggleFaqItem(row) {
     if (!row) return;
     const item = row.closest('.faq-item');
     if (!item) return;
@@ -2403,10 +2424,12 @@ contentEl.addEventListener('click', function(e) {
     if (!body) return;
 
     const isOpen = item.classList.contains('open');
-    // Close all
+    // Close all & reset aria
     $$('.faq-item.open', contentEl).forEach(o => {
         o.classList.remove('open');
         o.querySelector('.faq-body').style.maxHeight = '0';
+        const r = o.querySelector('.faq-row');
+        if (r) r.setAttribute('aria-expanded', 'false');
     });
     // Open clicked (if it was closed)
     if (!isOpen) {
@@ -2414,7 +2437,22 @@ contentEl.addEventListener('click', function(e) {
         const h = p ? (p.scrollHeight + 28) : 200;
         item.classList.add('open');
         body.style.maxHeight = h + 'px';
+        row.setAttribute('aria-expanded', 'true');
     }
+}
+
+/* FAQ click handler — delegated on contentEl so it survives tab cache restore */
+contentEl.addEventListener('click', function(e) {
+    _toggleFaqItem(e.target.closest('.faq-row'));
+});
+
+/* FIX v5.5 #5: FAQ keyboard handler — Enter/Space toggle */
+contentEl.addEventListener('keydown', function(e) {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const row = e.target.closest('.faq-row');
+    if (!row) return;
+    e.preventDefault();
+    _toggleFaqItem(row);
 });
 
 /* ═══════════════════════════════════════
@@ -2501,7 +2539,9 @@ function showLoading(message = 'Загрузка...') {
         }
     }
     overlay.style.display = 'flex';
-    requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('visible')));
+    /* FIX v5.5 #10: Explicit reflow instead of double rAF hack */
+    void overlay.offsetHeight;
+    overlay.classList.add('visible');
 }
 
 function hideLoading() {
