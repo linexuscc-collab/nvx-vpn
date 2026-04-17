@@ -220,11 +220,18 @@ body {
 [data-anim-d="6"] { animation-delay: 0.30s; }
 
 /* After animation completes — clean state for hover */
-/* FIX: Do NOT set transform:none — it breaks CSS hover transitions */
+/* FIX: Reset transform from animation's fill-mode so :hover transforms work.
+   We use empty string for transform — the base rule on each element (e.g. .hoverable)
+   applies, and :hover overrides it cleanly. */
 .anim-done {
-    animation: none;
-    opacity: 1;
+    animation: none !important;
+    opacity: 1 !important;
 }
+/* Elements that combine anim-* + .hoverable need hover to win over fill-mode.
+   We restore hoverable's base transform on .anim-done so hover transitions work. */
+.anim-done.hoverable { transform: translateZ(0); }
+.anim-done.hoverable:hover { transform: translateY(-2px) translateZ(0); }
+.anim-done.hoverable--slide:hover { transform: translateX(3px) translateZ(0); }
 
 /* ═══════════════════════════════════════
    HEADER
@@ -1873,7 +1880,10 @@ function switchTab(tab) {
 function _navHandleTap(btn) {
     if (!btn || !btn.dataset.tab) return;
     HapticFeedback.navigation();
-    // CSS :active already gives tactile scale feedback — no need for inline style.
+    // Inline scale feedback — more reliable than :active on mobile WebViews
+    // (especially in Telegram iframe where :active can be skipped).
+    btn.style.transform = 'scale(0.90)';
+    setTimeout(() => { btn.style.transform = ''; }, 150);
     requestAnimationFrame(() => {
         switchTab(btn.dataset.tab);
     });
