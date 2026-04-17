@@ -220,18 +220,11 @@ body {
 [data-anim-d="6"] { animation-delay: 0.30s; }
 
 /* After animation completes — clean state for hover */
-/* FIX: Reset transform from animation's fill-mode so :hover transforms work.
-   We use empty string for transform — the base rule on each element (e.g. .hoverable)
-   applies, and :hover overrides it cleanly. */
+/* FIX: Do NOT set transform:none — it breaks CSS hover transitions */
 .anim-done {
-    animation: none !important;
-    opacity: 1 !important;
+    animation: none;
+    opacity: 1;
 }
-/* Elements that combine anim-* + .hoverable need hover to win over fill-mode.
-   We restore hoverable's base transform on .anim-done so hover transitions work. */
-.anim-done.hoverable { transform: translateZ(0); }
-.anim-done.hoverable:hover { transform: translateY(-2px) translateZ(0); }
-.anim-done.hoverable--slide:hover { transform: translateX(3px) translateZ(0); }
 
 /* ═══════════════════════════════════════
    HEADER
@@ -247,7 +240,15 @@ body {
     border-radius: 20px;
     backdrop-filter: var(--blur-sm);
     -webkit-backdrop-filter: var(--blur-sm);
+    transition: var(--transition);
     cursor: default;
+    transform: translateZ(0);
+}
+.header:hover {
+    transform: translateY(-2px) translateZ(0);
+    border-color: var(--card-border-hover);
+    background: rgba(25, 32, 58, 0.35);
+    box-shadow: var(--card-shadow-hover);
 }
 .avatar {
     width: 40px; height: 40px; border-radius: 50%;
@@ -381,6 +382,10 @@ body {
     background: radial-gradient(circle, var(--accent-10) 0%, transparent 70%);
     border-radius: 50%; filter: blur(30px);
     pointer-events: none; opacity: 0.6;
+}
+.subscription-card:hover {
+    transform: translateY(-2px) translateZ(0);
+    background: rgba(20, 25, 50, 0.28);
 }
 .subscription-card .title {
     font-family: var(--font-display); font-size: 16px; font-weight: 700;
@@ -592,6 +597,7 @@ body {
     backdrop-filter: var(--blur-sm);
     display: flex; flex-direction: column; align-items: center; gap: 4px;
     cursor: default;
+    transform: translateZ(0);
 }
 /* FIX v5.5 #2: stat-card hover unified via .hoverable class in HTML */
 .stat-icon { font-size: 20px; color: var(--accent-bright); }
@@ -604,6 +610,7 @@ body {
     background: rgba(20, 25, 45, 0.2); border: 1px solid var(--card-border);
     border-radius: 18px; backdrop-filter: var(--blur-sm);
     cursor: default;
+    transform: translateZ(0);
 }
 /* FIX v5.5 #2: ref-link hover unified via .hoverable class in HTML */
 .ref-link p { font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; font-weight: 600; }
@@ -641,8 +648,10 @@ body {
     padding: 12px 14px; display: flex; align-items: center; gap: 12px;
     border-radius: 16px; background: rgba(20, 25, 45, 0.2);
     border: 1px solid var(--card-border);
+    transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
     cursor: pointer; position: relative; overflow: hidden;
     backdrop-filter: var(--blur-sm); min-height: 48px; margin-bottom: 8px;
+    transform: translateZ(0);
 }
 .topup-method::after {
     content: ''; position: absolute; left: 0; top: 0;
@@ -650,6 +659,12 @@ body {
     background: linear-gradient(180deg, var(--accent-70), transparent);
     transform: scaleY(0); transform-origin: top;
     transition: transform 0.3s ease-out;
+}
+.topup-method:hover {
+    border-color: var(--accent-30);
+    background: rgba(30, 40, 60, 0.35);
+    transform: translateX(3px) translateZ(0);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
 }
 .topup-method:hover::after { transform: scaleY(1); }
 .topup-method:active { transform: scale(0.97); }
@@ -669,6 +684,7 @@ body {
     border-radius: 18px; padding: 14px; margin-bottom: 14px;
     transition: var(--transition-fast);
     cursor: default;
+    transform: translateZ(0);
 }
 .promo-section:hover {
     transform: translateY(-2px) translateZ(0);
@@ -704,6 +720,7 @@ body {
     background: rgba(20, 25, 45, 0.2); border: 1px solid var(--card-border);
     border-radius: 18px; backdrop-filter: var(--blur-sm);
     cursor: default;
+    transform: translateZ(0);
 }
 /* FIX v5.5 #2: support-card hover unified via .hoverable class in HTML */
 @keyframes float {
@@ -721,6 +738,11 @@ body {
     background: rgba(20, 25, 45, 0.2); border: 1px solid var(--card-border);
     border-radius: 18px; backdrop-filter: var(--blur-sm); overflow: hidden;
     cursor: default;
+    transform: translateZ(0);
+}
+.faq:hover {
+    border-color: var(--accent-30);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 }
 .faq-header { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid rgba(70, 80, 110, 0.12); font-weight: 700; font-size: 13px; color: var(--text-secondary); letter-spacing: 0.04em; text-transform: uppercase; }
 .faq-header i { color: var(--accent-bright); font-size: 14px; }
@@ -1239,7 +1261,7 @@ body {
 
 <div id="app">
 <div class="ui-layer">
-  <header class="header hoverable">
+  <header class="header">
     <div class="user-info">
       <div class="avatar" id="avatarContainer">
         <img id="avatarImage" loading="lazy">
@@ -2118,7 +2140,7 @@ function renderHome() {
 
     contentEl.innerHTML = `
         <div class="section-title anim-title">Добро пожаловать, ${escapeHtml(user.name)}</div>
-        <div class="subscription-card glass hoverable anim-left" data-anim-d="1" id="subCard"></div>
+        <div class="subscription-card glass anim-left" data-anim-d="1" id="subCard"></div>
         <div id="trialBlock"></div>
     `;
 
@@ -2143,7 +2165,7 @@ function renderHome() {
         if (subscription.trialAvailable) {
             const tr = AppData.trial;
             $('#trialBlock').innerHTML = `
-                <div class="subscription-card glass hoverable anim-left" data-anim-d="2">
+                <div class="subscription-card glass anim-left" data-anim-d="2">
                     <div class="title"><i class="fas fa-flask"></i> Тестовый период</div>
                     <div class="detail"><i class="fas fa-database"></i> Трафик <span class="value">${safeInt(tr.trafficGb)} ГБ <span class="text-muted">(${safeFloat(tr.trafficPerLocGb)} ГБ на локацию)</span></span></div>
                     <div class="detail"><i class="fas fa-hourglass-end"></i> Длительность <span class="value">${safeInt(tr.days)} день</span></div>
@@ -2309,7 +2331,7 @@ function showPayMethodModal({ shortage, tariff }) {
             </div>
         </div>
         ${Object.entries(PAYMENT_METHODS).map(([key, m]) => `
-        <div class="pay-method-row topup-method hoverable hoverable--slide" data-method="${escapeHtml(key)}">
+        <div class="pay-method-row topup-method" data-method="${escapeHtml(key)}">
             <i class="fas ${escapeHtml(m.icon)}"></i>
             <div class="topup-method-text">
                 <span class="topup-method-name">${escapeHtml(m.name)}</span>
@@ -2416,7 +2438,7 @@ function renderTopUp() {
         </div>
         <div class="section-subtitle anim-up" data-anim-d="3">Доступные способы</div>
         ${Object.entries(PAYMENT_METHODS).map(([key, m], i) => `
-            <div class="topup-method hoverable hoverable--slide anim-up" data-anim-d="${Math.min(i + 3, 6)}" data-method="${escapeHtml(key)}">
+            <div class="topup-method anim-up" data-anim-d="${Math.min(i + 3, 6)}" data-method="${escapeHtml(key)}">
                 <i class="fas ${escapeHtml(m.icon)}"></i>
                 <div class="topup-method-text">
                     <span class="topup-method-name">${escapeHtml(m.name)}</span>
@@ -2482,7 +2504,7 @@ function renderSupport() {
                 <i class="fab fa-telegram"></i> Открыть чат
             </button>
         </div>
-        <div class="faq hoverable anim-fade" data-anim-d="2">
+        <div class="faq anim-fade" data-anim-d="2">
             <div class="faq-header"><i class="fas fa-layer-group"></i> Часто задаваемые вопросы</div>
             <div class="faq-list" id="faqList">
                 ${FAQ_ITEMS.map(([icon, q, a], i) => `
