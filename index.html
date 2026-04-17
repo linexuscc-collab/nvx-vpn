@@ -436,7 +436,7 @@ body {
 .subscription-card .detail {
     display: flex; align-items: center; gap: 10px;
     font-size: 12px; margin-bottom: 6px;
-    color: var(--text-secondary);
+    color: rgba(235, 235, 245, 0.73);
     padding: 4px 0 4px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     transition: padding-left 0.22s ease, color 0.22s ease;
     cursor: default;
@@ -738,8 +738,6 @@ body {
     border: 1px solid rgba(255,255,255,0.12);
     border-radius: 12px; padding: 11px 14px; color: var(--text-primary);
     font-size: 13px; outline: none; font-family: var(--font-body);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 1px 3px rgba(0,0,0,0.3);
     transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
 }
@@ -777,8 +775,8 @@ body {
 
 /* FAQ */
 .faq {
-    background: #1c1c1e; border: 1px solid var(--card-border);
-    border-radius: 18px; backdrop-filter: blur(8px); overflow: hidden;
+    background: transparent; border: 1px solid var(--card-border);
+    border-radius: 18px; overflow: hidden;
     cursor: default;
     transform: translateZ(0);
 }
@@ -788,7 +786,7 @@ body {
 }
 .faq-header { display: flex; align-items: center; gap: 10px; padding: 14px 16px; font-weight: 700; font-size: 13px; color: var(--text-secondary); letter-spacing: 0.04em; text-transform: uppercase; }
 .faq-header i { color: var(--accent-bright); font-size: 14px; }
-.faq-list { padding: 6px 0; }
+.faq-list { padding: 0; }
 .faq-item { border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
 .faq-item:last-child { border-bottom: none; }
 .faq-row {
@@ -1113,7 +1111,7 @@ body {
 }
 
 /* Utility */
-.text-muted { font-size: 10px; color: var(--text-tertiary); font-weight: 400; }
+.text-muted { font-size: 10px; color: rgba(235, 235, 245, 0.78); font-weight: 400; }
 .error-message {
     padding: 16px; text-align: center; color: var(--text-secondary);
     margin-top: 16px; font-size: 13px;
@@ -1600,8 +1598,6 @@ body {
     color: #ffffff !important;
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 1px 3px rgba(0,0,0,0.2);
     transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, background 0.25s ease !important;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     width: auto !important;
     height: auto !important;
 }
@@ -1664,7 +1660,7 @@ body {
 <!-- ═══════ SPLASH SCREEN ═══════ -->
 <div id="nvx-splash">
   <div id="nvx-splash-inner">
-    <img id="nvx-splash-logo" src="https://i.ibb.co/bMbCz01C/logo2.png" alt="NVX VPN">
+    <img id="nvx-splash-logo" src="https://i.ibb.co/JWfM8R2f/logo.png" alt="NVX VPN">
     <div id="nvx-splash-fallback">
       <i class="fas fa-shield-alt"></i>
     </div>
