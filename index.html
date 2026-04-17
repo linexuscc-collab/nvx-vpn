@@ -12,7 +12,6 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔒</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -33,11 +32,7 @@
     --safe-left: env(safe-area-inset-left, 0px);
     --safe-right: env(safe-area-inset-right, 0px);
     --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
-    /* FIX MEDIUM #17: Split transitions — appearance (no transform) vs motion (transform-only).
-       Original --transition included transform, which conflicted with :active scale feedback. */
-    --transition-appearance: background 0.3s var(--ease-bounce), border-color 0.3s var(--ease-bounce), box-shadow 0.3s var(--ease-bounce), color 0.3s var(--ease-bounce);
-    --transition-motion: transform 0.3s var(--ease-bounce);
-    --transition: var(--transition-motion), var(--transition-appearance);
+    --transition: transform 0.3s var(--ease-bounce), background 0.3s var(--ease-bounce), border-color 0.3s var(--ease-bounce), box-shadow 0.3s var(--ease-bounce), color 0.3s var(--ease-bounce);
     --transition-fast: transform 0.18s var(--ease-bounce), background 0.18s var(--ease-bounce), border-color 0.18s var(--ease-bounce), box-shadow 0.18s var(--ease-bounce), color 0.18s var(--ease-bounce);
     --glass-border-hover: var(--accent-40);
     --card-bg: rgba(20, 25, 45, 0.25);
@@ -70,10 +65,6 @@
     --accent-80: rgba(122, 111, 191, 0.80);
     /* Semantic color tokens */
     --modal-bg: rgba(14, 18, 38, 0.97);
-    /* Backdrop-filter tiers — unified across components */
-    --blur-sm: blur(8px);
-    --blur-md: blur(14px);
-    --blur-lg: blur(20px) saturate(220%);
 }
 
 /* ═══════════════════════════════════════
@@ -132,6 +123,8 @@ body {
 }
 .space-orb-1 { width: 600px; height: 600px; top: -200px; left: -200px; animation-duration: 25s; }
 .space-orb-2 { width: 500px; height: 500px; top: 50%; right: -150px; animation-delay: -8s; animation-duration: 30s; }
+.space-orb-3 { width: 450px; height: 450px; bottom: -100px; left: 30%; animation-delay: -15s; animation-duration: 28s; }
+.space-orb-4 { width: 350px; height: 350px; top: 30%; left: 40%; animation-delay: -5s; animation-duration: 35s; }
 
 @keyframes orbFloat {
     0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
@@ -167,6 +160,7 @@ body {
 }
 /* FIX v5.5 #1: Consolidated media queries — 400px and 600px rules were absorbed by 1024px */
 @media (max-width: 1024px) {
+    .space-orb-3, .space-orb-4 { display: none; }
     .glass, .subscription-card, .ref-link, .promo-section,
     .support-card, .faq, .stat-card, .topup-method,
     .header, .bottom-nav, .modal-content, .modal-overlay,
@@ -211,13 +205,22 @@ body {
 .anim-down  { animation: nvxSlideDown 0.6s ease-out both; }
 .anim-fade  { animation: nvxFadeIn 0.6s ease-out both; }
 
-/* FIX LOW #19: Unified stagger — single attribute drives delay across all anim-* */
-[data-anim-d="1"] { animation-delay: 0.05s; }
-[data-anim-d="2"] { animation-delay: 0.10s; }
-[data-anim-d="3"] { animation-delay: 0.15s; }
-[data-anim-d="4"] { animation-delay: 0.20s; }
-[data-anim-d="5"] { animation-delay: 0.25s; }
-[data-anim-d="6"] { animation-delay: 0.30s; }
+/* Stagger delays — generated for each animation type */
+.anim-d0 { animation-delay: 0s; }     .anim-d1 { animation-delay: 0.05s; }
+.anim-d2 { animation-delay: 0.1s; }   .anim-d3 { animation-delay: 0.15s; }
+.anim-d4 { animation-delay: 0.2s; }   .anim-d5 { animation-delay: 0.25s; }
+.anim-d6 { animation-delay: 0.3s; }
+
+.anim-left-d1 { animation-delay: 0.05s; } .anim-left-d2 { animation-delay: 0.1s; }
+.anim-left-d3 { animation-delay: 0.15s; }
+.anim-up-d1 { animation-delay: 0.05s; }   .anim-up-d2 { animation-delay: 0.1s; }
+.anim-up-d3 { animation-delay: 0.15s; }   .anim-up-d4 { animation-delay: 0.2s; }
+.anim-up-d5 { animation-delay: 0.25s; }   .anim-up-d6 { animation-delay: 0.3s; }
+.anim-down-d1 { animation-delay: 0.05s; } .anim-down-d2 { animation-delay: 0.1s; }
+.anim-down-d3 { animation-delay: 0.15s; }
+.anim-fade-d1 { animation-delay: 0.05s; } .anim-fade-d2 { animation-delay: 0.1s; }
+.anim-fade-d3 { animation-delay: 0.15s; } .anim-fade-d4 { animation-delay: 0.2s; }
+.anim-fade-d5 { animation-delay: 0.25s; } .anim-fade-d6 { animation-delay: 0.3s; }
 
 /* After animation completes — clean state for hover */
 /* FIX: Do NOT set transform:none — it breaks CSS hover transitions */
@@ -238,8 +241,8 @@ body {
     background: rgba(20, 25, 45, 0.25);
     border: 1px solid var(--card-border);
     border-radius: 20px;
-    backdrop-filter: var(--blur-sm);
-    -webkit-backdrop-filter: var(--blur-sm);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     transition: var(--transition);
     cursor: default;
     transform: translateZ(0);
@@ -250,6 +253,7 @@ body {
     background: rgba(25, 32, 58, 0.35);
     box-shadow: var(--card-shadow-hover);
 }
+.user-info { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .avatar {
     width: 40px; height: 40px; border-radius: 50%;
     background: linear-gradient(135deg, var(--accent-60), rgba(154, 143, 223, 0.4));
@@ -264,7 +268,6 @@ body {
 }
 .avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: none; }
 .user-details { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.user-info { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .user-name { font-weight: 700; font-size: 14px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .user-id { font-size: 11px; color: var(--text-secondary); }
 .balance {
@@ -301,11 +304,8 @@ body {
     width: 40px; height: 2px;
     background: linear-gradient(90deg, var(--accent-bright), rgba(154, 143, 223, 0.3), var(--accent-bright));
     background-size: 200% 100%;
-    border-radius: 2px;
-}
-/* FIX LOW #26: Shimmer animation only on hover — saves continuous GPU work */
-.section-title:hover::after {
     animation: shimmer 3s ease-in-out infinite;
+    border-radius: 2px;
 }
 .section-subtitle {
     font-size: 12px; font-weight: 600;
@@ -319,7 +319,8 @@ body {
 ═══════════════════════════════════════ */
 .glass {
     background: rgba(12, 15, 35, 0.18);
-    backdrop-filter: var(--blur-lg); -webkit-backdrop-filter: var(--blur-lg);
+    backdrop-filter: blur(24px) saturate(220%);
+    -webkit-backdrop-filter: blur(24px) saturate(220%);
     border: 1px solid rgba(120, 130, 180, 0.25);
     border-radius: 20px;
     transition: var(--transition);
@@ -355,13 +356,6 @@ body {
     box-shadow: var(--card-shadow-hover);
     background: rgba(25, 32, 58, 0.35);
 }
-/* Slide variant — horizontal motion instead of vertical lift */
-.hoverable--slide:hover {
-    transform: translateX(3px) translateZ(0);
-    border-color: var(--accent-30);
-    background: rgba(30, 40, 60, 0.35);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
-}
 
 
 /* ═══════════════════════════════════════
@@ -373,7 +367,7 @@ body {
     background: rgba(15, 18, 40, 0.18);
     border: 1px solid rgba(80, 90, 130, 0.25);
     border-radius: 20px;
-    backdrop-filter: var(--blur-lg); -webkit-backdrop-filter: var(--blur-lg);
+    backdrop-filter: blur(24px) saturate(220%); -webkit-backdrop-filter: blur(24px) saturate(220%);
 }
 .subscription-card::before {
     content: ''; position: absolute;
@@ -440,8 +434,7 @@ body {
     border: none; border-radius: 18px; padding: 10px 18px;
     font-weight: 600; font-size: 13px;
     display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-    cursor: pointer;
-    transition: transform 0.12s ease-out, var(--transition-appearance);
+    cursor: pointer; transition: var(--transition);
     font-family: var(--font-body); white-space: nowrap;
     min-height: 44px; -webkit-tap-highlight-color: transparent;
 }
@@ -449,12 +442,12 @@ body {
 .btn.primary {
     background: linear-gradient(135deg, var(--accent-70), rgba(154, 143, 223, 0.5));
     color: white; border: 1px solid var(--accent-30);
-    backdrop-filter: var(--blur-sm); box-shadow: 0 4px 12px var(--accent-15);
+    backdrop-filter: blur(8px); box-shadow: 0 4px 12px var(--accent-15);
 }
 .btn.primary:hover { transform: translateY(-1px); box-shadow: 0 6px 16px var(--accent-20); }
 .btn.secondary {
     background: rgba(30, 35, 55, 0.3); border: 1px solid rgba(70, 80, 110, 0.2);
-    color: var(--text-secondary); backdrop-filter: var(--blur-sm);
+    color: var(--text-secondary); backdrop-filter: blur(8px);
 }
 .btn.secondary:hover { background: rgba(40, 50, 75, 0.4); color: var(--accent-bright); }
 .btn.full-width { width: 100%; }
@@ -528,8 +521,8 @@ body {
     position: relative; overflow: hidden;
     background: var(--card-bg);
     border: 1px solid rgba(70, 80, 110, 0.18);
-    border-radius: 18px; backdrop-filter: var(--blur-sm);
-    -webkit-backdrop-filter: var(--blur-sm);
+    border-radius: 18px; backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     display: flex; flex-direction: column; gap: 9px;
 }
 /* FIX v5.6: .tariff-card hover unified via .hoverable class */
@@ -594,7 +587,7 @@ body {
 .stat-card {
     padding: 12px 8px; text-align: center; border-radius: 16px;
     background: rgba(20, 25, 45, 0.2); border: 1px solid var(--card-border);
-    backdrop-filter: var(--blur-sm);
+    backdrop-filter: blur(8px);
     display: flex; flex-direction: column; align-items: center; gap: 4px;
     cursor: default;
     transform: translateZ(0);
@@ -608,7 +601,7 @@ body {
 .ref-link {
     padding: 14px; margin-bottom: 14px;
     background: rgba(20, 25, 45, 0.2); border: 1px solid var(--card-border);
-    border-radius: 18px; backdrop-filter: var(--blur-sm);
+    border-radius: 18px; backdrop-filter: blur(8px);
     cursor: default;
     transform: translateZ(0);
 }
@@ -623,8 +616,7 @@ body {
 .copy-btn {
     width: 44px; height: 44px; border-radius: 28px;
     background: var(--accent-50); border: 1px solid var(--accent-30);
-    color: white; font-size: 14px; cursor: pointer;
-    transition: transform 0.18s var(--ease-bounce), var(--transition-appearance);
+    color: white; font-size: 14px; cursor: pointer; transition: var(--transition);
     display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
 .copy-btn:hover { transform: scale(1.05); background: var(--accent-60); }
@@ -650,7 +642,7 @@ body {
     border: 1px solid var(--card-border);
     transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
     cursor: pointer; position: relative; overflow: hidden;
-    backdrop-filter: var(--blur-sm); min-height: 48px; margin-bottom: 8px;
+    backdrop-filter: blur(8px); min-height: 48px; margin-bottom: 8px;
     transform: translateZ(0);
 }
 .topup-method::after {
@@ -706,8 +698,7 @@ body {
     padding: 11px 16px;
     background: linear-gradient(135deg, var(--accent-70), rgba(154, 143, 223, 0.5));
     border: none; border-radius: 12px; color: white; font-size: 13px; font-weight: 600;
-    cursor: pointer; white-space: nowrap; font-family: var(--font-body);
-    transition: transform 0.18s var(--ease-bounce), var(--transition-appearance);
+    cursor: pointer; white-space: nowrap; font-family: var(--font-body); transition: var(--transition);
 }
 .promo-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px var(--accent-20); }
 .promo-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
@@ -718,7 +709,7 @@ body {
 .support-card {
     padding: 20px 16px; text-align: center; margin-bottom: 16px;
     background: rgba(20, 25, 45, 0.2); border: 1px solid var(--card-border);
-    border-radius: 18px; backdrop-filter: var(--blur-sm);
+    border-radius: 18px; backdrop-filter: blur(8px);
     cursor: default;
     transform: translateZ(0);
 }
@@ -736,7 +727,7 @@ body {
 /* FAQ */
 .faq {
     background: rgba(20, 25, 45, 0.2); border: 1px solid var(--card-border);
-    border-radius: 18px; backdrop-filter: var(--blur-sm); overflow: hidden;
+    border-radius: 18px; backdrop-filter: blur(8px); overflow: hidden;
     cursor: default;
     transform: translateZ(0);
 }
@@ -826,20 +817,6 @@ body {
     background-size: 200% 100%; animation: loading 1.2s infinite;
     border-radius: 16px; height: 60px; margin-bottom: 10px;
 }
-.skeleton--title { height: 36px; width: 60%; margin-bottom: 14px; }
-.skeleton--title-sm { height: 36px; width: 50%; margin-bottom: 14px; }
-.skeleton--title-md { height: 36px; width: 55%; margin-bottom: 14px; }
-.skeleton--card-lg { height: 180px; border-radius: 20px; }
-.skeleton--card-md { height: 160px; border-radius: 18px; }
-.skeleton--card-sm { height: 140px; border-radius: 20px; }
-.skeleton--card-xs { height: 120px; border-radius: 18px; }
-.skeleton--card-xxs { height: 100px; border-radius: 18px; margin-bottom: 12px; }
-.skeleton--card-xl { height: 200px; border-radius: 18px; }
-.skeleton--card-wide { height: 80px; border-radius: 18px; }
-.skeleton--card-compact { height: 70px; border-radius: 18px; }
-.skeleton--row { height: 50px; }
-.skeleton--stat { height: 80px; }
-.skeleton-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
 @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
 /* ═══════════════════════════════════════
@@ -856,14 +833,10 @@ body {
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
     transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
     z-index: 9999; white-space: nowrap; max-width: 85vw;
-    pointer-events: none; backdrop-filter: var(--blur-sm); -webkit-backdrop-filter: var(--blur-sm);
+    pointer-events: none; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
     opacity: 0;
 }
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-/* FIX LOW #22: Toast variants via data-type instead of inline style */
-.toast[data-type="success"] { border-color: var(--accent-40); color: var(--accent-bright); }
-.toast[data-type="error"]   { border-color: rgba(255,107,107,0.5); color: #ff6b6b; }
-.toast[data-type="warning"] { border-color: rgba(255,165,2,0.5); color: #ffa502; }
 
 /* ═══════════════════════════════════════
    CONFIRM DIALOG
@@ -909,12 +882,12 @@ body {
 ═══════════════════════════════════════ */
 .modal { display: none; position: fixed; inset: 0; z-index: 1500; justify-content: center; align-items: flex-end; padding: 0; }
 .modal.show { display: flex; }
-.modal-overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: var(--blur-sm); }
+.modal-overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(6px); }
 .modal-content {
     max-width: 100%; width: 100%; padding: 0;
     border-radius: 24px 24px 0 0; position: relative; z-index: 1;
     background: rgba(14, 18, 38, 0.97); border: 1px solid rgba(80, 90, 130, 0.25);
-    border-bottom: none; backdrop-filter: var(--blur-lg);
+    border-bottom: none; backdrop-filter: blur(20px);
     box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.5);
     max-height: 92vh; overflow-y: auto;
     animation: modalSlideUp 0.35s cubic-bezier(0.22, 1, 0.36, 1);
@@ -1031,7 +1004,7 @@ body {
     margin: 6px 0 max(10px, var(--safe-bottom));
     border-radius: 20px; gap: 4px;
     background: rgba(20, 25, 45, 0.25); border: 1px solid var(--card-border);
-    backdrop-filter: var(--blur-sm); -webkit-backdrop-filter: var(--blur-sm); flex-shrink: 0;
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); flex-shrink: 0;
 }
 .nav-item {
     background: none; border: 1px solid transparent; color: var(--text-secondary);
@@ -1062,7 +1035,6 @@ body {
     border-color: var(--accent-40);
     box-shadow: 0 0 14px var(--accent-12);
 }
-.nav-item:active { transform: scale(0.92); }
 .nav-item.active::before {
     content: ''; position: absolute; top: -4px; left: 50%;
     transform: translateX(-50%); width: 5px; height: 5px;
@@ -1167,7 +1139,7 @@ body {
     align-items: center; justify-content: center;
     gap: 16px; pointer-events: all;
     opacity: 0; transition: opacity 0.25s ease;
-    backdrop-filter: var(--blur-sm);
+    backdrop-filter: blur(4px);
 }
 #loading-overlay.visible { opacity: 1; }
 #loading-overlay .lo-spinner {
@@ -1185,56 +1157,6 @@ body {
     animation: loading-pulse 2s ease-in-out infinite;
     font-family: var(--font-body);
 }
-
-/* ═══════════════════════════════════════
-   ICON FALLBACK — if FontAwesome CDN fails
-   Activates when <body> gets .no-icons class
-═══════════════════════════════════════ */
-.no-icons .fas, .no-icons .fab, .no-icons .far {
-    font-family: var(--font-body) !important;
-    font-weight: 900;
-    font-style: normal;
-    display: inline-flex; align-items: center; justify-content: center;
-    min-width: 1em;
-}
-.no-icons .fa-home::before, .no-icons .fa-house::before { content: "⌂"; }
-.no-icons .fa-tags::before { content: "#"; }
-.no-icons .fa-users::before, .no-icons .fa-user-plus::before { content: "◉"; }
-.no-icons .fa-wallet::before { content: "◫"; }
-.no-icons .fa-headset::before { content: "?"; }
-.no-icons .fa-coins::before, .no-icons .fa-money-bill-wave::before { content: "₽"; }
-.no-icons .fa-user::before { content: "◌"; }
-.no-icons .fa-shield-alt::before { content: "◆"; }
-.no-icons .fa-lock-open::before { content: "◇"; }
-.no-icons .fa-shopping-bag::before { content: "▸"; }
-.no-icons .fa-exclamation-circle::before, .no-icons .fa-exclamation-triangle::before { content: "!"; }
-.no-icons .fa-check-circle::before, .no-icons .fa-check::before { content: "✓"; }
-.no-icons .fa-times::before { content: "×"; }
-.no-icons .fa-chevron-right::before { content: "›"; }
-.no-icons .fa-chevron-down::before { content: "⌄"; }
-.no-icons .fa-arrow-right::before { content: "→"; }
-.no-icons .fa-rotate-right::before, .no-icons .fa-sync-alt::before, .no-icons .fa-redo::before { content: "↻"; }
-.no-icons .fa-flask::before { content: "◈"; }
-.no-icons .fa-bolt::before { content: "⚡"; }
-.no-icons .fa-rocket::before { content: "▲"; }
-.no-icons .fa-mobile-alt::before { content: "▯"; }
-.no-icons .fa-database::before { content: "≡"; }
-.no-icons .fa-calendar::before { content: "▤"; }
-.no-icons .fa-hourglass-end::before { content: "⧗"; }
-.no-icons .fa-globe::before { content: "○"; }
-.no-icons .fa-info-circle::before { content: "i"; }
-.no-icons .fa-map-marker-alt::before { content: "▼"; }
-.no-icons .fa-link::before { content: "∞"; }
-.no-icons .fa-copy::before { content: "⎘"; }
-.no-icons .fa-gift::before { content: "◎"; }
-.no-icons .fa-percent::before { content: "%"; }
-.no-icons .fa-lightbulb::before { content: "◐"; }
-.no-icons .fa-credit-card::before { content: "▭"; }
-.no-icons .fa-ticket-alt::before { content: "◭"; }
-.no-icons .fa-university::before { content: "▥"; }
-.no-icons .fa-star::before { content: "★"; }
-.no-icons .fa-layer-group::before { content: "≣"; }
-.no-icons .fa-telegram::before { content: "✈"; }
 </style>
 </head>
 <body>
@@ -1243,7 +1165,7 @@ body {
 <div id="nvx-splash">
   <div id="nvx-splash-inner">
     <img id="nvx-splash-logo" src="https://i.ibb.co/JWfM8R2f/logo.png" alt="NVX VPN">
-    <div id="nvx-splash-fallback" aria-hidden="true">
+    <div id="nvx-splash-fallback">
       <i class="fas fa-shield-alt"></i>
     </div>
     <div id="nvx-splash-bar-wrap">
@@ -1256,6 +1178,8 @@ body {
 <div id="space-bg">
     <div class="space-orb space-orb-1"></div>
     <div class="space-orb space-orb-2"></div>
+    <div class="space-orb space-orb-3"></div>
+    <div class="space-orb space-orb-4"></div>
     <div class="space-stars"></div>
 </div>
 
@@ -1312,29 +1236,6 @@ body {
 'use strict';
 
 /* ═══════════════════════════════════════
-   FONT AWESOME FALLBACK DETECTION
-   If CDN blocked/slow, activate Unicode icon fallback on <body>.
-═══════════════════════════════════════ */
-(function _detectFontAwesome() {
-    const check = () => {
-        const probe = document.createElement('i');
-        probe.className = 'fas fa-home';
-        probe.style.cssText = 'position:absolute;left:-9999px;font-size:24px;';
-        document.body.appendChild(probe);
-        const loaded = getComputedStyle(probe, '::before').content !== 'none'
-                    && getComputedStyle(probe).fontFamily.toLowerCase().includes('awesome');
-        probe.remove();
-        if (!loaded) {
-            document.body.classList.add('no-icons');
-            console.warn('[NVX] FontAwesome not available — using Unicode fallback');
-        }
-    };
-    // Check after 3s — enough time for CDN on slow networks
-    if (document.readyState === 'complete') setTimeout(check, 3000);
-    else window.addEventListener('load', () => setTimeout(check, 3000));
-})();
-
-/* ═══════════════════════════════════════
    CONSTANTS
 ═══════════════════════════════════════ */
 const SKELETON_DELAY_MS   = 250;
@@ -1371,13 +1272,12 @@ if (tg) {
 const HapticFeedback = {
     buttonLight() { tg?.HapticFeedback?.impactOccurred?.('light'); },
     buttonMedium() { tg?.HapticFeedback?.impactOccurred?.('medium'); },
+    navigation() { tg?.HapticFeedback?.impactOccurred?.('light'); },
     success() { tg?.HapticFeedback?.notificationOccurred?.('success'); },
     error() { tg?.HapticFeedback?.notificationOccurred?.('error'); },
     warning() { tg?.HapticFeedback?.notificationOccurred?.('warning'); },
-    selection() { tg?.HapticFeedback?.selectionChanged?.(); },
+    selection() { tg?.HapticFeedback?.selectionChanged?.(); }
 };
-// Semantic alias — same intensity as buttonLight, kept for call-site readability
-HapticFeedback.navigation = HapticFeedback.buttonLight;
 
 /* ═══════════════════════════════════════
    DOUBLE-CLICK PREVENTION (with TTL cleanup)
@@ -1400,6 +1300,26 @@ function canProceed(actionId) {
     clickTimestamps.set(actionId, now);
     return true;
 }
+
+/* ═══════════════════════════════════════
+   PROMO CODES (test stubs)
+   ╔══════════════════════════════════════════════════════════════╗
+   ║  ⛔  SECURITY CRITICAL — УДАЛИТЬ ПЕРЕД ПРОДАКШЕНОМ!         ║
+   ║  Все промокоды ДОЛЖНЫ валидироваться ТОЛЬКО на сервере.     ║
+   ║  Клиентский код НЕ должен содержать ни кодов, ни бонусов.  ║
+   ║  Пользователь может увидеть коды через DevTools и           ║
+   ║  модифицировать баланс через консоль.                       ║
+   ║  При подключении backend:                                   ║
+   ║  1. Удалить VALID_PROMOS целиком                            ║
+   ║  2. Заменить проверку на API.activatePromo(code)            ║
+   ║  3. Обновить баланс из ответа сервера                       ║
+   ╚══════════════════════════════════════════════════════════════╝
+═══════════════════════════════════════ */
+const VALID_PROMOS = {
+    'NVX2026':  { bonus: 50,  desc: '+50₽ на баланс' },
+    'WELCOME':  { bonus: 30,  desc: '+30₽ на баланс' },
+    'FREEVPN':  { bonus: 100, desc: '+100₽ на баланс' },
+};
 
 /* ═══════════════════════════════════════
    DATA LAYER — готов к замене на API
@@ -1570,8 +1490,6 @@ const modalTitle   = $('#modal-title');
 const modalBody    = $('#modal-body');
 const modalButtons = $('#modal-buttons');
 const modalClose   = $('#modal-close');
-const modalContent = $('.modal-content');
-const modalDragBar = $('.modal-drag-bar');
 
 let currentTab = 'home';
 
@@ -1596,68 +1514,60 @@ function safeFloat(n) { const v = Number(n); return Number.isFinite(v) ? Math.ro
 ═══════════════════════════════════════ */
 /* FIX v5.5 #8: Animation cleanup via animationend + fallback timer
    Uses animationend for accuracy, keeps fallback timer as safety net */
-const AnimCleanup = {
-    _timer: null,
-    _pending: 0,
+let cleanupTimer = null;
+let _animPendingCount = 0;
 
-    _markDone(el) {
-        el.classList.add('anim-done');
-        el.removeEventListener('animationend', AnimCleanup._onEnd);
-    },
+function _markAnimDone(el) {
+    el.classList.add('anim-done');
+    el.removeEventListener('animationend', _onAnimEnd);
+}
 
-    _onEnd(e) {
-        // Only react to our entrance animations, not child animations
-        if (e.target !== e.currentTarget) return;
-        AnimCleanup._pending--;
-        AnimCleanup._markDone(e.currentTarget);
-        if (AnimCleanup._pending <= 0 && AnimCleanup._timer) {
-            clearTimeout(AnimCleanup._timer);
-            AnimCleanup._timer = null;
-        }
-    },
+function _onAnimEnd(e) {
+    // Only react to our entrance animations, not child animations
+    if (e.target !== e.currentTarget) return;
+    _animPendingCount--;
+    _markAnimDone(e.currentTarget);
+    // If all done early, clear the fallback timer
+    if (_animPendingCount <= 0 && cleanupTimer) {
+        clearTimeout(cleanupTimer);
+        cleanupTimer = null;
+    }
+}
 
-    _resetState() {
-        if (this._timer) { clearTimeout(this._timer); this._timer = null; }
-        this._pending = 0;
-    },
+function registerAnimCleanup() {
+    if (cleanupTimer) clearTimeout(cleanupTimer);
+    const animEls = $$(ANIM_SELECTORS);
+    _animPendingCount = animEls.length;
 
-    register() {
-        this._resetState();
-        const els = $$(ANIM_SELECTORS);
-        this._pending = els.length;
-        els.forEach(el => {
-            el.removeEventListener('animationend', AnimCleanup._onEnd); // prevent duplicates
-            el.addEventListener('animationend', AnimCleanup._onEnd, { once: true });
-        });
-        this._timer = setTimeout(() => {
-            $$(ANIM_SELECTORS).forEach(el => AnimCleanup._markDone(el));
-            AnimCleanup._timer = null;
-            AnimCleanup._pending = 0;
-        }, ANIM_CLEANUP_MS);
-    },
+    animEls.forEach(el => {
+        el.removeEventListener('animationend', _onAnimEnd); // prevent duplicates
+        el.addEventListener('animationend', _onAnimEnd, { once: true });
+    });
 
-    cancel() { this._resetState(); },
-};
-
-// Backward-compatible alias (renderers call registerAnimCleanup)
-const registerAnimCleanup = () => AnimCleanup.register();
+    // Fallback timer in case animationend never fires (e.g. display:none)
+    cleanupTimer = setTimeout(() => {
+        $$(ANIM_SELECTORS).forEach(el => _markAnimDone(el));
+        cleanupTimer = null;
+        _animPendingCount = 0;
+    }, ANIM_CLEANUP_MS);
+}
 
 /* ═══════════════════════════════════════
    TOAST
 ═══════════════════════════════════════ */
 let toastTimer = null;
-const TOAST_ICONS = {
-    success: 'fa-check-circle',
-    error:   'fa-exclamation-circle',
-    warning: 'fa-exclamation-triangle',
+const TOAST_TYPES = {
+    success: { icon: 'fa-check-circle',        border: 'var(--accent-40)', color: 'var(--accent-bright)' },
+    error:   { icon: 'fa-exclamation-circle',   border: 'rgba(255,107,107,0.5)', color: '#ff6b6b' },
+    warning: { icon: 'fa-exclamation-triangle', border: 'rgba(255,165,2,0.5)',   color: '#ffa502' },
 };
 
 function showToast(msg, type = 'success') {
-    const icon = TOAST_ICONS[type] || TOAST_ICONS.success;
-    const typeKey = TOAST_ICONS[type] ? type : 'success';
+    const cfg = TOAST_TYPES[type] || TOAST_TYPES.success;
     toastMsg.textContent = msg;
-    toastIcon.className = `fas ${icon}`;
-    toast.dataset.type = typeKey;
+    toastIcon.className = `fas ${cfg.icon}`;
+    toast.style.borderColor = cfg.border;
+    toast.style.color = cfg.color;
 
     if (toastTimer) { clearTimeout(toastTimer); toastTimer = null; }
     toast.classList.add('show');
@@ -1769,10 +1679,6 @@ function hideModal() {
                 modal.classList.remove('show');
                 modalContent.style.transform = '';
                 modalHasInput = false;
-            } else {
-                // Restore: re-enable transition so modal snaps back smoothly
-                modalContent.style.transition = '';
-                modalContent.style.transform = '';
             }
         });
         return;
@@ -1795,6 +1701,9 @@ function showModal() {
 modal?.setAttribute('role', 'dialog');
 modal?.setAttribute('aria-modal', 'true');
 modal?.setAttribute('aria-labelledby', 'modal-title');
+
+const modalContent = $('.modal-content');
+const modalDragBar = $('.modal-drag-bar');
 
 /* FIX v5.5 #11: Centralized drag listener cleanup to prevent leaks */
 function _cleanupDragListeners() {
@@ -1832,10 +1741,12 @@ function onModalDragEnd() {
     modalIsDragging = false;
     modalContent.style.transition = '';
     _cleanupDragListeners();
-    // Threshold: >100px drag → dismiss. hideModal() handles transform reset
-    // (either commits to hide, or restores via confirm-cancel branch).
+    // FIX N6: Check threshold BEFORE resetting transform so modal stays
+    // in dragged position while confirm dialog is shown
     if (modalDragCurrentY > 100) {
         hideModal();
+        // Reset transform after hideModal (if confirm canceled, modal snaps back)
+        modalContent.style.transform = '';
     } else {
         modalContent.style.transform = '';
     }
@@ -1889,21 +1800,15 @@ function switchTab(tab) {
     });
     currentTab = tab;
     showTab(tab);
-    // FIX MEDIUM #18: Defer BackButton toggle to next frame —
-    // avoids Telegram client sync reflow during tab transition.
     if (isTelegram && tg.BackButton) {
-        requestAnimationFrame(() => {
-            if (tab === 'home') tg.BackButton.hide();
-            else tg.BackButton.show();
-        });
+        if (tab === 'home') tg.BackButton.hide();
+        else tg.BackButton.show();
     }
 }
 
 function _navHandleTap(btn) {
     if (!btn || !btn.dataset.tab) return;
     HapticFeedback.navigation();
-    // Inline scale feedback — more reliable than :active on mobile WebViews
-    // (especially in Telegram iframe where :active can be skipped).
     btn.style.transform = 'scale(0.90)';
     setTimeout(() => { btn.style.transform = ''; }, 150);
     requestAnimationFrame(() => {
@@ -1912,7 +1817,15 @@ function _navHandleTap(btn) {
 }
 
 $$('.nav-item').forEach(btn => {
+    let _touchHandled = false;
+    btn.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        _touchHandled = true;
+        _navHandleTap(this);
+        setTimeout(() => { _touchHandled = false; }, 500);
+    }, { passive: false });
     btn.addEventListener('click', function() {
+        if (_touchHandled) return;
         _navHandleTap(this);
     });
 });
@@ -1921,11 +1834,11 @@ $$('.nav-item').forEach(btn => {
    TAB ROUTER
 ═══════════════════════════════════════ */
 const TAB_SKELETONS = {
-    home:     '<div class="skeleton skeleton--title"></div><div class="skeleton skeleton--card-lg"></div><div class="skeleton skeleton--card-sm"></div>',
-    tariffs:  '<div class="skeleton skeleton--title-sm"></div><div class="skeleton skeleton--card-md"></div><div class="skeleton skeleton--card-md"></div><div class="skeleton skeleton--card-md"></div>',
-    referral: '<div class="skeleton skeleton--card-xxs"></div><div class="skeleton-grid-3"><div class="skeleton skeleton--stat"></div><div class="skeleton skeleton--stat"></div><div class="skeleton skeleton--stat"></div></div><div class="skeleton skeleton--card-compact"></div>',
-    topup:    '<div class="skeleton skeleton--title-md"></div><div class="skeleton skeleton--card-wide"></div><div class="skeleton skeleton--row"></div><div class="skeleton skeleton--row"></div><div class="skeleton skeleton--row"></div>',
-    support:  '<div class="skeleton skeleton--title-md"></div><div class="skeleton skeleton--card-xs"></div><div class="skeleton skeleton--card-xl"></div>',
+    home:     '<div class="skeleton" style="height:36px;width:60%;margin-bottom:14px"></div><div class="skeleton" style="height:180px;border-radius:20px"></div><div class="skeleton" style="height:140px;border-radius:20px"></div>',
+    tariffs:  '<div class="skeleton" style="height:36px;width:50%;margin-bottom:14px"></div><div class="skeleton" style="height:160px;border-radius:18px"></div><div class="skeleton" style="height:160px;border-radius:18px"></div><div class="skeleton" style="height:160px;border-radius:18px"></div>',
+    referral: '<div class="skeleton" style="height:100px;border-radius:18px;margin-bottom:12px"></div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px"><div class="skeleton" style="height:80px"></div><div class="skeleton" style="height:80px"></div><div class="skeleton" style="height:80px"></div></div><div class="skeleton" style="height:70px;border-radius:18px"></div>',
+    topup:    '<div class="skeleton" style="height:36px;width:55%;margin-bottom:14px"></div><div class="skeleton" style="height:80px;border-radius:18px"></div><div class="skeleton" style="height:50px"></div><div class="skeleton" style="height:50px"></div><div class="skeleton" style="height:50px"></div>',
+    support:  '<div class="skeleton" style="height:36px;width:55%;margin-bottom:14px"></div><div class="skeleton" style="height:120px;border-radius:18px"></div><div class="skeleton" style="height:200px;border-radius:18px"></div>',
 };
 
 const TAB_RENDERERS = {
@@ -1937,6 +1850,7 @@ const TAB_RENDERERS = {
 };
 
 let tabTimer = null;
+let pendingRender = null;
 
 const tabCache = new Map();
 function invalidateTabCache(...tabs) {
@@ -1966,20 +1880,26 @@ function _renderTabContent(tab) {
     const cached = tabCache.get(tab);
     if (cached) {
         contentEl.innerHTML = cached.html;
-        // Cached HTML already has .anim-done — no re-animation flash
-        requestAnimationFrame(() => { contentEl.scrollTop = 0; });
+        registerAnimCleanup();
+        requestAnimationFrame(() => {
+            contentEl.scrollTop = 0;
+        });
     } else {
         const renderer = TAB_RENDERERS[tab];
-        if (!renderer) return;
-        try {
-            renderer();
-            // renderer() already calls registerAnimCleanup() internally —
-            // animations run, then AnimCleanup marks elements .anim-done,
-            // and the cache picks up the finished HTML on next tab switch.
-            tabCache.set(tab, { html: contentEl.innerHTML, scrollTop: 0 });
-        } catch (err) {
-            _renderTabError(tab, err.message);
-            return;
+        if (renderer) {
+            try {
+                const result = renderer();
+                if (result && typeof result.then === 'function') {
+                    contentEl.innerHTML = TAB_SKELETONS[tab] || '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
+                    result.then(() => {
+                        tabCache.set(tab, { html: contentEl.innerHTML, scrollTop: 0 });
+                    }).catch(err => _renderTabError(tab, err.message));
+                } else {
+                    tabCache.set(tab, { html: contentEl.innerHTML, scrollTop: 0 });
+                }
+            } catch (err) {
+                _renderTabError(tab, err.message);
+            }
         }
     }
 
@@ -1993,16 +1913,8 @@ function _renderTabContent(tab) {
 
 function showTab(tab) {
     if (tabTimer) { clearTimeout(tabTimer); tabTimer = null; }
-    AnimCleanup.cancel();
-
-    // Update cache of the tab we're LEAVING.
-    // Force .anim-done on all entrance-animated elements so the cached HTML
-    // doesn't re-trigger (or get stuck at) opacity:0 on return — even if the
-    // user switched before animations finished.
-    if (currentTab && currentTab !== tab && tabCache.has(currentTab)) {
-        $$(ANIM_SELECTORS, contentEl).forEach(el => el.classList.add('anim-done'));
-        tabCache.set(currentTab, { html: contentEl.innerHTML, scrollTop: contentEl.scrollTop });
-    }
+    if (pendingRender) { cancelAnimationFrame(pendingRender); pendingRender = null; }
+    if (cleanupTimer) { clearTimeout(cleanupTimer); cleanupTimer = null; }
 
     contentEl.style.opacity = '0';
     contentEl.style.transform = 'translateY(10px)';
@@ -2023,9 +1935,8 @@ function showTab(tab) {
 
 /* ═══════════════════════════════════════
    CONTENT — event delegation
-   Registered once via initEventDelegation() from initApp()
 ═══════════════════════════════════════ */
-function _onContentClick(e) {
+contentEl.addEventListener('click', e => {
     const target = e.target;
 
     const actionBtn = target.closest('.btn.action-row[data-action]');
@@ -2052,6 +1963,7 @@ function _onContentClick(e) {
     if (topupMethod && canProceed('topup-' + topupMethod.dataset.method)) {
         HapticFeedback.buttonMedium();
         const method = PAYMENT_METHODS[topupMethod.dataset.method];
+        // FIX v3 #7 (original): Use method?.name instead of method object
         showToast(`Переход к оплате через ${method?.name || 'неизвестный метод'}`);
         return;
     }
@@ -2070,13 +1982,23 @@ function _onContentClick(e) {
         const input = $('#promoInput');
         if (!input?.value.trim()) { showToast('Введите промокод', 'warning'); return; }
 
-        if (promoBtn) promoBtn.disabled = true;
+        if (promoBtn) { promoBtn.disabled = true; promoBtn.style.opacity = '0.5'; }
+        const _enableBtn = () => { if (promoBtn) { promoBtn.disabled = false; promoBtn.style.opacity = ''; } };
 
-        // TODO: Replace with API.activatePromo(code) when backend is connected.
-        //       On success: update AppData.user.balance from response,
-        //       call updateHeader() + invalidateTabCache('home','referral','topup').
-        showToast('Доступно после подключения backend', 'warning');
-        if (promoBtn) promoBtn.disabled = false;
+        const code = input.value.trim().toUpperCase();
+        const promo = VALID_PROMOS[code];
+        if (promo) {
+            AppData.user.balance += promo.bonus;
+            updateHeader();
+            invalidateTabCache('home', 'referral', 'topup');
+            showToast(`Промокод активирован: ${escapeHtml(promo.desc)}`, 'success');
+            HapticFeedback.success();
+            input.value = '';
+        } else {
+            showToast('Промокод не найден', 'error');
+            HapticFeedback.error();
+        }
+        _enableBtn();
         return;
     }
 
@@ -2107,30 +2029,7 @@ function _onContentClick(e) {
         showToast('Открываем чат поддержки');
         return;
     }
-
-    // FAQ accordion — last, since any row is a regular click target
-    const faqRow = target.closest('.faq-row');
-    if (faqRow) {
-        _toggleFaqItem(faqRow);
-    }
-}
-
-function _onContentKeydown(e) {
-    if (e.key !== 'Enter' && e.key !== ' ') return;
-    const row = e.target.closest('.faq-row');
-    if (!row) return;
-    e.preventDefault();
-    _toggleFaqItem(row);
-}
-
-let _delegationRegistered = false;
-function initEventDelegation() {
-    if (_delegationRegistered) return;
-    _delegationRegistered = true;
-    contentEl.addEventListener('click', _onContentClick);
-    contentEl.addEventListener('keydown', _onContentKeydown);
-    if (modalBody) modalBody.addEventListener('click', _onModalBodyClick);
-}
+});
 
 /* ═══════════════════════════════════════
    RENDER: HOME
@@ -2140,7 +2039,7 @@ function renderHome() {
 
     contentEl.innerHTML = `
         <div class="section-title anim-title">Добро пожаловать, ${escapeHtml(user.name)}</div>
-        <div class="subscription-card glass anim-left" data-anim-d="1" id="subCard"></div>
+        <div class="subscription-card glass hoverable anim-left anim-left-d1" id="subCard"></div>
         <div id="trialBlock"></div>
     `;
 
@@ -2165,7 +2064,7 @@ function renderHome() {
         if (subscription.trialAvailable) {
             const tr = AppData.trial;
             $('#trialBlock').innerHTML = `
-                <div class="subscription-card glass anim-left" data-anim-d="2">
+                <div class="subscription-card glass hoverable anim-left anim-left-d2">
                     <div class="title"><i class="fas fa-flask"></i> Тестовый период</div>
                     <div class="detail"><i class="fas fa-database"></i> Трафик <span class="value">${safeInt(tr.trafficGb)} ГБ <span class="text-muted">(${safeFloat(tr.trafficPerLocGb)} ГБ на локацию)</span></span></div>
                     <div class="detail"><i class="fas fa-hourglass-end"></i> Длительность <span class="value">${safeInt(tr.days)} день</span></div>
@@ -2221,12 +2120,13 @@ function renderHome() {
 ═══════════════════════════════════════ */
 function renderTariffs() {
     const { tariffs, locations, nodesCount: n } = AppData;
+    const delays = ['anim-up-d1', 'anim-up-d2', 'anim-up-d3'];
 
     contentEl.innerHTML = `
         <div class="section-title anim-title">Выберите тариф</div>
         <div class="tariffs-list">
             ${tariffs.map((t, i) => `
-            <div class="tariff-card hoverable anim-up" data-anim-d="${i + 1}" data-id="${safeInt(t.id)}">
+            <div class="tariff-card hoverable anim-up ${delays[i] || ''}" data-id="${safeInt(t.id)}">
                 <div class="tariff-card-header">
                     <div class="tariff-card-days">
                         <span class="tariff-days-num">${safeInt(t.days)}</span>
@@ -2345,7 +2245,7 @@ function showPayMethodModal({ shortage, tariff }) {
 }
 
 // Delegated click handler for modal body
-function _onModalBodyClick(e) {
+modalBody?.addEventListener('click', (e) => {
     const payRow = e.target.closest('.pay-method-row[data-method]');
     if (payRow && canProceed('payMethod-' + payRow.dataset.method)) {
         HapticFeedback.buttonLight();
@@ -2355,7 +2255,7 @@ function _onModalBodyClick(e) {
         showToast('Доступно после подключения backend', 'warning');
         switchTab('topup');
     }
-}
+});
 
 /* ═══════════════════════════════════════
    RENDER: REFERRAL
@@ -2363,7 +2263,7 @@ function _onModalBodyClick(e) {
 function renderReferral() {
     const r = AppData.referral;
     contentEl.innerHTML = `
-        <div class="referral-hero anim-fade">
+        <div class="referral-hero anim-fade anim-d0">
             <div class="referral-hero-icon">
                 <i class="fas fa-gift"></i>
             </div>
@@ -2375,35 +2275,35 @@ function renderReferral() {
             </div>
         </div>
         <div class="stats-grid">
-            <div class="stat-card hoverable anim-down" data-anim-d="1">
+            <div class="stat-card hoverable anim-down anim-down-d1">
                 <div class="stat-icon"><i class="fas fa-user-plus"></i></div>
                 <span class="stat-label">Приглашено</span>
                 <span class="stat-value">${safeInt(r.total)}</span>
             </div>
-            <div class="stat-card hoverable anim-down" data-anim-d="2">
+            <div class="stat-card hoverable anim-down anim-down-d2">
                 <div class="stat-icon"><i class="fas fa-money-bill-wave"></i></div>
                 <span class="stat-label">Заработано</span>
                 <span class="stat-value">${safeFloat(r.earned)}₽</span>
             </div>
-            <div class="stat-card hoverable anim-down" data-anim-d="3">
+            <div class="stat-card hoverable anim-down anim-down-d3">
                 <div class="stat-icon"><i class="fas fa-percent"></i></div>
                 <span class="stat-label">Процент</span>
                 <span class="stat-value">${safeInt(r.percent)}%</span>
             </div>
         </div>
-        <div class="ref-link glass hoverable anim-up" data-anim-d="2">
+        <div class="ref-link glass hoverable anim-up anim-up-d2">
             <p><i class="fas fa-link"></i> Ваша реферальная ссылка</p>
             <div class="ref-link-row">
                 <div class="ref-link-input">${escapeHtml(r.link)}</div>
                 <button type="button" class="copy-btn" id="copyRef" aria-label="Скопировать ссылку"><i class="fas fa-copy"></i></button>
             </div>
         </div>
-        <div class="info-hint anim-up" data-anim-d="3">
+        <div class="info-hint anim-up anim-up-d3">
             <i class="fas fa-lightbulb"></i>
             <span>Отправляйте ссылку друзьям, публикуйте в чатах и соцсетях — заработок будет расти автоматически</span>
         </div>
-        <div class="section-subtitle anim-up" data-anim-d="4">Вывод средств</div>
-        <div class="action-buttons anim-up" data-anim-d="5">
+        <div class="section-subtitle anim-up anim-up-d4">Вывод средств</div>
+        <div class="action-buttons anim-up anim-up-d5">
             <button type="button" class="btn primary action-row" id="withdrawCard">
                 <div class="action-icon-wrap"><i class="fas fa-credit-card"></i></div>
                 <div class="action-text-wrap"><span class="action-label">На карту</span><span class="action-desc">Вывод на банковскую карту (от 500₽)</span></div>
@@ -2425,20 +2325,20 @@ function renderReferral() {
 function renderTopUp() {
     contentEl.innerHTML = `
         <div class="section-title anim-title">Пополнить баланс</div>
-        <div class="promo-section anim-up" data-anim-d="1">
+        <div class="promo-section anim-up anim-up-d1">
             <p><i class="fas fa-ticket-alt"></i> Активировать промокод</p>
             <div class="promo-row">
                 <input class="promo-input" placeholder="ВВЕДИТЕ ПРОМОКОД" id="promoInput">
                 <button type="button" class="promo-btn" id="promoBtn">Активировать</button>
             </div>
         </div>
-        <div class="info-hint info-lg anim-up" data-anim-d="2">
+        <div class="info-hint info-lg anim-up anim-up-d2">
             <i class="fas fa-info-circle"></i>
             <span>Выберите удобный способ оплаты и желаемую сумму. Средства зачисляются мгновенно.</span>
         </div>
-        <div class="section-subtitle anim-up" data-anim-d="3">Доступные способы</div>
+        <div class="section-subtitle anim-up anim-up-d3">Доступные способы</div>
         ${Object.entries(PAYMENT_METHODS).map(([key, m], i) => `
-            <div class="topup-method anim-up" data-anim-d="${Math.min(i + 3, 6)}" data-method="${escapeHtml(key)}">
+            <div class="topup-method anim-up anim-up-d${Math.min(i + 3, 6)}" data-method="${escapeHtml(key)}">
                 <i class="fas ${escapeHtml(m.icon)}"></i>
                 <div class="topup-method-text">
                     <span class="topup-method-name">${escapeHtml(m.name)}</span>
@@ -2454,57 +2354,34 @@ function renderTopUp() {
    RENDER: SUPPORT
 ═══════════════════════════════════════ */
 /* FIX v9: FAQ_ITEMS moved to AppData.faqItems for unified data layer */
-/* FIX v5.5 #14: Deep freeze — prevent mutation of both array and its tuples */
-const FAQ_ITEMS = Object.freeze(AppData.faqItems.map(item => Object.freeze([...item])));
+/* FIX v5.5 #14: Frozen copy instead of direct reference to prevent mutation */
+const FAQ_ITEMS = Object.freeze(AppData.faqItems.map(Object.freeze));
 
 /* ═══════════════════════════════════════
    FAQ SANITIZER (whitelist: strong, em, code)
-   Uses DOMParser for reliable tag whitelisting.
-   Strips: attributes, event handlers, unknown tags.
 ═══════════════════════════════════════ */
-const FAQ_ALLOWED_TAGS = new Set(['STRONG', 'EM', 'CODE']);
-
 function sanitizeFaqHtml(html) {
-    const doc = new DOMParser().parseFromString(
-        `<div>${String(html)}</div>`, 'text/html'
-    );
-    const root = doc.body.firstChild;
-    if (!root) return '';
-
-    const walk = (node) => {
-        // Iterate over a static copy — we mutate children during traversal
-        [...node.childNodes].forEach(child => {
-            if (child.nodeType === 1 /* ELEMENT_NODE */) {
-                if (FAQ_ALLOWED_TAGS.has(child.tagName)) {
-                    // Strip ALL attributes (no href, no on*, no style)
-                    [...child.attributes].forEach(a => child.removeAttribute(a.name));
-                    walk(child);
-                } else {
-                    // Unknown tag — replace with its text content
-                    const text = doc.createTextNode(child.textContent || '');
-                    child.replaceWith(text);
-                }
-            } else if (child.nodeType !== 3 /* TEXT_NODE */) {
-                // Strip comments, CDATA, etc.
-                child.remove();
-            }
+    // Allow only <strong>, <em>, <code> and their closing tags — NO attributes allowed
+    return String(html)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/&lt;(\/?(strong|em|code))&gt;/gi, function(_, tag) {
+            return '<' + tag + '>';
         });
-    };
-    walk(root);
-    return root.innerHTML;
 }
 
 function renderSupport() {
     contentEl.innerHTML = `
         <div class="section-title anim-title">Служба поддержки</div>
-        <div class="support-card glass hoverable anim-fade" data-anim-d="1">
+        <div class="support-card glass hoverable anim-fade anim-fade-d1">
             <i class="fas fa-headset support-icon"></i>
             <p>Есть вопросы? Свяжитесь с нами 24/7</p>
             <button type="button" class="btn primary" id="supportChatBtn">
                 <i class="fab fa-telegram"></i> Открыть чат
             </button>
         </div>
-        <div class="faq anim-fade" data-anim-d="2">
+        <div class="faq anim-fade anim-fade-d2">
             <div class="faq-header"><i class="fas fa-layer-group"></i> Часто задаваемые вопросы</div>
             <div class="faq-list" id="faqList">
                 ${FAQ_ITEMS.map(([icon, q, a], i) => `
@@ -2548,12 +2425,24 @@ function _toggleFaqItem(row) {
     }
 }
 
+/* FAQ click handler — delegated on contentEl so it survives tab cache restore */
+contentEl.addEventListener('click', function(e) {
+    _toggleFaqItem(e.target.closest('.faq-row'));
+});
+
+/* FIX v5.5 #5: FAQ keyboard handler — Enter/Space toggle */
+contentEl.addEventListener('keydown', function(e) {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const row = e.target.closest('.faq-row');
+    if (!row) return;
+    e.preventDefault();
+    _toggleFaqItem(row);
+});
+
 /* ═══════════════════════════════════════
    INIT
 ═══════════════════════════════════════ */
 function initApp() {
-    initEventDelegation();
-
     if (isTelegram && tg.initDataUnsafe?.user) {
         const tgUser = tg.initDataUnsafe.user;
         if (tgUser.username) AppData.user.name = tgUser.username;
@@ -2603,14 +2492,7 @@ function initApp() {
 
     const _startParam = tg?.initDataUnsafe?.start_param || new URLSearchParams(window.location.search).get('tab');
     const _validTabs = Object.keys(TAB_RENDERERS);
-    let _initTab = 'home';
-    if (_startParam) {
-        if (_validTabs.includes(_startParam)) {
-            _initTab = _startParam;
-        } else {
-            console.info(`[NVX] Ignoring unknown start_param: "${_startParam}"`);
-        }
-    }
+    const _initTab = (_startParam && _validTabs.includes(_startParam)) ? _startParam : 'home';
 
     if (_initTab !== 'home') {
         $$('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.tab === _initTab));
