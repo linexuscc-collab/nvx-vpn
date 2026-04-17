@@ -675,9 +675,9 @@ body {
     border: 1px solid var(--accent-12);
     border-radius: 14px; margin-bottom: 14px;
 }
-.info-hint i { color: var(--accent-bright); font-size: 13px; margin-top: 1px; flex-shrink: 0; }
-.info-hint span { font-size: 11px; color: var(--text-secondary); line-height: 1.5; }
-.info-hint.info-lg span { font-size: 12px; }
+.info-hint i { color: rgba(255,255,255,0.92); font-size: 14px; margin-top: 1px; flex-shrink: 0; }
+.info-hint span { font-size: 12px; color: rgba(235,235,245,0.78); line-height: 1.5; font-weight: 400; }
+.info-hint.info-lg span { font-size: 13px; color: rgba(245,245,250,0.85); font-weight: 450; letter-spacing: 0.1px; }
 
 /* ═══════════════════════════════════════
    TOPUP METHODS
@@ -734,12 +734,18 @@ body {
 .promo-section p i { color: var(--accent-bright); }
 .promo-row { display: flex; gap: 8px; }
 .promo-input {
-    flex: 1; background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.10);
+    flex: 1;
+    background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.015) 100%);
+    border: 1px solid rgba(255,255,255,0.12);
     border-radius: 12px; padding: 11px 14px; color: var(--text-primary);
-    font-size: 13px; outline: none; font-family: var(--font-body); transition: border-color 0.2s;
+    font-size: 13px; outline: none; font-family: var(--font-body);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 1px 3px rgba(0,0,0,0.3);
+    transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
 }
-.promo-input::placeholder { color: var(--text-tertiary); }
-.promo-input:focus { border-color: var(--glass-border-hover); }
+.promo-input::placeholder { color: rgba(235,235,245,0.55); font-weight: 500; letter-spacing: 0.6px; }
+.promo-input:focus { border-color: rgba(255,255,255,0.28); background: rgba(255,255,255,0.04); box-shadow: 0 0 0 3px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.06); }
 .promo-btn {
     padding: 11px 16px;
     background: #ffffff;
@@ -1048,9 +1054,27 @@ body {
     display: flex; justify-content: space-around;
     padding: 6px 4px; padding-bottom: max(6px, calc(var(--safe-bottom) + 6px));
     margin: 6px 0 max(10px, var(--safe-bottom));
-    border-radius: 20px; gap: 4px;
-    background: #1c1c1e; border: 1px solid var(--card-border);
-    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); flex-shrink: 0;
+    border-radius: 22px; gap: 4px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+    border: 1px solid rgba(255,255,255,0.12);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.1),
+        inset 0 -1px 0 rgba(0,0,0,0.2),
+        0 -4px 20px rgba(0,0,0,0.4),
+        0 10px 30px rgba(0,0,0,0.5);
+    flex-shrink: 0;
+    position: relative;
+}
+/* Тонкий top shine на самом navbar */
+.bottom-nav::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 8%; right: 8%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    pointer-events: none;
 }
 .nav-item {
     background: none; border: 1px solid transparent; color: var(--text-secondary);
@@ -1203,6 +1227,477 @@ body {
     animation: loading-pulse 2s ease-in-out infinite;
     font-family: var(--font-body);
 }
+
+/* ═══════════════════════════════════════
+   ✨ PREMIUM GLASS v3
+   Настоящее liquid-glass с прозрачностью,
+   чтобы орбы просвечивали. Gradient text.
+   Underline slider, 3D tilt, noise texture.
+═══════════════════════════════════════ */
+
+/* ───── Глобальный noise-оверлей (очень тонкий, общий на стекле) ───── */
+.has-grain::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.4 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.08;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: 4;
+}
+
+/* ───── Премиальный glass базовый стиль ───── */
+.topup-method,
+.btn.action-row,
+.faq-row,
+.connect-help-card,
+.stat-card,
+.subscription-card,
+.tariff-card,
+.support-card {
+    position: relative;
+    background: linear-gradient(
+        180deg,
+        rgba(255,255,255,0.045) 0%,
+        rgba(255,255,255,0.015) 100%
+    ) !important;
+    border: 0.5px solid rgba(255,255,255,0.09) !important;
+    backdrop-filter: blur(30px) saturate(180%) brightness(1.05);
+    -webkit-backdrop-filter: blur(30px) saturate(180%) brightness(1.05);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.1),
+        inset 0 -0.5px 0 rgba(0,0,0,0.15),
+        0 2px 6px rgba(0,0,0,0.25),
+        0 10px 30px rgba(0,0,0,0.3) !important;
+    overflow: hidden;
+    isolation: isolate;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease !important;
+    transform-style: preserve-3d;
+    perspective: 800px;
+}
+
+/* Noise overlay через ::after */
+.topup-method::after,
+.btn.action-row::after,
+.faq-row::after,
+.connect-help-card::after,
+.stat-card::after,
+.subscription-card::after,
+.tariff-card::after,
+.support-card::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.4 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.06;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: 1;
+}
+
+/* Sweep glare на hover */
+.topup-method::before,
+.btn.action-row::before,
+.faq-row::before,
+.connect-help-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 65%; height: 100%;
+    background: linear-gradient(
+        110deg,
+        transparent 0%,
+        rgba(255,255,255,0.0) 40%,
+        rgba(255,255,255,0.16) 50%,
+        rgba(255,255,255,0.0) 60%,
+        transparent 100%
+    );
+    transition: left 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    z-index: 2;
+}
+.topup-method:hover::before,
+.btn.action-row:hover::before,
+.faq-row:hover::before,
+.connect-help-card:hover::before {
+    left: 150%;
+}
+
+/* Top shine — 1px горизонтальный блик */
+.topup-method,
+.btn.action-row,
+.faq-row,
+.connect-help-card,
+.stat-card,
+.subscription-card,
+.tariff-card,
+.support-card {
+    background-image:
+        linear-gradient(180deg, rgba(255,255,255,0.045) 0%, rgba(255,255,255,0.015) 100%),
+        linear-gradient(90deg, transparent 8%, rgba(255,255,255,0.22) 50%, transparent 92%) !important;
+    background-repeat: no-repeat;
+    background-size: 100% 100%, 100% 1px;
+    background-position: 0 0, 0 0;
+}
+
+/* Контент поверх слоёв */
+.topup-method > *,
+.btn.action-row > *,
+.faq-row > *,
+.connect-help-card > * {
+    position: relative;
+    z-index: 3;
+}
+
+/* Hover — усиление */
+.topup-method:hover,
+.btn.action-row:hover,
+.faq-row:hover,
+.connect-help-card:hover,
+.stat-card:hover,
+.subscription-card:hover,
+.tariff-card:hover,
+.support-card:hover {
+    background-image:
+        linear-gradient(180deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.03) 100%),
+        linear-gradient(90deg, transparent 8%, rgba(255,255,255,0.35) 50%, transparent 92%) !important;
+    border-color: rgba(255,255,255,0.24) !important;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.2),
+        inset 0 -0.5px 0 rgba(0,0,0,0.15),
+        0 4px 14px rgba(0,0,0,0.35),
+        0 12px 40px rgba(0,0,0,0.4),
+        0 0 0 0.5px rgba(255,255,255,0.08) !important;
+    transform: translateY(-2px);
+}
+
+/* ═══════════════════════════════════════
+   ✨ Градиентные белые цвета (хром-эффект)
+═══════════════════════════════════════ */
+.user-name,
+.section-title,
+.tariff-days-num,
+.no-sub-title,
+.ref-title,
+.support-title,
+.page-title,
+.tab-title,
+.action-label,
+.topup-method-name,
+.faq-question,
+#userBalance {
+    background: linear-gradient(180deg, #ffffff 0%, #d4d5da 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent !important;
+}
+
+/* Крупные акцентные цифры — более сильный градиент */
+.tariff-price-num,
+#userBalance,
+.ref-percent,
+.stat-value {
+    background: linear-gradient(180deg, #ffffff 0%, #b8babf 90%) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+    filter: drop-shadow(0 1px 2px rgba(255,255,255,0.08));
+}
+
+/* ═══════════════════════════════════════
+   ✨ CTA кнопка — shimmer + glow pulse
+═══════════════════════════════════════ */
+.btn.primary:not(.action-row) {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(180deg, #ffffff 0%, #e4e5ea 100%) !important;
+    color: #000 !important;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.95),
+        inset 0 -1px 0 rgba(0,0,0,0.08),
+        0 6px 20px rgba(255,255,255,0.1),
+        0 2px 6px rgba(0,0,0,0.4) !important;
+    isolation: isolate;
+}
+.btn.primary:not(.action-row)::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -150%;
+    width: 80%; height: 100%;
+    background: linear-gradient(110deg,
+        transparent 0%,
+        rgba(255,255,255,0.0) 40%,
+        rgba(255,255,255,0.7) 50%,
+        rgba(255,255,255,0.0) 60%,
+        transparent 100%);
+    animation: ctaShimmer 5s ease-in-out infinite;
+    animation-delay: 1.5s;
+    pointer-events: none;
+}
+/* Glow pulse — статичное «дыхание» */
+#trialBtn::before,
+.btn.primary:not(.action-row).pulse-cta::before {
+    content: '';
+    position: absolute; inset: -2px;
+    border-radius: inherit;
+    background: radial-gradient(ellipse at center, rgba(255,255,255,0.35) 0%, transparent 70%);
+    opacity: 0;
+    animation: ctaGlowPulse 7s ease-in-out infinite;
+    animation-delay: 3s;
+    pointer-events: none;
+    z-index: -1;
+    filter: blur(12px);
+}
+@keyframes ctaShimmer {
+    0%, 100% { left: -150%; }
+    38%, 62% { left: 200%; }
+}
+@keyframes ctaGlowPulse {
+    0%, 100% { opacity: 0; transform: scale(0.95); }
+    50% { opacity: 0.7; transform: scale(1.05); }
+}
+.btn.primary:not(.action-row):hover {
+    background: linear-gradient(180deg, #ffffff 0%, #f0f1f5 100%) !important;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,1),
+        0 8px 28px rgba(255,255,255,0.22),
+        0 4px 12px rgba(0,0,0,0.5) !important;
+    transform: translateY(-2px);
+}
+
+/* ═══════════════════════════════════════
+   ✨ Иконки платёжек — glass chips
+═══════════════════════════════════════ */
+.topup-method i:first-child {
+    width: 40px !important; height: 40px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(180deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
+    border: 0.5px solid rgba(255,255,255,0.14);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.18),
+        0 2px 8px rgba(0,0,0,0.35);
+    font-size: 16px !important;
+    color: #ffffff !important;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+    position: relative;
+    z-index: 3;
+}
+.topup-method:hover i:first-child {
+    transform: scale(1.1) rotate(-4deg);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.25),
+        0 4px 14px rgba(255,255,255,0.12),
+        0 0 0 0.5px rgba(255,255,255,0.2);
+}
+
+/* ═══════════════════════════════════════
+   ✨ Bottom nav — premium glass + sliding underline
+═══════════════════════════════════════ */
+.nav-item {
+    transition: color 0.25s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    background: transparent !important;
+    border: 0.5px solid transparent !important;
+    position: relative;
+}
+.nav-item::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.9), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease, width 0.3s ease;
+    box-shadow: 0 0 12px rgba(255,255,255,0.6);
+}
+.nav-item.active {
+    background: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.04) 100%) !important;
+    border: 0.5px solid rgba(255,255,255,0.2) !important;
+    color: #ffffff !important;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.22),
+        0 4px 16px rgba(255,255,255,0.08),
+        0 0 22px rgba(255,255,255,0.05) !important;
+}
+.nav-item.active::after {
+    opacity: 1;
+    width: 20px;
+    height: 2px;
+    border-radius: 2px;
+    bottom: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent);
+    box-shadow: 0 0 8px rgba(255,255,255,0.5);
+}
+
+/* Пульсирующие иконки разделов (только активный) */
+.nav-item.active i {
+    animation: navIconBreathe 2.8s ease-in-out infinite;
+    transform-origin: center;
+}
+@keyframes navIconBreathe {
+    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(255,255,255,0)); }
+    50%      { transform: scale(1.08); filter: drop-shadow(0 0 6px rgba(255,255,255,0.5)); }
+}
+
+/* ═══════════════════════════════════════
+   ✨ Header & glass — улучшенное стекло
+═══════════════════════════════════════ */
+.header,
+.glass {
+    background: linear-gradient(180deg, rgba(255,255,255,0.055) 0%, rgba(255,255,255,0.015) 100%) !important;
+    border: 0.5px solid rgba(255,255,255,0.11) !important;
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.1),
+        0 4px 20px rgba(0,0,0,0.35);
+}
+
+.promo-section {
+    background: linear-gradient(180deg, rgba(255,255,255,0.045) 0%, rgba(255,255,255,0.012) 100%) !important;
+    border: 0.5px solid rgba(255,255,255,0.1) !important;
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 4px 18px rgba(0,0,0,0.3);
+}
+.promo-section p {
+    background: linear-gradient(180deg, #ffffff, #c8cad0);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 600;
+}
+
+.info-hint {
+    background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.008) 100%);
+    border: 0.5px solid rgba(255,255,255,0.07);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+/* ═══════════════════════════════════════
+   ✨ ID-чип: аватар + ник + копируемый ID
+═══════════════════════════════════════ */
+.user-details { gap: 4px !important; }
+.user-id {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 8px;
+    margin-top: 1px;
+    width: fit-content;
+    font-size: 10px !important;
+    font-family: 'SF Mono', 'JetBrains Mono', monospace;
+    letter-spacing: 0.3px;
+    color: rgba(235,235,245,0.6) !important;
+    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.015));
+    border: 0.5px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    user-select: none;
+}
+.user-id::after {
+    content: '\f0c5';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    font-size: 8px;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+.user-id:hover {
+    color: rgba(255,255,255,0.95) !important;
+    background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03));
+    border-color: rgba(255,255,255,0.2);
+}
+.user-id:hover::after { opacity: 1; }
+.user-id.copied {
+    color: #fff !important;
+    background: linear-gradient(180deg, rgba(48,209,88,0.2), rgba(48,209,88,0.06));
+    border-color: rgba(48,209,88,0.4);
+}
+
+/* ═══════════════════════════════════════
+   ✨ Flag chips — glass с кодом + emoji
+═══════════════════════════════════════ */
+.country-flag {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px !important;
+    font-size: 11px !important;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.015)) !important;
+    border: 0.5px solid rgba(255,255,255,0.12) !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 1px 3px rgba(0,0,0,0.2);
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, background 0.25s ease !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    width: auto !important;
+    height: auto !important;
+}
+.country-flag .flag-emoji {
+    font-size: 13px;
+    line-height: 1;
+}
+.country-flag:hover {
+    transform: scale(1.08) translateY(-1px) !important;
+    background: linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04)) !important;
+    border-color: rgba(255,255,255,0.25) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 10px rgba(0,0,0,0.3) !important;
+}
+
+/* ═══════════════════════════════════════
+   ✨ Pull-to-refresh indicator
+═══════════════════════════════════════ */
+.ptr-indicator {
+    position: absolute;
+    top: -60px; left: 50%;
+    transform: translateX(-50%);
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3), rgba(255,255,255,0.05));
+    border: 0.5px solid rgba(255,255,255,0.2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.9);
+    font-size: 14px;
+    z-index: 100;
+    opacity: 0;
+    transition: top 0.2s cubic-bezier(0.4,0,0.2,1), opacity 0.2s;
+    pointer-events: none;
+}
+.ptr-indicator.visible { opacity: 1; }
+.ptr-indicator.loading i {
+    animation: ptrSpin 0.9s linear infinite;
+}
+@keyframes ptrSpin {
+    to { transform: rotate(360deg); }
+}
+
+/* ═══════════════════════════════════════
+   Reduced motion
+═══════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+    .btn.primary:not(.action-row)::after { animation: none; }
+    .topup-method::before, .btn.action-row::before,
+    .faq-row::before, .connect-help-card::before { transition: none; }
+    .nav-item.active i { animation: none; }
+    #trialBtn::before { animation: none; }
+}
+
 </style>
 </head>
 <body>
@@ -1825,8 +2320,36 @@ modal?.addEventListener('keydown', (e) => {
 function updateHeader() {
     const u = AppData.user;
     $('#userName').textContent = String(u.name);
-    $('#userId').textContent = `ID: ${String(u.id)}`;
-    $('#userBalance').textContent = `${Number(u.balance).toFixed(2)}₽`;
+    const uid = $('#userId');
+    uid.textContent = String(u.id);
+    uid.setAttribute('role', 'button');
+    uid.setAttribute('tabindex', '0');
+    uid.setAttribute('title', 'Нажмите, чтобы скопировать');
+    // animated counter на балансе
+    animateCounter('#userBalance', Number(u.balance), { suffix: '₽', decimals: 2 });
+}
+
+/* Animated counter helper */
+function animateCounter(sel, target, opts = {}) {
+    const el = typeof sel === 'string' ? $(sel) : sel;
+    if (!el) return;
+    const { suffix = '', prefix = '', decimals = 0, duration = 900 } = opts;
+    const start = parseFloat(el.dataset.cur || '0') || 0;
+    if (Math.abs(start - target) < 0.001) {
+        el.textContent = `${prefix}${target.toFixed(decimals)}${suffix}`;
+        el.dataset.cur = String(target);
+        return;
+    }
+    const t0 = performance.now();
+    const step = (now) => {
+        const t = Math.min(1, (now - t0) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const val = start + (target - start) * eased;
+        el.textContent = `${prefix}${val.toFixed(decimals)}${suffix}`;
+        if (t < 1) requestAnimationFrame(step);
+        else el.dataset.cur = String(target);
+    };
+    requestAnimationFrame(step);
 }
 updateHeader();
 
@@ -2190,7 +2713,7 @@ function renderTariffs() {
                 </div>
                 <div class="tariff-locations">
                     <div class="tariff-locations-label"><i class="fas fa-map-marker-alt"></i> Страны в подписке</div>
-                    <div class="tariff-countries">${locations.map(l => `<span class="country-flag" title="${escapeHtml(l.code)}">${escapeHtml(l.flag)}</span>`).join('')}</div>
+                    <div class="tariff-countries">${locations.map(l => `<span class="country-flag" title="${escapeHtml(l.code)}"><span class="flag-emoji">${escapeHtml(l.flag)}</span>${escapeHtml(l.code)}</span>`).join('')}</div>
                     <div class="tariff-locations-note"><i class="fas fa-info-circle"></i> ${safeInt(t.traffic_gb)} ГБ на локацию · всего ${safeInt(t.traffic_gb) * n} ГБ</div>
                 </div>
                 <button type="button" class="tariff-card-btn">Выбрать <i class="fas fa-arrow-right"></i></button>
@@ -2547,6 +3070,178 @@ function initApp() {
     }
 
     showTab(_initTab);
+
+    // ─── Премиальные модули v3 ───
+    initIdCopy();
+    init3dTilt();
+    initPullToRefresh();
+    initFaqHaptic();
+    initFlagChipHaptic();
+}
+
+/* ═══════════════════════════════════════
+   ✨ V3 PREMIUM INTERACTION MODULES
+═══════════════════════════════════════ */
+
+/* ID chip click-to-copy */
+function initIdCopy() {
+    const uid = $('#userId');
+    if (!uid) return;
+    const copy = async () => {
+        HapticFeedback.buttonLight();
+        const ok = await copyToClipboard(String(AppData.user.id));
+        if (ok) {
+            uid.classList.add('copied');
+            const orig = uid.textContent;
+            uid.textContent = 'Скопировано ✓';
+            setTimeout(() => {
+                uid.classList.remove('copied');
+                uid.textContent = orig;
+            }, 1400);
+            HapticFeedback.success();
+        } else {
+            showToast('Не удалось скопировать', 'error');
+        }
+    };
+    uid.addEventListener('click', copy);
+    uid.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); copy(); }
+    });
+}
+
+/* 3D tilt — лёгкий наклон карточек по движению мыши/пальца */
+function init3dTilt() {
+    const hasReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (hasReducedMotion) return;
+    const selector = '.tariff-card, .stat-card, .subscription-card, .support-card, .connect-help-card';
+    const maxTilt = 6; // градусов
+    const onMove = (card, x, y) => {
+        const rect = card.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const dx = (x - cx) / (rect.width / 2);   // -1..1
+        const dy = (y - cy) / (rect.height / 2);  // -1..1
+        const rY = Math.max(-1, Math.min(1, dx)) * maxTilt;
+        const rX = -Math.max(-1, Math.min(1, dy)) * maxTilt;
+        card.style.transform = `perspective(900px) rotateX(${rX}deg) rotateY(${rY}deg) translateY(-2px)`;
+    };
+    const reset = (card) => { card.style.transform = ''; };
+
+    document.addEventListener('pointermove', (e) => {
+        if (e.pointerType === 'touch') return; // touch обрабатываем отдельно
+        const card = e.target.closest(selector);
+        if (!card) return;
+        onMove(card, e.clientX, e.clientY);
+    });
+    document.addEventListener('pointerleave', () => {
+        document.querySelectorAll(selector).forEach(reset);
+    }, true);
+    document.addEventListener('mouseout', (e) => {
+        const card = e.target.closest(selector);
+        if (card && !card.contains(e.relatedTarget)) reset(card);
+    });
+
+    // Touch — короткий наклон при касании
+    document.addEventListener('touchstart', (e) => {
+        const card = e.target.closest(selector);
+        if (!card) return;
+        const t = e.touches[0];
+        onMove(card, t.clientX, t.clientY);
+    }, { passive: true });
+    document.addEventListener('touchend', (e) => {
+        const card = e.target.closest(selector);
+        if (card) setTimeout(() => reset(card), 200);
+    }, { passive: true });
+    document.addEventListener('touchmove', (e) => {
+        const card = e.target.closest(selector);
+        if (!card) return;
+        const t = e.touches[0];
+        onMove(card, t.clientX, t.clientY);
+    }, { passive: true });
+}
+
+/* Pull-to-refresh на главной */
+function initPullToRefresh() {
+    const content = $('.content');
+    if (!content) return;
+
+    // Создаём индикатор
+    const ind = document.createElement('div');
+    ind.className = 'ptr-indicator';
+    ind.innerHTML = '<i class="fas fa-arrow-down"></i>';
+    const stageLayer = $('.ui-layer') || document.body;
+    stageLayer.appendChild(ind);
+
+    const THRESHOLD = 70;
+    let startY = 0, curY = 0, pulling = false, active = false;
+
+    content.addEventListener('touchstart', (e) => {
+        if (currentTab !== 'home') return;
+        if (content.scrollTop > 2) return;
+        startY = e.touches[0].clientY;
+        pulling = true;
+        active = false;
+    }, { passive: true });
+
+    content.addEventListener('touchmove', (e) => {
+        if (!pulling) return;
+        curY = e.touches[0].clientY;
+        const d = curY - startY;
+        if (d <= 0) { ind.classList.remove('visible'); return; }
+        const dampened = Math.min(d * 0.5, THRESHOLD + 20);
+        ind.style.top = `${-60 + dampened}px`;
+        ind.classList.add('visible');
+        if (dampened >= THRESHOLD && !active) {
+            active = true;
+            HapticFeedback.buttonMedium();
+            ind.style.transform = 'translateX(-50%) scale(1.1)';
+        } else if (dampened < THRESHOLD && active) {
+            active = false;
+            ind.style.transform = 'translateX(-50%) scale(1)';
+        }
+    }, { passive: true });
+
+    content.addEventListener('touchend', () => {
+        if (!pulling) return;
+        pulling = false;
+        if (active) {
+            ind.classList.add('loading');
+            ind.innerHTML = '<i class="fas fa-circle-notch"></i>';
+            ind.style.top = '20px';
+            // Имитация рефреша
+            setTimeout(() => {
+                invalidateTabCache('home');
+                showTab('home');
+                HapticFeedback.success();
+                ind.classList.remove('visible', 'loading');
+                ind.style.top = '-60px';
+                ind.style.transform = 'translateX(-50%) scale(1)';
+                ind.innerHTML = '<i class="fas fa-arrow-down"></i>';
+            }, 900);
+        } else {
+            ind.classList.remove('visible');
+            ind.style.top = '-60px';
+            ind.style.transform = 'translateX(-50%) scale(1)';
+        }
+    }, { passive: true });
+}
+
+/* Haptic feedback для FAQ */
+function initFaqHaptic() {
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('.faq-row')) {
+            HapticFeedback.selection();
+        }
+    }, true);
+}
+
+/* Haptic feedback для флаг-чипов */
+function initFlagChipHaptic() {
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('.country-flag')) {
+            HapticFeedback.buttonLight();
+        }
+    }, true);
 }
 
 /* ═══════════════════════════════════════
