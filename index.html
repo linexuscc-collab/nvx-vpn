@@ -2,18 +2,379 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://telegram.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: blob:; connect-src 'self' https://telegram.org https://api.telegram.org;">
-<title>NVX VPN</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-69NrEuG6AO+DEwJeQmzgbAQuIdFyHSiriOIwexjyxWc=' https://telegram.org; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://telegram.org; object-src 'none'; base-uri 'self'; form-action 'none';">
+<meta name="robots" content="noindex,nofollow">
+<title>NvxVPN — Mini App</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔒</text></svg>">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="https://i.ibb.co/zT8NR7k7/logo2.png" type="image/png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha384-PPIZEGYM1v8zp5Py7UjFb79S58UeqCL9pYVnVPURKEqvioPROaVAJKKLzvH2rDnI" crossorigin="anonymous">
+<style>
+/* Font faces; font files are loaded from Google Fonts. */
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2JL7SUc.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa0ZL7SUc.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2ZL7SUc.woff2") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1pL7SUc.woff2") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2pL7SUc.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa25L7SUc.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2JL7SUc.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa0ZL7SUc.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2ZL7SUc.woff2") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1pL7SUc.woff2") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2pL7SUc.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa25L7SUc.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2JL7SUc.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa0ZL7SUc.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2ZL7SUc.woff2") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1pL7SUc.woff2") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2pL7SUc.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa25L7SUc.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2JL7SUc.woff2") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa0ZL7SUc.woff2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2ZL7SUc.woff2") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1pL7SUc.woff2") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa2pL7SUc.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa25L7SUc.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPb54C-s0.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPb94C-s0.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4Cw.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPb54C-s0.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPb94C-s0.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4Cw.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPb54C-s0.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPb94C-s0.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4Cw.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPb54C-s0.woff2") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPb94C-s0.woff2") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4Cw.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
 <style>
 /* ═══════════════════════════════════════
    CSS VARIABLES
@@ -1654,13 +2015,139 @@ body {
 }
 
 </style>
+<style>
+/* Mini App refinements */
+/* Gentle refinements. Original glass, lighting, type scale and motion stay in index.html. */
+:root {
+    --safe-top: max(env(safe-area-inset-top, 0px), var(--tg-safe-area-inset-top, 0px), var(--tg-content-safe-area-inset-top, 0px));
+    --safe-bottom: max(env(safe-area-inset-bottom, 0px), var(--tg-safe-area-inset-bottom, 0px), var(--tg-content-safe-area-inset-bottom, 0px));
+    --safe-left: max(env(safe-area-inset-left, 0px), var(--tg-content-safe-area-inset-left, 0px));
+    --safe-right: max(env(safe-area-inset-right, 0px), var(--tg-content-safe-area-inset-right, 0px));
+}
+html { -webkit-text-size-adjust: 100%; }
+#app { height: var(--app-height, 100dvh); max-width: 540px; margin-inline: auto; }
+.ui-layer { min-height: 0; position: relative; }
+.content { min-height: 0; overscroll-behavior-y: contain; outline-offset: -3px; }
+/* Account for the home indicator once, outside the floating navigation. */
+.bottom-nav { padding-bottom: 6px; }
+.user-info { flex: 1; }
+.user-details { min-width: 0; }
+.header { gap: 10px; }
+.user-id { white-space: nowrap; }
+.section-title { overflow-wrap: anywhere; }
+/* A shorter empty-state message leaves room for the trial on a phone. */
+#subCard:has(.no-sub-wrap) { padding-block: 14px; }
+.no-sub-wrap { padding: 2px 0 4px; }
+.no-sub-icon { margin-bottom: 12px; }
+.no-sub-text { margin-bottom: 14px; }
+.subscription-card .sub-title-center { margin-bottom: 10px; }
+.balance { font-family: var(--font-body); }
+.balance, .stat-value, .tariff-days-num, .tariff-price-num, .detail .value { font-variant-numeric: tabular-nums; }
+/* Clearer secondary labels within the original monochrome palette. */
+.user-id, .nav-item:not(.active), .tariff-days-label, .stat-label { color: #aaaab0; }
+.tariff-feature, .faq-body p, .connect-help-text .desc { color: #c0c0c5; }
+/* Explanations remain inline, wrapping only when the actual width requires it. */
+.subscription-card .detail { display: grid; grid-template-columns: 16px auto minmax(0, 1fr); column-gap: 10px; }
+.subscription-card .detail .value { min-width: 0; margin-left: 0; text-align: right; overflow-wrap: anywhere; }
+.subscription-card .detail .text-muted { display: inline; }
+.flag-asset { width: 16px; height: 12px; object-fit: cover; border-radius: 2px; flex-shrink: 0; }
+.tariff-locations-note { flex-wrap: wrap; }
+.tariff-locations-note i, .action-icon-wrap, .faq-icon-wrap, .connect-help-icon { flex-shrink: 0; }
+.action-text-wrap, .topup-method-text { min-width: 0; }
+.ref-link-input { user-select: text; }
+/* Native buttons inherit the original cards, rather than browser defaults. */
+button.topup-method, button.connect-help-card, button.faq-row { width: 100%; text-align: left; font-family: var(--font-body); color: var(--text-primary); }
+button.faq-row { border: 0; border-radius: 0; }
+/* The original hover sweep and texture shared ::after; preserve the texture box. */
+.topup-method::after { width: auto; height: auto; transform: none; background-color: transparent; }
+.promo-input { min-width: 0; width: 100%; font-size: 16px; padding-block: 9px; }
+.promo-input::placeholder { font-size: 11px; }
+.promo-btn { min-height: 40px; }
+.copy-btn:disabled { opacity: .45; cursor: default; }
+/* Testing controls appear only at ?preview=inactive or ?preview=active. */
+[hidden] { display: none !important; }
+.preview-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-shrink: 0; padding: 6px 2px 0; color: #aaaab0; font-size: 11px; }
+.preview-separator { margin-inline: 4px; opacity: .6; }
+.preview-bar button { border: 0; background: transparent; color: inherit; font: inherit; padding: 8px 0 8px 8px; cursor: pointer; }
+.preview-bar button i { margin-left: 5px; }
+/* Existing repaired dialogs/forms: no effect on the five screen compositions. */
+.modal-content { max-width: 540px; max-height: 92dvh; overscroll-behavior: contain; }
+.modal-drag { min-height: 32px; padding: 14px; touch-action: none; cursor: grab; }
+.modal-header { gap: 12px; }
+.modal-header h3 { line-height: 1.35; }
+.modal-close { min-width: 44px; min-height: 44px; flex-shrink: 0; }
+#modal-body { padding: 16px 20px 0; }
+#modal-buttons.modal-buttons { padding: 0 20px max(20px, calc(var(--safe-bottom) + 12px)); gap: 10px; margin-top: 18px; }
+.modal-btn-primary { width: 100%; margin: 0; height: auto; min-height: 46px; padding: 12px; font-size: 14px; }
+.modal-btn-secondary { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 44px; padding: 12px; border: 1px solid #ffffff25; border-radius: 16px; background: #ffffff08; color: #ebebee; font: 500 14px var(--font-body); cursor: pointer; }
+.bot-link { display: flex; align-items: center; justify-content: center; gap: 9px; text-decoration: none; text-align: center; line-height: 1.5; }
+.sheet-icon { display: flex; justify-content: center; margin: 0 0 16px; }
+.sheet-icon img { object-fit: contain; }
+.sheet-copy { font-size: 14px; line-height: 1.65; color: #d2d2d7; }
+.sheet-note { font-size: 12px; line-height: 1.65; color: #aaaab0; margin-top: 12px; }
+.preview-note { border-top: 1px solid #ffffff15; padding-top: 12px; margin-top: 16px; }
+.amount-label { display: block; font-size: 13px; color: #c0c0c5; margin-bottom: 10px; }
+.amount-field { display: flex; align-items: center; gap: 12px; padding: 12px 15px; background: #0003; border: 1px solid #ffffff25; border-radius: 14px; }
+.amount-field input { min-width: 0; width: 100%; background: transparent; border: 0; color: #fff; font: 600 26px var(--font-display); outline-offset: 4px; }
+.amount-field > span { color: #b3b3b9; font: 500 22px var(--font-display); }
+.field-error { font-size: 12px; line-height: 1.6; color: #ffaaa4; margin-top: 8px; }
+.field-error:empty { display: none; }
+.payment-review-amount { font: 650 38px var(--font-display); text-align: center; padding: 5px 0 20px; }
+.payment-review-amount span { font-size: 26px; color: #aaaab0; }
+.modal-detail-row { gap: 12px; }
+.modal-detail-value { min-width: 0; text-align: right; overflow-wrap: anywhere; }
+.modal-balance-warn { line-height: 1.6; }
+.connection-steps { list-style: none; }
+.connection-steps li { display: flex; gap: 12px; padding-bottom: 18px; }
+.connection-steps li > span { font: 500 12px var(--font-display); border: 1px solid #ffffff25; border-radius: 9px; width: 30px; height: 30px; display: grid; place-items: center; flex-shrink: 0; color: #bdbdc5; }
+.connection-steps strong { display: block; font-size: 14px; font-weight: 600; margin: 4px 0 6px; }
+.connection-steps p { font-size: 13px; line-height: 1.65; color: #b3b3b9; }
+.confirm-box { width: calc(100% - 36px); max-width: 360px; }
+.confirm-box p { line-height: 1.6; }
+.confirm-btn { min-height: 44px; }
+.toast { white-space: normal; width: max-content; max-width: min(480px, calc(100vw - 32px)); line-height: 1.5; bottom: max(90px, calc(var(--safe-bottom) + 80px)); }
+.toast i { flex-shrink: 0; }
+#toast-message { min-width: 0; overflow-wrap: anywhere; }
+[inert] { pointer-events: none; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, a:focus-visible, input:focus-visible, [tabindex]:focus-visible { outline: 2px solid #eeeef2; outline-offset: 3px; }
+button:disabled { cursor: not-allowed; }
+@media (hover: none) {
+    /* No stuck desktop lift after a tap; existing light sweeps remain. */
+    .hoverable:hover, .header:hover, .header:hover .avatar, .subscription-card:hover, .topup-method:hover, .btn.action-row:hover, .connect-help-card:hover, .promo-section:hover, .promo-btn:hover, .nav-item:hover, .btn.primary:hover { transform: none; }
+    .country-flag:hover { transform: none !important; }
+    .btn:active, .promo-btn:active, .topup-method:active, .tariff-card-btn:active { transform: scale(.98) !important; }
+    .nav-item:active { transform: scale(.95) !important; }
+}
+@media (min-width: 700px) {
+    #app { top: 20px; bottom: 20px; height: calc(var(--app-height, 100dvh) - 40px); border-radius: 26px; border: 1px solid #ffffff18; overflow: hidden; }
+}
+@media (max-width: 359px) {
+    .bottom-nav { gap: 2px; }
+    .header { padding-inline: 10px; gap: 8px; }
+    .user-info { gap: 8px; }
+    .balance { padding-inline: 9px; }
+    .nav-item { min-width: 44px; flex: 1 1 auto; padding-inline: 1px; }
+    .subscription-card .detail { column-gap: 7px; }
+    .promo-input { padding-inline: 10px; }
+    .promo-input::placeholder { font-size: 10px; letter-spacing: 0; }
+    .promo-btn { padding-inline: 10px; font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    .anim-title, .anim-left, .anim-up, .anim-down, .anim-fade { opacity: 1 !important; transform: none !important; }
+    .modal-content { transform: none !important; }
+}
+body.page-paused *, body.page-paused *::before, body.page-paused *::after { animation-play-state: paused !important; }
+
+</style>
 </head>
 <body>
 
 <!-- ═══════ SPLASH SCREEN ═══════ -->
-<div id="nvx-splash">
+<div id="nvx-splash" aria-hidden="true">
   <div id="nvx-splash-inner">
-    <img id="nvx-splash-logo" src="https://i.ibb.co/WptRdbLv/logo2.png" alt="NVX VPN">
+    <img id="nvx-splash-logo" src="https://i.ibb.co/zT8NR7k7/logo2.png" alt="NVX VPN">
     <div id="nvx-splash-fallback">
       <i class="fas fa-shield-alt"></i>
     </div>
@@ -1681,10 +2168,11 @@ body {
 
 <div id="app">
 <div class="ui-layer">
+  <div class="preview-bar" hidden><span>NvxVPN <span class="preview-separator">/</span> Mini App</span><button type="button" id="previewControl">Предпросмотр <i class="fas fa-sliders-h" aria-hidden="true"></i></button></div>
   <header class="header">
     <div class="user-info">
       <div class="avatar" id="avatarContainer">
-        <img id="avatarImage" loading="lazy">
+        <img id="avatarImage" loading="lazy" alt="" width="40" height="40">
         <span id="userInitial"><i class="fas fa-user"></i></span>
       </div>
       <div class="user-details">
@@ -1692,15 +2180,15 @@ body {
         <span class="user-id" id="userId">ID: —</span>
       </div>
     </div>
-    <div class="balance" id="balanceDisplay">
+    <button type="button" class="balance" id="balanceDisplay" aria-label="Баланс. Пополнить">
       <i class="fas fa-coins"></i>
       <span id="userBalance">0.00₽</span>
-    </div>
+    </button>
   </header>
 
-  <main class="content" id="content" role="tabpanel"></main>
+  <main class="content" id="content" role="tabpanel" tabindex="0"></main>
 
-  <nav class="bottom-nav" id="bottomNav" role="tablist">
+  <nav class="bottom-nav" id="bottomNav" role="tablist" aria-label="Разделы приложения">
     <button type="button" class="nav-item active" data-tab="home" role="tab" aria-selected="true" aria-controls="content" aria-label="Главная"><i class="fas fa-home"></i><span>Главная</span></button>
     <button type="button" class="nav-item" data-tab="tariffs" role="tab" aria-selected="false" aria-controls="content" aria-label="Тарифы"><i class="fas fa-tags"></i><span>Тарифы</span></button>
     <button type="button" class="nav-item" data-tab="referral" role="tab" aria-selected="false" aria-controls="content" aria-label="Рефералы"><i class="fas fa-users"></i><span>Рефералы</span></button>
@@ -1751,9 +2239,15 @@ const PAYMENT_METHODS = {
    TELEGRAM WEBAPP INIT (with fallback)
 ═══════════════════════════════════════ */
 const tg = window.Telegram?.WebApp;
-const isTelegram = !!tg;
+// SDK also exists in a regular browser. This check is for UI integration only;
+// authentication and balances require server-side validation of raw initData.
+const isTelegram = Boolean(tg?.initData && tg?.platform !== 'unknown');
+const BOT_URL = 'https://t.me/NvxVpnBot';
+const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+const reduceMotion = () => motionPreference.matches;
+const PREVIEW_NOTICE = 'Это предпросмотр приложения. Платежи не создаются, баланс и подписка не изменяются на сервере.';
 
-if (tg) {
+if (isTelegram) {
     try { tg.setHeaderColor('#000000'); } catch {}
     try { tg.setBackgroundColor('#000000'); } catch {}
     try { tg.expand(); } catch {}
@@ -1765,14 +2259,18 @@ if (tg) {
 /* ═══════════════════════════════════════
    HAPTIC FEEDBACK MODULE
 ═══════════════════════════════════════ */
+function haptic(method, value) {
+    if (!isTelegram || !tg.isVersionAtLeast?.('6.1')) return;
+    try { tg.HapticFeedback?.[method]?.(value); } catch { /* optional device feedback */ }
+}
 const HapticFeedback = {
-    buttonLight() { tg?.HapticFeedback?.impactOccurred?.('light'); },
-    buttonMedium() { tg?.HapticFeedback?.impactOccurred?.('medium'); },
-    navigation() { tg?.HapticFeedback?.impactOccurred?.('light'); },
-    success() { tg?.HapticFeedback?.notificationOccurred?.('success'); },
-    error() { tg?.HapticFeedback?.notificationOccurred?.('error'); },
-    warning() { tg?.HapticFeedback?.notificationOccurred?.('warning'); },
-    selection() { tg?.HapticFeedback?.selectionChanged?.(); }
+    buttonLight() { haptic('impactOccurred', 'light'); },
+    buttonMedium() { haptic('impactOccurred', 'medium'); },
+    navigation() { haptic('impactOccurred', 'light'); },
+    success() { haptic('notificationOccurred', 'success'); },
+    error() { haptic('notificationOccurred', 'error'); },
+    warning() { haptic('notificationOccurred', 'warning'); },
+    selection() { haptic('selectionChanged'); }
 };
 
 /* ═══════════════════════════════════════
@@ -1797,33 +2295,15 @@ function canProceed(actionId) {
     return true;
 }
 
-/* ═══════════════════════════════════════
-   PROMO CODES (test stubs)
-   ╔══════════════════════════════════════════════════════════════╗
-   ║  ⛔  SECURITY CRITICAL — УДАЛИТЬ ПЕРЕД ПРОДАКШЕНОМ!         ║
-   ║  Все промокоды ДОЛЖНЫ валидироваться ТОЛЬКО на сервере.     ║
-   ║  Клиентский код НЕ должен содержать ни кодов, ни бонусов.  ║
-   ║  Пользователь может увидеть коды через DevTools и           ║
-   ║  модифицировать баланс через консоль.                       ║
-   ║  При подключении backend:                                   ║
-   ║  1. Удалить VALID_PROMOS целиком                            ║
-   ║  2. Заменить проверку на API.activatePromo(code)            ║
-   ║  3. Обновить баланс из ответа сервера                       ║
-   ╚══════════════════════════════════════════════════════════════╝
-═══════════════════════════════════════ */
-const VALID_PROMOS = {
-    'NVX2026':  { bonus: 50,  desc: '+50₽ на баланс' },
-    'WELCOME':  { bonus: 30,  desc: '+30₽ на баланс' },
-    'Naste4ek':  { bonus: 100, desc: '+100₽ на баланс' },
-};
+// Preview contains no valid promo codes or client-side financial mutations.
 
 /* ═══════════════════════════════════════
    DATA LAYER — готов к замене на API
 ═══════════════════════════════════════ */
 const AppData = {
     user: {
-        name: 'ONE_DAY',
-        id: '641915862',
+        name: 'Пользователь',
+        id: '',
         balance: 0.00,
         avatar: null,
     },
@@ -1832,9 +2312,9 @@ const AppData = {
         trialAvailable: true,
         // FIX N8: Subscription details — will come from backend
         planName: 'Тестовая подписка',
-        expiresAt: '31 марта 2026 09:12',
+        expiresAt: new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }).format(Date.now() + 86400000),
         daysLeft: 1,
-        daysLeftLabel: '1  день',
+        daysLeftLabel: '1 день',
         trafficTotalGb: 48,
         trafficPerLocGb: 1.5,
         trafficUsedPercent: 5,
@@ -1872,7 +2352,7 @@ const AppData = {
         ['fa-sync-alt',              'Как продлить подписку?',                             'Перейдите на главную вкладку и нажмите <strong>«Продлить»</strong>. Выберите нужное количество дней. Средства списываются с баланса мгновенно.'],
         ['fa-mobile-alt',            'Как подключить дополнительное устройство?',           'На главной вкладке нажмите <strong>«Устройства»</strong> и выберите количество новых слотов. Один слот — ещё одно одновременное подключение.'],
         ['fa-exclamation-triangle',  'VPN не подключается или работает нестабильно',        'Убедитесь, что подписка активна. Переподключитесь или обновите конфигурацию. Попробуйте сменить сервер. Если проблема сохраняется — обратитесь в поддержку.'],
-        ['fa-wallet',                'Какие способы пополнения баланса доступны?',          'Поддерживаются: <strong>Telegram Stars</strong>, <strong>CryptoBot</strong> (USDT, TON), <strong>Lolz Market</strong>, <strong>СБП</strong>.'],
+        ['fa-wallet',                'Какие способы пополнения баланса доступны?',          'Поддерживаются: <strong>Telegram Stars</strong>, <strong>CryptoBot</strong> (USDT, TON), <strong>СБП</strong>.'],
         ['fa-flask',                 'Как получить тестовый период?',                       'Тестовая подписка — <strong>один раз в 30 дней</strong>: 1 день, 1.5 ГБ на локацию, 1 устройство на локацию. Баннер появится на главной вкладке.'],
         ['fa-globe',                 'Сколько серверов и в каких странах?',                 'Сеть охватывает <strong>9+ стран</strong>: LV, NL, RU, US, PL, KZ, SE, TR, UA. Список постоянно расширяется.'],
     ],
@@ -1888,61 +2368,41 @@ const API = {
     RETRY_BASE_MS: 1000,
 
     async _request(endpoint, options = {}) {
-        const maxRetries = options._noRetry ? 0 : this.MAX_RETRIES;
-        let lastErr;
-
-        for (let attempt = 0; attempt <= maxRetries; attempt++) {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), this.TIMEOUT_MS);
-
-            if (attempt === 0) showLoading(options._loadingMsg || 'Загрузка...');
-
-            try {
-                const resp = await fetch(this.BASE_URL + endpoint, {
-                    ...options,
-                    signal: controller.signal,
-                    headers: {
-                        'Content-Type': 'application/json',
-                        ...(isTelegram && tg.initData ? { 'X-Telegram-Init-Data': tg.initData } : {}),
-                        ...options.headers,
-                    },
-                });
-                /* FIX v5.5 #12: clearTimeout moved to finally */
-                if (!resp.ok) {
-                    const errBody = await resp.json().catch(() => ({}));
-                    const err = new Error(errBody.message || `HTTP ${resp.status}`);
-                    err.status = resp.status;
-                    throw err;
-                }
-                hideLoading();
-                return await resp.json();
-            } catch (err) {
-                lastErr = err;
-                // Don't retry on client errors (4xx) or abort
-                if (err.name === 'AbortError' || (err.status && err.status >= 400 && err.status < 500)) {
-                    break;
-                }
-                if (attempt < maxRetries) {
-                    const delay = this.RETRY_BASE_MS * Math.pow(2, attempt);
-                    await new Promise(r => setTimeout(r, delay));
-                    continue;
-                }
-            } finally {
-                clearTimeout(timeoutId);
+        const { _noRetry, _loadingMsg, ...fetchOptions } = options;
+        const method = (fetchOptions.method || 'GET').toUpperCase();
+        // Never retry payments, purchases or promo activation automatically.
+        const maxRetries = !_noRetry && method === 'GET' ? this.MAX_RETRIES : 0;
+        showLoading(_loadingMsg || 'Загрузка...');
+        try {
+            for (let attempt = 0; ; attempt++) {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), this.TIMEOUT_MS);
+                let retryError;
+                try {
+                    const resp = await fetch(this.BASE_URL + endpoint, {
+                        ...fetchOptions, signal: controller.signal,
+                        headers: { 'Content-Type': 'application/json',
+                            ...(isTelegram ? { 'X-Telegram-Init-Data': tg.initData } : {}),
+                            ...fetchOptions.headers }
+                    });
+                    if (!resp.ok) {
+                        const body = await resp.json().catch(() => ({}));
+                        const err = new Error(body.message || `HTTP ${resp.status}`);
+                        err.status = resp.status;
+                        throw err;
+                    }
+                    return resp.status === 204 ? null : await resp.json();
+                } catch (err) {
+                    if (attempt >= maxRetries || err.name === 'AbortError' || (err.status && err.status < 500)) throw err;
+                    retryError = err;
+                } finally { clearTimeout(timeoutId); }
+                if (retryError) await new Promise(resolve => setTimeout(resolve, this.RETRY_BASE_MS * 2 ** attempt));
             }
-        }
-
-        // All retries failed
-        hideLoading();
-        if (lastErr.name === 'AbortError') {
-            showToast('Превышено время ожидания', 'error');
-        } else if (!navigator.onLine) {
-            showToast('Нет подключения к интернету', 'error');
-        } else {
-            showToast(lastErr.message || 'Ошибка сервера', 'error');
-        }
-        HapticFeedback.error();
-        throw lastErr;
+        } catch (err) {
+            showToast(err.name === 'AbortError' ? 'Превышено время ожидания' : !navigator.onLine ? 'Нет подключения к интернету' : err.message || 'Ошибка сервера', 'error');
+            HapticFeedback.error();
+            throw err;
+        } finally { hideLoading(); }
     },
 
     getUser() { return this._request('/user', { _loadingMsg: 'Загрузка профиля...' }); },
@@ -1988,6 +2448,10 @@ const modalButtons = $('#modal-buttons');
 const modalClose   = $('#modal-close');
 
 let currentTab = 'home';
+let tabRevision = 0;
+let checkout = null;
+const paymentDrafts = new Map();
+const tabState = new Map();
 
 /* ═══════════════════════════════════════
    XSS PROTECTION
@@ -2001,7 +2465,7 @@ function escapeHtml(str) {
         .replace(/'/g, '&#039;');
 }
 
-function safeInt(n) { return parseInt(n, 10) || 0; }
+function safeInt(n) { const value = Number(n); return Number.isFinite(value) ? Math.trunc(value) : 0; }
 /* FIX v5.5 #13: Simplified — single conversion path */
 function safeFloat(n) { const v = Number(n); return Number.isFinite(v) ? Math.round(v * 100) / 100 : 0; }
 
@@ -2033,6 +2497,7 @@ function _onAnimEnd(e) {
 function registerAnimCleanup() {
     if (cleanupTimer) clearTimeout(cleanupTimer);
     const animEls = $$(ANIM_SELECTORS);
+    if (reduceMotion()) { animEls.forEach(_markAnimDone); return; }
     _animPendingCount = animEls.length;
 
     animEls.forEach(el => {
@@ -2053,6 +2518,7 @@ function registerAnimCleanup() {
 ═══════════════════════════════════════ */
 let toastTimer = null;
 const TOAST_TYPES = {
+    info:    { icon: 'fa-info-circle', border: 'rgba(255,255,255,.2)', color: 'var(--text-primary)' },
     success: { icon: 'fa-check-circle',        border: 'rgba(48,209,88,0.5)', color: 'var(--success)' },
     error:   { icon: 'fa-exclamation-circle',   border: 'rgba(255,69,58,0.5)', color: '#ff453a' },
     warning: { icon: 'fa-exclamation-triangle', border: 'rgba(255,165,2,0.5)',   color: '#ffa502' },
@@ -2075,234 +2541,203 @@ function showToast(msg, type = 'success') {
 ═══════════════════════════════════════ */
 async function copyToClipboard(text) {
     try {
-        if (navigator.clipboard?.writeText) {
-            await navigator.clipboard.writeText(text);
-            return true;
-        }
-    } catch { /* fall through */ }
+        if (navigator.clipboard?.writeText) { await navigator.clipboard.writeText(text); return true; }
+    } catch { /* fallback for embedded browsers */ }
+    const previous = document.activeElement;
+    const textarea = document.createElement('textarea');
     try {
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;';
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        return true;
-    } catch {
-        return false;
-    }
+        textarea.value = text;
+        textarea.style.cssText = 'position:fixed;left:-9999px;top:0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        return document.execCommand('copy') === true;
+    } catch { return false; }
+    finally { textarea.remove(); if (previous?.isConnected) previous.focus({ preventScroll: true }); }
 }
 
 /* ═══════════════════════════════════════
    CUSTOM CONFIRM DIALOG
 ═══════════════════════════════════════ */
-function showConfirmDialog(message) {
-    return new Promise((resolve) => {
-        const existing = document.getElementById('confirmDialog');
-        if (existing) existing.remove();
-
-        const overlay = document.createElement('div');
-        overlay.id = 'confirmDialog';
-        overlay.className = 'confirm-overlay';
-        overlay.innerHTML = `
-            <div class="confirm-box">
-                <p>${escapeHtml(message)}</p>
-                <div class="confirm-buttons">
-                    <button type="button" class="confirm-btn confirm-btn-cancel" id="confirmCancel">Отмена</button>
-                    <button type="button" class="confirm-btn confirm-btn-ok" id="confirmOk">OK</button>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(overlay);
-
-        // FIX v3 #24: Add ARIA attributes to confirm dialog
-        overlay.setAttribute('role', 'alertdialog');
-        overlay.setAttribute('aria-modal', 'true');
-
-        requestAnimationFrame(() => overlay.classList.add('show'));
-
-        const cleanup = (result) => {
-            overlay.classList.remove('show');
-            setTimeout(() => { overlay.remove(); }, 200);
-            resolve(result);
-        };
-
-        $('#confirmCancel', overlay).addEventListener('click', () => {
-            HapticFeedback.buttonLight();
-            cleanup(false);
-        });
-        $('#confirmOk', overlay).addEventListener('click', () => {
-            HapticFeedback.buttonLight();
-            cleanup(true);
-        });
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) cleanup(false);
-        });
-
-        // Focus trap + keyboard handling
-        overlay.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') { cleanup(false); return; }
-            if (e.key !== 'Tab') return;
-            const btns = overlay.querySelectorAll('button');
-            if (!btns.length) return;
-            const first = btns[0], last = btns[btns.length - 1];
-            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-        });
-
-        // Auto-focus OK button
-        requestAnimationFrame(() => {
-            const okBtn = $('#confirmOk', overlay);
-            if (okBtn) okBtn.focus();
-        });
-    });
-}
-
-/* ═══════════════════════════════════════
-   MODAL
-═══════════════════════════════════════ */
+let confirmSession = null;
 let modalHasInput = false;
-let modalDragStartY = 0;
-let modalDragCurrentY = 0;
-let modalIsDragging = false;
+let modalOpener = null;
+let modalBack = null;
+const modalContent = $('.modal-content');
+const modalDragBar = $('.modal-drag');
+const uiLayer = $('.ui-layer');
 
-function hideModal() {
-    if (modalHasInput) {
-        showConfirmDialog('Закрыть? Введённые данные будут потеряны.').then(ok => {
-            if (ok) {
-                HapticFeedback.buttonLight();
-                modal.classList.remove('show');
-                modalContent.style.transform = '';
-                modalHasInput = false;
-            }
-        });
+function focusableWithin(container) {
+    return [...container.querySelectorAll('button:not(:disabled),a[href],input:not(:disabled),textarea:not(:disabled),[tabindex="0"]')]
+        .filter(el => !el.hidden && !el.closest('[inert]'));
+}
+function trapFocus(e, container) {
+    if (e.key !== 'Tab') return;
+    const items = focusableWithin(container);
+    if (!items.length) { e.preventDefault(); container.focus(); return; }
+    const first = items[0], last = items.at(-1);
+    if (e.shiftKey && (document.activeElement === first || !container.contains(document.activeElement))) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+}
+function syncBackButton() {
+    if (!isTelegram || !tg.isVersionAtLeast?.('6.1')) return;
+    try { tg.BackButton?.[currentTab !== 'home' || modal.classList.contains('show') || confirmSession ? 'show' : 'hide'](); } catch {}
+}
+function showConfirmDialog(message) {
+    // Repeated close gestures share one pending result.
+    if (confirmSession) return confirmSession.promise;
+    let resolve;
+    const promise = new Promise(done => { resolve = done; });
+    const previous = document.activeElement;
+    const overlay = document.createElement('div');
+    overlay.id = 'confirmDialog';
+    overlay.className = 'confirm-overlay';
+    overlay.setAttribute('role', 'alertdialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-labelledby', 'confirm-message');
+    overlay.innerHTML = `<div class="confirm-box"><p id="confirm-message">${escapeHtml(message)}</p><div class="confirm-buttons"><button type="button" class="confirm-btn confirm-btn-cancel" id="confirmCancel">Остаться</button><button type="button" class="confirm-btn confirm-btn-ok" id="confirmOk">Закрыть</button></div></div>`;
+    const settle = result => {
+        if (confirmSession?.overlay !== overlay) return;
+        confirmSession = null;
+        overlay.remove();
+        modal.inert = false;
+        uiLayer.inert = modal.classList.contains('show');
+        if (previous?.isConnected) previous.focus({ preventScroll: true });
+        syncBackButton();
+        resolve(result);
+    };
+    confirmSession = { promise, overlay, settle };
+    document.body.appendChild(overlay);
+    modal.inert = true;
+    uiLayer.inert = true;
+    requestAnimationFrame(() => { if (overlay.isConnected) { overlay.classList.add('show'); $('#confirmCancel', overlay).focus(); } });
+    $('#confirmCancel', overlay).onclick = () => settle(false);
+    $('#confirmOk', overlay).onclick = () => settle(true);
+    overlay.onclick = e => { if (e.target === overlay) settle(false); };
+    overlay.onkeydown = e => {
+        if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); settle(false); }
+        else trapFocus(e, overlay);
+    };
+    syncBackButton();
+    return promise;
+}
+function closeModalNow() {
+    resetModalDrag();
+    paymentDrafts.clear();
+    modal.classList.remove('show');
+    modal.setAttribute('aria-hidden', 'true');
+    modal.inert = true;
+    uiLayer.inert = false;
+    modalHasInput = false;
+    modalBack = null;
+    if (modalOpener?.isConnected) modalOpener.focus({ preventScroll: true });
+    else $('#nav-' + currentTab)?.focus({ preventScroll: true });
+    modalOpener = null;
+    syncBackButton();
+}
+async function hideModal() {
+    if (!modal.classList.contains('show')) return false;
+    if ((modalHasInput || paymentDrafts.size > 0) && !await showConfirmDialog('Закрыть? Введённые данные будут потеряны.')) return false;
+    if (!modal.classList.contains('show')) return true;
+    HapticFeedback.buttonLight();
+    closeModalNow();
+    return true;
+}
+function showModal(back = null) {
+    if (!modal.classList.contains('show')) modalOpener = document.activeElement;
+    modalBack = back;
+    modal.inert = false;
+    modal.setAttribute('aria-hidden', 'false');
+    modal.classList.add('show');
+    uiLayer.inert = true;
+    modalHasInput = false;
+    resetModalDrag();
+    modalBody.querySelectorAll('input,textarea').forEach(input => { input.dataset.initialValue = input.value; });
+    requestAnimationFrame(() => { if (modal.classList.contains('show') && !confirmSession) modalClose.focus({ preventScroll: true }); });
+    syncBackButton();
+}
+modalBody.addEventListener('input', () => {
+    modalHasInput = [...modalBody.querySelectorAll('input,textarea')].some(input => input.value !== input.dataset.initialValue);
+});
+modal.setAttribute('role', 'dialog');
+modal.setAttribute('aria-modal', 'true');
+modal.setAttribute('aria-labelledby', 'modal-title');
+modal.setAttribute('aria-hidden', 'true');
+modal.inert = true;
+let drag = null;
+function resetModalDrag() {
+    drag = null;
+    modalContent.style.transform = '';
+    modalContent.style.transition = '';
+}
+modalDragBar.addEventListener('pointerdown', e => {
+    if (e.button !== 0) return;
+    drag = { id: e.pointerId, start: e.clientY, delta: 0 };
+    modalContent.style.transition = 'none';
+    modalDragBar.setPointerCapture(e.pointerId);
+});
+modalDragBar.addEventListener('pointermove', e => {
+    if (!drag || drag.id !== e.pointerId) return;
+    drag.delta = Math.max(0, e.clientY - drag.start);
+    modalContent.style.transform = `translateY(${drag.delta}px)`;
+});
+modalDragBar.addEventListener('pointerup', () => {
+    const shouldClose = drag && drag.delta > 100;
+    resetModalDrag();
+    if (shouldClose) hideModal();
+});
+modalDragBar.addEventListener('pointercancel', resetModalDrag);
+modalDragBar.addEventListener('lostpointercapture', resetModalDrag);
+modalClose.addEventListener('click', hideModal);
+modal.addEventListener('click', e => { if (e.target.classList.contains('modal-overlay')) hideModal(); });
+modal.addEventListener('keydown', e => {
+    if (!modal.classList.contains('show') || confirmSession) return;
+    if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); hideModal(); }
+    else trapFocus(e, modal);
+});
+function navigateBack() {
+    if (confirmSession) { confirmSession.settle(false); return; }
+    if (modal.classList.contains('show')) {
+        if (modalBack) { const back = modalBack; back(); }
+        else hideModal();
         return;
     }
-    HapticFeedback.buttonLight();
-    modal.classList.remove('show');
-    modalContent.style.transform = '';
-    modalHasInput = false;
+    if (currentTab !== 'home') switchTab('home');
 }
-
-function showModal() {
-    modal.classList.add('show');
-    modalHasInput = false;
-    const inputs = modalBody.querySelectorAll('input, textarea');
-    inputs.forEach(inp => {
-        inp.addEventListener('input', () => { modalHasInput = true; }, { once: true });
-    });
-}
-
-modal?.setAttribute('role', 'dialog');
-modal?.setAttribute('aria-modal', 'true');
-modal?.setAttribute('aria-labelledby', 'modal-title');
-
-const modalContent = $('.modal-content');
-const modalDragBar = $('.modal-drag-bar');
-
-/* FIX v5.5 #11: Centralized drag listener cleanup to prevent leaks */
-function _cleanupDragListeners() {
-    document.removeEventListener('mousemove', onModalDragMove);
-    document.removeEventListener('touchmove', onModalDragMove);
-    document.removeEventListener('mouseup', onModalDragEnd);
-    document.removeEventListener('touchend', onModalDragEnd);
-}
-
-function onModalDragStart(e) {
-    const touch = e.touches?.[0] || e;
-    modalDragStartY = touch.clientY;
-    modalIsDragging = true;
-    modalContent.style.transition = 'none';
-    // Clean up any stale listeners from a previous incomplete drag
-    _cleanupDragListeners();
-    document.addEventListener('mousemove', onModalDragMove);
-    document.addEventListener('touchmove', onModalDragMove, { passive: false });
-    document.addEventListener('mouseup', onModalDragEnd);
-    document.addEventListener('touchend', onModalDragEnd);
-}
-
-function onModalDragMove(e) {
-    if (!modalIsDragging) return;
-    if (e.cancelable) e.preventDefault();
-    const touch = e.touches?.[0] || e;
-    modalDragCurrentY = touch.clientY - modalDragStartY;
-    if (modalDragCurrentY > 0) {
-        modalContent.style.transform = `translateY(${modalDragCurrentY}px)`;
-    }
-}
-
-function onModalDragEnd() {
-    if (!modalIsDragging) return;
-    modalIsDragging = false;
-    modalContent.style.transition = '';
-    _cleanupDragListeners();
-    // FIX N6: Check threshold BEFORE resetting transform so modal stays
-    // in dragged position while confirm dialog is shown
-    if (modalDragCurrentY > 100) {
-        hideModal();
-        // Reset transform after hideModal (if confirm canceled, modal snaps back)
-        modalContent.style.transform = '';
-    } else {
-        modalContent.style.transform = '';
-    }
-    modalDragCurrentY = 0;
-}
-
-modalDragBar?.addEventListener('mousedown', onModalDragStart);
-modalDragBar?.addEventListener('touchstart', onModalDragStart, { passive: false });
-
-modalClose?.addEventListener('click', hideModal);
-modal?.addEventListener('click', e => {
-    if (e.target.classList.contains('modal-overlay')) hideModal();
-});
-
-// Keyboard trap
-modal?.addEventListener('keydown', (e) => {
-    if (!modal.classList.contains('show')) return;
-    if (e.key === 'Escape') { hideModal(); return; }
-    if (e.key !== 'Tab') return;
-    const focusable = modal.querySelectorAll('button, input, textarea, [tabindex]:not([tabindex="-1"])');
-    if (!focusable.length) return;
-    const first = focusable[0], last = focusable[focusable.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-});
 
 /* ═══════════════════════════════════════
    HEADER
 ═══════════════════════════════════════ */
 function updateHeader() {
     const u = AppData.user;
+    $('#balanceDisplay').setAttribute('aria-label', `Баланс ${safeFloat(u.balance)} рублей. Пополнить`);
     $('#userName').textContent = String(u.name);
     const uid = $('#userId');
-    uid.textContent = 'ID: ' + String(u.id);
+    uid.textContent = u.id ? 'ID: ' + String(u.id) : 'Вход через Telegram';
     // animated counter на балансе
     animateCounter('#userBalance', Number(u.balance), { suffix: '₽', decimals: 2 });
 }
 
 /* Animated counter helper */
+const counterFrames = new Map();
 function animateCounter(sel, target, opts = {}) {
     const el = typeof sel === 'string' ? $(sel) : sel;
     if (!el) return;
+    if (counterFrames.has(el)) cancelAnimationFrame(counterFrames.get(el));
     const { suffix = '', prefix = '', decimals = 0, duration = 900 } = opts;
-    const start = parseFloat(el.dataset.cur || '0') || 0;
-    if (Math.abs(start - target) < 0.001) {
-        el.textContent = `${prefix}${target.toFixed(decimals)}${suffix}`;
-        el.dataset.cur = String(target);
-        return;
-    }
+    target = safeFloat(target);
+    const start = safeFloat(el.dataset.cur);
+    const write = value => { el.textContent = `${prefix}${value.toFixed(decimals)}${suffix}`; el.dataset.cur = String(value); };
+    if (reduceMotion() || document.hidden || duration <= 0 || Math.abs(start - target) < .001) { write(target); counterFrames.delete(el); return; }
     const t0 = performance.now();
-    const step = (now) => {
-        const t = Math.min(1, (now - t0) / duration);
-        const eased = 1 - Math.pow(1 - t, 3);
-        const val = start + (target - start) * eased;
-        el.textContent = `${prefix}${val.toFixed(decimals)}${suffix}`;
-        if (t < 1) requestAnimationFrame(step);
-        else el.dataset.cur = String(target);
+    const step = now => {
+        const t = reduceMotion() || document.hidden ? 1 : Math.min(1, (now - t0) / duration);
+        write(start + (target - start) * (1 - (1 - t) ** 3));
+        if (t < 1 && el.isConnected) counterFrames.set(el, requestAnimationFrame(step));
+        else counterFrames.delete(el);
     };
-    requestAnimationFrame(step);
+    counterFrames.set(el, requestAnimationFrame(step));
 }
+
 updateHeader();
 
 $('#balanceDisplay')?.addEventListener('click', () => {
@@ -2313,28 +2748,33 @@ $('#balanceDisplay')?.addEventListener('click', () => {
 /* ═══════════════════════════════════════
    NAVIGATION
 ═══════════════════════════════════════ */
+function rememberTab() {
+    tabState.set(currentTab, { scroll: contentEl.scrollTop,
+        promo: $('#promoInput')?.value || '',
+        faq: $('.faq-item.open', contentEl)?.dataset.i });
+}
 function switchTab(tab) {
-    $$('.nav-item').forEach(b => {
-        const isActive = b.dataset.tab === tab;
-        b.classList.toggle('active', isActive);
-        b.setAttribute('aria-selected', String(isActive));
+    if (!Object.hasOwn(TAB_RENDERERS, tab)) return;
+    rememberTab();
+    $$('.nav-item').forEach(button => {
+        const active = button.dataset.tab === tab;
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-selected', String(active));
+        button.tabIndex = active ? 0 : -1;
+        button.id = 'nav-' + button.dataset.tab;
     });
+    contentEl.setAttribute('aria-labelledby', 'nav-' + tab);
     currentTab = tab;
     showTab(tab);
-    if (isTelegram && tg.BackButton) {
-        if (tab === 'home') tg.BackButton.hide();
-        else tg.BackButton.show();
-    }
+    syncBackButton();
 }
 
 function _navHandleTap(btn) {
     if (!btn || !btn.dataset.tab) return;
     HapticFeedback.navigation();
-    btn.style.transform = 'scale(0.90)';
+    if (!reduceMotion()) btn.style.transform = 'scale(0.90)';
     setTimeout(() => { btn.style.transform = ''; }, 150);
-    requestAnimationFrame(() => {
-        switchTab(btn.dataset.tab);
-    });
+    switchTab(btn.dataset.tab);
 }
 
 $$('.nav-item').forEach(btn => {
@@ -2354,202 +2794,77 @@ $$('.nav-item').forEach(btn => {
 /* ═══════════════════════════════════════
    TAB ROUTER
 ═══════════════════════════════════════ */
-const TAB_SKELETONS = {
-    home:     '<div class="skeleton" style="height:36px;width:60%;margin-bottom:14px"></div><div class="skeleton" style="height:180px;border-radius:20px"></div><div class="skeleton" style="height:140px;border-radius:20px"></div>',
-    tariffs:  '<div class="skeleton" style="height:36px;width:50%;margin-bottom:14px"></div><div class="skeleton" style="height:160px;border-radius:18px"></div><div class="skeleton" style="height:160px;border-radius:18px"></div><div class="skeleton" style="height:160px;border-radius:18px"></div>',
-    referral: '<div class="skeleton" style="height:100px;border-radius:18px;margin-bottom:12px"></div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px"><div class="skeleton" style="height:80px"></div><div class="skeleton" style="height:80px"></div><div class="skeleton" style="height:80px"></div></div><div class="skeleton" style="height:70px;border-radius:18px"></div>',
-    topup:    '<div class="skeleton" style="height:36px;width:55%;margin-bottom:14px"></div><div class="skeleton" style="height:80px;border-radius:18px"></div><div class="skeleton" style="height:50px"></div><div class="skeleton" style="height:50px"></div><div class="skeleton" style="height:50px"></div>',
-    support:  '<div class="skeleton" style="height:36px;width:55%;margin-bottom:14px"></div><div class="skeleton" style="height:120px;border-radius:18px"></div><div class="skeleton" style="height:200px;border-radius:18px"></div>',
-};
-
-const TAB_RENDERERS = {
-    home:     renderHome,
-    tariffs:  renderTariffs,
-    referral: renderReferral,
-    topup:    renderTopUp,
-    support:  renderSupport,
-};
-
-let tabTimer = null;
-let pendingRender = null;
-
-const tabCache = new Map();
-function invalidateTabCache(...tabs) {
-    if (tabs.length === 0) { tabCache.clear(); return; }
-    tabs.forEach(t => tabCache.delete(t));
-}
-
-function _renderTabError(tab, message) {
-    console.error(`[NVX] Ошибка вкладки "${tab}":`, message);
-    contentEl.innerHTML = `
-        <div class="error-message">
-            <i class="fas fa-exclamation-triangle"></i>
-            <div class="error-message-title">Ошибка загрузки</div>
-            <div>${escapeHtml(message || 'Попробуйте ещё раз')}</div>
-            <button type="button" class="btn primary error-message-action" id="retryTab">
-                <i class="fas fa-redo"></i> Повторить
-            </button>
-        </div>`;
-    const retryBtn = $('#retryTab');
-    if (retryBtn) retryBtn.addEventListener('click', () => {
-        invalidateTabCache(tab);
-        showTab(tab);
-    });
-}
-
-function _renderTabContent(tab) {
-    const cached = tabCache.get(tab);
-    if (cached) {
-        contentEl.innerHTML = cached.html;
-        registerAnimCleanup();
-        requestAnimationFrame(() => {
-            contentEl.scrollTop = 0;
-        });
-    } else {
-        const renderer = TAB_RENDERERS[tab];
-        if (renderer) {
-            try {
-                const result = renderer();
-                if (result && typeof result.then === 'function') {
-                    contentEl.innerHTML = TAB_SKELETONS[tab] || '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
-                    result.then(() => {
-                        tabCache.set(tab, { html: contentEl.innerHTML, scrollTop: 0 });
-                    }).catch(err => _renderTabError(tab, err.message));
-                } else {
-                    tabCache.set(tab, { html: contentEl.innerHTML, scrollTop: 0 });
-                }
-            } catch (err) {
-                _renderTabError(tab, err.message);
-            }
-        }
-    }
-
-    requestAnimationFrame(() => {
-        contentEl.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
-        contentEl.style.opacity = '1';
-        contentEl.style.transform = 'translateY(0)';
-        setTimeout(() => { contentEl.style.transition = ''; }, 250);
-    });
-}
-
+const TAB_RENDERERS = { home: renderHome, tariffs: renderTariffs, referral: renderReferral, topup: renderTopUp, support: renderSupport };
+function invalidateTabCache(...tabs) { if (!tabs.length) tabState.clear(); else tabs.forEach(tab => tabState.delete(tab)); }
 function showTab(tab) {
-    if (tabTimer) { clearTimeout(tabTimer); tabTimer = null; }
-    if (pendingRender) { cancelAnimationFrame(pendingRender); pendingRender = null; }
-    if (cleanupTimer) { clearTimeout(cleanupTimer); cleanupTimer = null; }
-
-    contentEl.style.opacity = '0';
-    contentEl.style.transform = 'translateY(10px)';
-    contentEl.style.transition = 'none';
-
-    /* FIX v5.5 #9: Only clear innerHTML for non-cached tabs to prevent flash.
-       Cached tabs replace content inside _renderTabContent instantly. */
-    if (tabCache.has(tab)) {
-        _renderTabContent(tab);
-    } else {
-        contentEl.innerHTML = '';
-        tabTimer = setTimeout(() => {
-            tabTimer = null;
-            _renderTabContent(tab);
-        }, SKELETON_DELAY_MS);
+    if (!Object.hasOwn(TAB_RENDERERS, tab)) return;
+    ++tabRevision;
+    const saved = tabState.get(tab);
+    try {
+        // All current renderers are synchronous: no artificial blank loading screen.
+        TAB_RENDERERS[tab]();
+        $$('.detail', contentEl).forEach(row => [...row.childNodes].forEach(node => {
+            if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+                const label = document.createElement('span');
+                label.className = 'detail-label'; label.textContent = node.textContent.trim(); node.replaceWith(label);
+            }
+        }));
+        if (saved?.promo && $('#promoInput')) $('#promoInput').value = saved.promo;
+        if (saved?.faq !== undefined) _toggleFaqItem($(`.faq-item[data-i="${saved.faq}"] .faq-row`, contentEl));
+        contentEl.scrollTop = saved?.scroll || 0;
+        contentEl.style.opacity = '1';
+        contentEl.style.transform = '';
+        // Original staggered entrance classes animate the cards and title.
+        // Avoid a second animation on the scroll container while toggling inert.
+    } catch (err) {
+        console.error('[NVX] Ошибка вкладки', tab, err);
+        contentEl.innerHTML = `<div class="error-message"><div class="error-message-title">Не удалось открыть раздел</div><button type="button" class="btn primary" id="retryTab">Повторить</button></div>`;
+        $('#retryTab').onclick = () => showTab(tab);
     }
 }
+$('#bottomNav').addEventListener('keydown', e => {
+    const tabs = [...$$('.nav-item')], index = tabs.indexOf(e.target);
+    if (index < 0 || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
+    e.preventDefault();
+    const next = e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : (index + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+    switchTab(tabs[next].dataset.tab); tabs[next].focus();
+});
 
 /* ═══════════════════════════════════════
    CONTENT — event delegation
 ═══════════════════════════════════════ */
 contentEl.addEventListener('click', e => {
     const target = e.target;
-
-    const actionBtn = target.closest('.btn.action-row[data-action]');
-    if (actionBtn && canProceed('action-' + actionBtn.dataset.action)) {
-        HapticFeedback.buttonMedium();
-        showToast('Доступно после подключения backend', 'warning');
+    const action = target.closest('[data-action]');
+    if (action && canProceed('action-' + action.dataset.action)) {
+        if (action.dataset.action === 'renew') switchTab('tariffs');
+        else showServiceNotice('Ваши устройства', 'В предпросмотре список подключённых устройств недоступен. Управление реальными подключениями находится в вашем аккаунте NvxVPN.');
         return;
     }
-
-    if (target.closest('#connectHelpCard') && canProceed('connectHelp')) {
-        HapticFeedback.buttonLight();
-        showToast('Функция подключится после настройки backend');
-        return;
+    if (target.closest('#connectHelpCard')) { showConnectionHelp(); return; }
+    const tariff = target.closest('.tariff-card[data-id]');
+    if (tariff && !target.closest('.country-flag') && canProceed('tariff-' + tariff.dataset.id)) { HapticFeedback.buttonMedium(); openTariffModal(safeInt(tariff.dataset.id)); return; }
+    const method = target.closest('.topup-method[data-method]');
+    if (method && canProceed('topup-' + method.dataset.method)) { checkout = null; showTopupForm(method.dataset.method); return; }
+    if (target.closest('#copyRef') && AppData.user.id && canProceed('copyRef')) {
+        copyToClipboard(AppData.referral.link).then(ok => showToast(ok ? 'Ссылка скопирована' : 'Не удалось скопировать. Выделите ссылку вручную.', ok ? 'success' : 'error')); return;
     }
-
-    const tariffCard = target.closest('.tariff-card[data-id]');
-    if (tariffCard && canProceed('tariff-' + tariffCard.dataset.id)) {
-        HapticFeedback.buttonMedium();
-        openTariffModal(parseInt(tariffCard.dataset.id, 10));
-        return;
-    }
-
-    const topupMethod = target.closest('.topup-method[data-method]');
-    if (topupMethod && canProceed('topup-' + topupMethod.dataset.method)) {
-        HapticFeedback.buttonMedium();
-        const method = PAYMENT_METHODS[topupMethod.dataset.method];
-        // FIX v3 #7 (original): Use method?.name instead of method object
-        showToast(`Переход к оплате через ${method?.name || 'неизвестный метод'}`);
-        return;
-    }
-
-    if (target.closest('#copyRef') && canProceed('copyRef')) {
-        HapticFeedback.buttonLight();
-        copyToClipboard(AppData.referral.link).then(ok => {
-            showToast(ok ? 'Ссылка скопирована' : 'Не удалось скопировать', ok ? 'success' : 'error');
-        });
-        return;
-    }
-
     if (target.closest('#promoBtn') && canProceed('promo')) {
-        HapticFeedback.buttonMedium();
-        const promoBtn = $('#promoBtn');
         const input = $('#promoInput');
-        if (!input?.value.trim()) { showToast('Введите промокод', 'warning'); return; }
-
-        if (promoBtn) { promoBtn.disabled = true; promoBtn.style.opacity = '0.5'; }
-        const _enableBtn = () => { if (promoBtn) { promoBtn.disabled = false; promoBtn.style.opacity = ''; } };
-
-        const code = input.value.trim().toUpperCase();
-        const promo = VALID_PROMOS[code];
-        if (promo) {
-            AppData.user.balance += promo.bonus;
-            updateHeader();
-            invalidateTabCache('home', 'referral', 'topup');
-            showToast(`Промокод активирован: ${escapeHtml(promo.desc)}`, 'success');
-            HapticFeedback.success();
-            input.value = '';
-        } else {
-            showToast('Промокод не найден', 'error');
-            HapticFeedback.error();
-        }
-        _enableBtn();
-        return;
+        if (!input.value.trim()) { input.setAttribute('aria-invalid', 'true'); showToast('Введите промокод', 'warning'); input.focus(); return; }
+        input.removeAttribute('aria-invalid');
+        showServiceNotice('Проверка промокода', 'В предпросмотре промокоды не активируются. Проверить код и получить бонус можно в своём аккаунте NvxVPN.'); return;
     }
-
-    if (target.closest('#buySubBtn') && canProceed('buySub')) {
-        HapticFeedback.buttonMedium();
-        switchTab('tariffs');
-        return;
+    if (target.closest('#buySubBtn')) { switchTab('tariffs'); return; }
+    if (target.closest('#trialBtn')) { showTrialPreview(); return; }
+    if (target.closest('#withdrawCard') || target.closest('#withdrawBalance')) {
+        const toCard = Boolean(target.closest('#withdrawCard'));
+        showServiceNotice(toCard ? 'Вывод на карту' : 'Перевод на баланс', `Доступно к выводу: ${safeFloat(AppData.referral.earned)} ₽. ${toCard ? 'Минимальная сумма — 500 ₽.' : 'Минимальная сумма — 1 ₽.'} В предпросмотре переводы не выполняются.`); return;
     }
-
-    if (target.closest('#trialBtn') && canProceed('trial')) {
-        HapticFeedback.buttonMedium();
-        AppData.subscription.trialAvailable = false;
-        AppData.subscription.active = true;
-        invalidateTabCache();
-        showToast('Тестовая подписка активирована', 'success');
-        showTab('home');
-        return;
-    }
-
-    if ((target.closest('#withdrawCard') || target.closest('#withdrawBalance')) && canProceed('withdraw')) {
-        HapticFeedback.buttonMedium();
-        showToast('Доступно после подключения backend', 'warning');
-        return;
-    }
-
-    if (target.closest('#supportChatBtn') && canProceed('support')) {
-        HapticFeedback.buttonMedium();
-        showToast('Открываем чат поддержки');
-        return;
-    }
+    if (target.closest('#supportChatBtn')) { showServiceNotice('Поддержка NvxVPN', 'Откройте NvxVPN в Telegram, чтобы перейти к помощи в боте. Здесь также доступны ответы на частые вопросы.'); }
+});
+contentEl.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && e.target.id === 'promoInput') { e.preventDefault(); $('#promoBtn').click(); }
 });
 
 /* ═══════════════════════════════════════
@@ -2559,7 +2874,7 @@ function renderHome() {
     const { user, subscription } = AppData;
 
     contentEl.innerHTML = `
-        <div class="section-title anim-title">Добро пожаловать, ${escapeHtml(user.name)}</div>
+        <div class="section-title anim-title">Добро пожаловать${user.id ? `, ${escapeHtml(user.name)}` : ''}</div>
         <div class="subscription-card glass hoverable anim-left anim-left-d1" id="subCard"></div>
         <div id="trialBlock"></div>
     `;
@@ -2575,7 +2890,7 @@ function renderHome() {
                 <div class="title sub-title-center">
                     <i class="fas fa-exclamation-circle"></i> Нет активной подписки
                 </div>
-                <p class="no-sub-text">Активируйте подписку чтобы начать пользоваться VPN</p>
+                <p class="no-sub-text">Активируйте подписку для доступа к VPN.</p>
                 <button type="button" class="btn primary full-width" id="buySubBtn">
                     <i class="fas fa-shopping-bag"></i> Выбрать подписку
                 </button>
@@ -2587,11 +2902,11 @@ function renderHome() {
             $('#trialBlock').innerHTML = `
                 <div class="subscription-card glass hoverable anim-left anim-left-d2">
                     <div class="title"><i class="fas fa-flask"></i> Тестовый период</div>
-                    <div class="detail"><i class="fas fa-database"></i> Трафик <span class="value">${safeInt(tr.trafficGb)} ГБ <span class="text-muted">(${safeFloat(tr.trafficPerLocGb)} ГБ на локацию)</span></span></div>
-                    <div class="detail"><i class="fas fa-hourglass-end"></i> Длительность <span class="value">${safeInt(tr.days)} день</span></div>
-                    <div class="detail"><i class="fas fa-mobile-alt"></i> Устройств <span class="value">${safeInt(tr.devices)} <span class="text-muted">(${safeInt(tr.devicesPerLoc)} на локацию)</span></span></div>
-                    <div class="detail"><i class="fas fa-globe"></i> Локации <span class="value">Все доступные</span></div>
-                    <div class="detail"><i class="fas fa-info-circle"></i> Условие <span class="value">1 раз в ${safeInt(tr.cooldownDays)} дней</span></div>
+                    <div class="detail"><i class="fas fa-database"></i><span class="detail-label">Трафик</span><span class="value">${safeInt(tr.trafficGb)} ГБ <span class="text-muted">(${safeFloat(tr.trafficPerLocGb)} ГБ на локацию)</span></span></div>
+                    <div class="detail"><i class="fas fa-hourglass-end"></i><span class="detail-label">Длительность</span><span class="value">${safeInt(tr.days)} день</span></div>
+                    <div class="detail"><i class="fas fa-mobile-alt"></i><span class="detail-label">Устройств</span><span class="value">${safeInt(tr.devices)} <span class="text-muted">(${safeInt(tr.devicesPerLoc)} на локацию)</span></span></div>
+                    <div class="detail"><i class="fas fa-globe"></i><span class="detail-label">Локации</span><span class="value">Все доступные</span></div>
+                    <div class="detail"><i class="fas fa-info-circle"></i><span class="detail-label">Условие</span><span class="value">1 раз в ${safeInt(tr.cooldownDays)} дней</span></div>
                     <button type="button" class="btn primary full-width rounded trial-btn-margin" id="trialBtn">
                         <i class="fas fa-bolt"></i> Активировать бесплатно
                     </button>
@@ -2603,20 +2918,20 @@ function renderHome() {
         const s = subscription;
         subCard.innerHTML = `
             <div class="title"><i class="fas fa-shield-alt"></i> ${escapeHtml(s.planName)}</div>
-            <div class="detail"><i class="fas fa-calendar"></i> Действительна до <span class="value">${escapeHtml(s.expiresAt)}</span></div>
-            <div class="detail"><i class="fas fa-hourglass-end"></i> Дней осталось <span class="value">${escapeHtml(s.daysLeftLabel)}</span></div>
-            <div class="detail"><i class="fas fa-database"></i> Трафик всего <span class="value">${safeInt(s.trafficTotalGb)} ГБ <span class="text-muted">(${safeFloat(s.trafficPerLocGb)} ГБ на лок.)</span></span></div>
-            <div class="progress-bar"><div class="progress-fill" style="width:${safeInt(s.trafficUsedPercent)}%"></div></div>
-            <div class="detail"><i class="fas fa-mobile-alt"></i> Устройств <span class="value">${safeInt(s.devicesTotal)} <span class="text-muted">(${safeInt(s.devicesPerLoc)} на локацию)</span></span></div>
+            <div class="detail"><i class="fas fa-calendar"></i><span class="detail-label">Действительна до</span><span class="value">${escapeHtml(s.expiresAt)}</span></div>
+            <div class="detail"><i class="fas fa-hourglass-end"></i><span class="detail-label">Дней осталось</span><span class="value">${escapeHtml(s.daysLeftLabel)}</span></div>
+            <div class="detail"><i class="fas fa-database"></i><span class="detail-label">Трафик всего</span><span class="value">${safeInt(s.trafficTotalGb)} ГБ <span class="text-muted">(${safeFloat(s.trafficPerLocGb)} ГБ на лок.)</span></span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:${Math.min(100, Math.max(0, safeInt(s.trafficUsedPercent)))}%"></div></div>
+            <div class="detail"><i class="fas fa-mobile-alt"></i><span class="detail-label">Устройств</span><span class="value">${safeInt(s.devicesTotal)} <span class="text-muted">(${safeInt(s.devicesPerLoc)} на локацию)</span></span></div>
             <div class="connect-help-wrap">
-                <div class="connect-help-card hoverable" id="connectHelpCard">
+                <button type="button" class="connect-help-card hoverable" id="connectHelpCard">
                     <div class="connect-help-icon"><i class="fas fa-rocket"></i></div>
                     <div class="connect-help-text">
                         <span class="label">Как подключиться?</span>
                         <span class="desc">Ссылки, QR-код и приложения</span>
                     </div>
                     <i class="fas fa-chevron-right connect-help-arrow"></i>
-                </div>
+                </button>
             </div>
             <div class="section-subtitle quick-actions-title">Быстрые действия</div>
             <div class="action-buttons">
@@ -2665,10 +2980,10 @@ function renderTariffs() {
                 </div>
                 <div class="tariff-locations">
                     <div class="tariff-locations-label"><i class="fas fa-map-marker-alt"></i> Страны в подписке</div>
-                    <div class="tariff-countries">${locations.map(l => `<span class="country-flag" title="${escapeHtml(l.code)}"><span class="flag-emoji">${escapeHtml(l.flag)}</span>${escapeHtml(l.code)}</span>`).join('')}</div>
+                    <div class="tariff-countries">${locations.map(l => `<span class="country-flag" title="${escapeHtml(l.code)}"><img class="flag-asset" src="https://raw.githubusercontent.com/lipis/flag-icons/v7.3.2/flags/4x3/${escapeHtml(l.code.toLowerCase())}.svg" width="16" height="12" alt="">${escapeHtml(l.code)}</span>`).join('')}</div>
                     <div class="tariff-locations-note"><i class="fas fa-info-circle"></i> ${safeInt(t.traffic_gb)} ГБ на локацию · всего ${safeInt(t.traffic_gb) * n} ГБ</div>
                 </div>
-                <button type="button" class="tariff-card-btn">Выбрать <i class="fas fa-arrow-right"></i></button>
+                <button type="button" class="tariff-card-btn" aria-label="Выбрать тариф на ${safeInt(t.days)} дней за ${safeInt(t.price)} рублей">Выбрать <i class="fas fa-arrow-right"></i></button>
             </div>`).join('')}
         </div>
     `;
@@ -2683,9 +2998,10 @@ function openTariffModal(tariffId) {
     const t = AppData.tariffs.find(x => x.id === tariffId);
     if (!t) { showToast('Тариф не найден', 'error'); return; }
 
+    checkout = { tariff: t, shortage: Math.max(0, safeFloat(t.price - AppData.user.balance)) };
     const n = AppData.nodesCount;
     const bal = AppData.user.balance;
-    const diff = Math.ceil(t.price - bal);
+    const diff = Math.max(0, safeFloat(t.price - bal));
     const notEnough = bal < t.price;
 
     modalTitle.textContent = 'Подтверждение покупки';
@@ -2708,7 +3024,7 @@ function openTariffModal(tariffId) {
         ${notEnough ? `
         <div class="modal-balance-warn">
             <i class="fas fa-wallet"></i>
-            <span>На балансе <span class="warn-balance">${safeFloat(bal)}₽</span> — не хватает <span class="warn-short">${safeInt(diff)}₽</span></span>
+            <span>На балансе <span class="warn-balance">${safeFloat(bal)}₽</span> — не хватает <span class="warn-short">${safeFloat(diff)}₽</span></span>
         </div>` : ''}
     `;
 
@@ -2717,21 +3033,15 @@ function openTariffModal(tariffId) {
     btn.type = 'button';
     btn.className = 'modal-btn-primary';
     btn.innerHTML = notEnough
-        ? `<i class="fas fa-credit-card"></i> Доплатить ${safeInt(diff)}₽`
+        ? `<i class="fas fa-credit-card"></i> Доплатить ${safeFloat(diff)}₽`
         : `<i class="fas fa-check"></i> Оплатить ${safeInt(t.price)}₽`;
 
     btn.addEventListener('click', () => {
         HapticFeedback.buttonMedium();
-        hideModal();
-        if (notEnough) {
-            showPayMethodModal({ shortage: diff, tariff: t });
-        } else {
-            // FIX v3-6: Invalidate tab cache after purchase
-            // TODO: Replace with actual API.buySubscription(t.id) call
-            invalidateTabCache('home', 'tariffs');
-            showToast('Доступно после подключения backend', 'warning');
-        }
+        if (notEnough) showPayMethodModal(checkout);
+        else showServiceNotice('Оплата подписки', PREVIEW_NOTICE, () => openTariffModal(t.id));
     });
+
     modalButtons.appendChild(btn);
     showModal();
 }
@@ -2748,35 +3058,106 @@ function showPayMethodModal({ shortage, tariff }) {
             </div>
             <div class="pay-method-summary-row">
                 <span>Баланс: <b>${safeFloat(bal)}₽</b></span>
-                <span class="pay-method-shortage">Доплатить: ${safeInt(shortage)}₽</span>
+                <span class="pay-method-shortage">Доплатить: ${safeFloat(shortage)}₽</span>
             </div>
         </div>
         ${Object.entries(PAYMENT_METHODS).map(([key, m]) => `
-        <div class="pay-method-row topup-method" data-method="${escapeHtml(key)}">
+        <button type="button" class="pay-method-row topup-method" data-method="${escapeHtml(key)}">
             <i class="fas ${escapeHtml(m.icon)}"></i>
             <div class="topup-method-text">
                 <span class="topup-method-name">${escapeHtml(m.name)}</span>
                 <span class="topup-method-desc">${escapeHtml(m.desc)}</span>
             </div>
             <i class="fas fa-chevron-right topup-method-arrow"></i>
-        </div>`).join('')}
+        </button>`).join('')}
     `;
     modalButtons.innerHTML = '';
-    showModal();
+    addModalBack(() => openTariffModal(tariff.id));
+    showModal(() => openTariffModal(tariff.id));
 }
 
-// Delegated click handler for modal body
-modalBody?.addEventListener('click', (e) => {
-    const payRow = e.target.closest('.pay-method-row[data-method]');
-    if (payRow && canProceed('payMethod-' + payRow.dataset.method)) {
-        HapticFeedback.buttonLight();
-        hideModal();
-        // FIX v3-6: Invalidate tab cache after payment
-        invalidateTabCache('home', 'tariffs', 'topup');
-        showToast('Доступно после подключения backend', 'warning');
-        switchTab('topup');
+// The payment method and selected tariff remain in the same sheet flow.
+modalBody.addEventListener('click', e => {
+    const row = e.target.closest('.pay-method-row[data-method]');
+    if (row && canProceed('pay-' + row.dataset.method)) showTopupForm(row.dataset.method);
+});
+function addModalBack(callback) {
+    const button = document.createElement('button');
+    button.type = 'button'; button.className = 'modal-btn-secondary'; button.textContent = 'Назад';
+    button.onclick = callback; modalButtons.appendChild(button);
+}
+function botLink() { return `<a class="modal-btn-primary bot-link" href="${BOT_URL}" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram"></i> Открыть NvxVPN в Telegram</a>`; }
+document.addEventListener('click', e => {
+    const link = e.target.closest('a.bot-link');
+    if (link && isTelegram && tg.isVersionAtLeast?.('6.1')) {
+        try { tg.openTelegramLink(link.href); e.preventDefault(); } catch { /* normal link remains usable */ }
     }
 });
+function showServiceNotice(title, message, back = null) {
+    modalTitle.textContent = title;
+    modalBody.innerHTML = `<div class="sheet-icon"><img src="https://i.ibb.co/zT8NR7k7/logo2.png" alt="" width="46" height="46"></div><p class="sheet-copy">${escapeHtml(message)}</p>`;
+    modalButtons.innerHTML = botLink();
+    if (back) addModalBack(back);
+    showModal(back);
+}
+function showConnectionHelp() {
+    modalTitle.textContent = 'Как подключиться';
+    modalBody.innerHTML = `<ol class="connection-steps"><li><span>01</span><div><strong>Откройте свою подписку</strong><p>В аккаунте NvxVPN получите персональную ссылку для подключения.</p></div></li><li><span>02</span><div><strong>Установите VPN-клиент</strong><p>Выберите приложение для своего устройства в инструкции к подписке.</p></div></li><li><span>03</span><div><strong>Импортируйте конфигурацию</strong><p>Добавьте ссылку в приложение, выберите сервер и подключитесь.</p></div></li></ol><p class="sheet-note">В предпросмотре персональные ссылки и QR-коды не выдаются.</p>`;
+    modalButtons.innerHTML = botLink(); showModal();
+}
+function showTrialPreview() {
+    modalTitle.textContent = 'Тестовый период';
+    modalBody.innerHTML = `<p class="sheet-copy">Посмотрите, как выглядит приложение с активной подпиской: срок действия, трафик, устройства и инструкция подключения.</p><p class="sheet-note">Это просмотр состояния. Реальная подписка не активируется.</p>`;
+    modalButtons.innerHTML = '<button type="button" class="modal-btn-primary" id="previewTrial">Посмотреть активную подписку <i class="fas fa-arrow-right"></i></button>';
+    $('#previewTrial').onclick = () => setPreviewState(true);
+    showModal();
+}
+function setPreviewState(active) {
+    AppData.subscription.active = active;
+    AppData.subscription.trialAvailable = !active;
+    closeModalNow(); invalidateTabCache('home'); switchTab('home');
+    showToast(active ? 'Предпросмотр активной подписки' : 'Предпросмотр без подписки', 'info');
+}
+function showPreviewMenu() {
+    modalTitle.textContent = 'Предпросмотр Mini App';
+    modalBody.innerHTML = `<p class="sheet-copy">Все пять разделов доступны для проверки. Профиль, баланс и подписка показывают пример данных.</p><p class="sheet-note">${PREVIEW_NOTICE}</p>`;
+    modalButtons.innerHTML = '<button type="button" class="modal-btn-primary" id="previewActive">С активной подпиской</button><button type="button" class="modal-btn-secondary" id="previewInactive">Без подписки</button>';
+    $('#previewActive').onclick = () => setPreviewState(true);
+    $('#previewInactive').onclick = () => setPreviewState(false);
+    showModal();
+}
+$('#previewControl')?.addEventListener('click', showPreviewMenu);
+function showTopupForm(method, savedAmount) {
+    const selected = PAYMENT_METHODS[method];
+    if (!selected) return;
+    const minimum = checkout?.shortage || 1;
+    const draftKey = `${checkout?.tariff.id || 'balance'}:${method}`;
+    const amount = savedAmount ?? paymentDrafts.get(draftKey) ?? (checkout?.shortage || 100);
+    const back = checkout ? () => showPayMethodModal(checkout) : null;
+    modalTitle.textContent = 'Пополнение · ' + selected.name;
+    modalBody.innerHTML = `${checkout ? `<div class="pay-method-summary"><div class="pay-method-summary-title">Подписка на ${safeInt(checkout.tariff.days)} дней</div><div class="pay-method-summary-row">К доплате: ${safeFloat(checkout.shortage)} ₽</div></div>` : ''}<form id="topupForm" novalidate><label class="amount-label" for="paymentAmount">Сумма пополнения, ₽</label><div class="amount-field"><input id="paymentAmount" name="amount" type="text" inputmode="decimal" autocomplete="off" maxlength="12" value="${escapeHtml(amount)}" aria-describedby="amountHelp amountError"><span>₽</span></div><p id="amountHelp" class="sheet-note">${checkout ? `Не меньше ${safeFloat(minimum)} ₽ для выбранного тарифа.` : 'Укажите сумму, которую хотите добавить на баланс.'}</p><p id="amountError" class="field-error" role="alert"></p>${method === 'stars' ? '<p class="sheet-note">Количество Stars и окончательная стоимость должны быть показаны в счёте Telegram перед оплатой.</p>' : ''}<p class="sheet-note preview-note">${PREVIEW_NOTICE}</p></form>`;
+    modalButtons.innerHTML = '<button type="submit" form="topupForm" class="modal-btn-primary">Проверить сумму <i class="fas fa-arrow-right"></i></button>';
+    if (back) addModalBack(back);
+    $('#paymentAmount').addEventListener('input', e => paymentDrafts.set(draftKey, e.target.value));
+    $('#topupForm').onsubmit = e => {
+        e.preventDefault();
+        const input = $('#paymentAmount');
+        const raw = input.value.trim().replace(',', '.');
+        const value = Number(raw);
+        if (!/^\d+(?:\.\d{1,2})?$/.test(raw) || !Number.isFinite(value) || value < minimum || value > 1000000) {
+            $('#amountError').textContent = `Введите сумму от ${safeFloat(minimum)} до 1 000 000 ₽, не более двух знаков после запятой.`;
+            input.setAttribute('aria-invalid', 'true'); input.focus(); return;
+        }
+        showPaymentReview(method, value);
+    };
+    showModal(back);
+}
+function showPaymentReview(method, amount) {
+    const back = () => showTopupForm(method, amount);
+    modalTitle.textContent = 'Проверка пополнения';
+    modalBody.innerHTML = `<div class="payment-review-amount">${escapeHtml(new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(amount))}<span> ₽</span></div><div class="modal-detail-row"><span>Способ оплаты</span><strong>${escapeHtml(PAYMENT_METHODS[method].name)}</strong></div>${checkout ? `<div class="modal-detail-row"><span>Подписка</span><strong>${safeInt(checkout.tariff.days)} дней</strong></div>` : ''}<p class="sheet-note preview-note">${PREVIEW_NOTICE}</p>`;
+    modalButtons.innerHTML = botLink(); addModalBack(back); showModal(back);
+}
 
 /* ═══════════════════════════════════════
    RENDER: REFERRAL
@@ -2815,8 +3196,8 @@ function renderReferral() {
         <div class="ref-link glass hoverable anim-up anim-up-d2">
             <p><i class="fas fa-link"></i> Ваша реферальная ссылка</p>
             <div class="ref-link-row">
-                <div class="ref-link-input">${escapeHtml(r.link)}</div>
-                <button type="button" class="copy-btn" id="copyRef" aria-label="Скопировать ссылку"><i class="fas fa-copy"></i></button>
+                <div class="ref-link-input">${AppData.user.id ? escapeHtml(r.link) : 'Ссылка появится после входа в Telegram'}</div>
+                <button type="button" class="copy-btn" id="copyRef" ${AppData.user.id ? '' : 'disabled'} aria-label="Скопировать ссылку"><i class="fas fa-copy"></i></button>
             </div>
         </div>
         <div class="info-hint anim-up anim-up-d3">
@@ -2849,24 +3230,24 @@ function renderTopUp() {
         <div class="promo-section anim-up anim-up-d1">
             <p><i class="fas fa-ticket-alt"></i> Активировать промокод</p>
             <div class="promo-row">
-                <input class="promo-input" placeholder="ВВЕДИТЕ ПРОМОКОД" id="promoInput">
+                <input class="promo-input" placeholder="ВВЕДИТЕ ПРОМОКОД" id="promoInput" aria-label="Промокод" maxlength="64" autocomplete="off" spellcheck="false">
                 <button type="button" class="promo-btn" id="promoBtn">Активировать</button>
             </div>
         </div>
         <div class="info-hint info-lg anim-up anim-up-d2">
             <i class="fas fa-info-circle"></i>
-            <span>Выберите удобный способ оплаты и желаемую сумму. Средства зачисляются мгновенно.</span>
+            <span>Выберите способ оплаты и сумму. Перед оплатой проверьте данные.</span>
         </div>
         <div class="section-subtitle anim-up anim-up-d3">Доступные способы</div>
         ${Object.entries(PAYMENT_METHODS).map(([key, m], i) => `
-            <div class="topup-method anim-up anim-up-d${Math.min(i + 3, 6)}" data-method="${escapeHtml(key)}">
+            <button type="button" class="topup-method anim-up anim-up-d${Math.min(i + 3, 6)}" data-method="${escapeHtml(key)}">
                 <i class="fas ${escapeHtml(m.icon)}"></i>
                 <div class="topup-method-text">
                     <span class="topup-method-name">${escapeHtml(m.name)}</span>
                     <span class="topup-method-desc">${escapeHtml(m.desc)}</span>
                 </div>
                 <i class="fas fa-chevron-right topup-method-arrow"></i>
-            </div>`).join('')}
+            </button>`).join('')}
     `;
     registerAnimCleanup();
 }
@@ -2907,12 +3288,12 @@ function renderSupport() {
             <div class="faq-list" id="faqList">
                 ${FAQ_ITEMS.map(([icon, q, a], i) => `
                 <div class="faq-item" data-i="${i}">
-                    <div class="faq-row" role="button" tabindex="0" aria-expanded="false">
+                    <button type="button" class="faq-row" aria-expanded="false" aria-controls="faq-answer-${i}">
                         <div class="faq-icon-wrap"><i class="fas ${escapeHtml(icon)}"></i></div>
                         <span class="faq-question">${escapeHtml(q)}</span>
                         <i class="fas fa-chevron-down faq-chevron"></i>
-                    </div>
-                    <div class="faq-body"><p>${sanitizeFaqHtml(a)}</p></div>
+                    </button>
+                    <div class="faq-body" id="faq-answer-${i}" aria-hidden="true"><p>${sanitizeFaqHtml(a)}</p></div>
                 </div>`).join('')}
             </div>
         </div>
@@ -2933,6 +3314,7 @@ function _toggleFaqItem(row) {
     $$('.faq-item.open', contentEl).forEach(o => {
         o.classList.remove('open');
         o.querySelector('.faq-body').style.maxHeight = '0';
+        o.querySelector('.faq-body').setAttribute('aria-hidden', 'true');
         const r = o.querySelector('.faq-row');
         if (r) r.setAttribute('aria-expanded', 'false');
     });
@@ -2942,6 +3324,7 @@ function _toggleFaqItem(row) {
         const h = p ? (p.scrollHeight + 28) : 200;
         item.classList.add('open');
         body.style.maxHeight = h + 'px';
+        body.setAttribute('aria-hidden', 'false');
         row.setAttribute('aria-expanded', 'true');
     }
 }
@@ -2951,82 +3334,45 @@ contentEl.addEventListener('click', function(e) {
     _toggleFaqItem(e.target.closest('.faq-row'));
 });
 
-/* FIX v5.5 #5: FAQ keyboard handler — Enter/Space toggle */
-contentEl.addEventListener('keydown', function(e) {
-    if (e.key !== 'Enter' && e.key !== ' ') return;
-    const row = e.target.closest('.faq-row');
-    if (!row) return;
-    e.preventDefault();
-    _toggleFaqItem(row);
-});
+// FAQ uses native buttons: Enter/Space produce one click, without a duplicate key handler.
 
 /* ═══════════════════════════════════════
    INIT
 ═══════════════════════════════════════ */
 function initApp() {
     if (isTelegram && tg.initDataUnsafe?.user) {
-        const tgUser = tg.initDataUnsafe.user;
-        if (tgUser.username) AppData.user.name = tgUser.username;
-        if (tgUser.id) AppData.user.id = String(tgUser.id);
-        if (tgUser.photo_url) {
-            AppData.user.avatar = tgUser.photo_url;
-            const avatarImg = $('#avatarImage');
-            const avatarInitial = $('#userInitial');
-            if (avatarImg) {
-                avatarImg.src = tgUser.photo_url;
-                avatarImg.style.display = 'block';
-            }
-            if (avatarInitial) avatarInitial.style.display = 'none';
+        // Display only. No identity, permissions or monetary decisions use these values.
+        const user = tg.initDataUnsafe.user;
+        AppData.user.name = user.username || [user.first_name, user.last_name].filter(Boolean).join(' ') || 'Пользователь';
+        if (user.id) AppData.user.id = String(user.id);
+        const avatar = $('#avatarImage'), initial = $('#userInitial');
+        if (user.photo_url && /^https:\/\//.test(user.photo_url)) {
+            avatar.onload = () => { avatar.style.display = 'block'; initial.style.display = 'none'; };
+            avatar.onerror = () => { avatar.style.display = 'none'; initial.style.display = ''; };
+            avatar.src = user.photo_url;
         }
     }
-
-    AppData.referral.link = `https://t.me/NVXvpn_bot?start=ref${AppData.user.id}`;
+    AppData.referral.link = AppData.user.id ? `${BOT_URL}?start=ref${encodeURIComponent(AppData.user.id)}` : '';
     updateHeader();
-
-    if (isTelegram && tg.BackButton) {
-        tg.BackButton.onClick(() => {
-            HapticFeedback.navigation();
-            if (currentTab !== 'home') {
-                switchTab('home');
-                tg.BackButton.hide();
-            }
-        });
-    }
-
-    if (isTelegram) {
-        tg.onEvent('viewportChanged', ({ isStateStable }) => {
-            if (!isStateStable) return;
-            const content = $('.content');
-            if (content) {
-                if (tg.isExpanded) {
-                    content.style.height = '';
-                } else {
-                    // FIX v3-15: Calculate offset dynamically instead of hardcoded 120px
-                    const header = $('.header');
-                    const nav = $('.bottom-nav');
-                    const offset = (header?.offsetHeight || 60) + (nav?.offsetHeight || 60) + 20;
-                    content.style.height = `${tg.viewportStableHeight - offset}px`;
-                }
-            }
-        });
-    }
-
-    const _startParam = tg?.initDataUnsafe?.start_param || new URLSearchParams(window.location.search).get('tab');
-    const _validTabs = Object.keys(TAB_RENDERERS);
-    const _initTab = (_startParam && _validTabs.includes(_startParam)) ? _startParam : 'home';
-
-    if (_initTab !== 'home') {
-        $$('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.tab === _initTab));
-        currentTab = _initTab;
-        if (isTelegram && tg.BackButton) tg.BackButton.show();
-    }
-
-    showTab(_initTab);
-
-    // ─── Премиальные модули v3 ───
-    initPullToRefresh();
-    initFaqHaptic();
-    initFlagChipHaptic();
+    if (isTelegram && tg.isVersionAtLeast?.('6.1')) tg.BackButton?.onClick(navigateBack);
+    const syncViewport = () => {
+        if (isTelegram && tg.viewportStableHeight > 0) document.documentElement.style.setProperty('--app-height', tg.viewportStableHeight + 'px');
+    };
+    if (isTelegram) { tg.onEvent?.('viewportChanged', syncViewport); syncViewport(); }
+    const params = new URLSearchParams(location.search);
+    const previewBar = $('.preview-bar');
+    if (previewBar) previewBar.hidden = !params.has('preview');
+    AppData.subscription.active = params.get('preview') === 'active';
+    AppData.subscription.trialAvailable = !AppData.subscription.active;
+    const start = (isTelegram && tg.initDataUnsafe?.start_param) || params.get('tab');
+    switchTab(Object.hasOwn(TAB_RENDERERS, start) ? start : 'home');
+    initPullToRefresh(); initFaqHaptic(); initFlagChipHaptic();
+    const pause = () => document.body.classList.toggle('page-paused', document.hidden);
+    document.addEventListener('visibilitychange', pause); pause();
+    window.addEventListener('resize', () => {
+        const body = $('.faq-item.open .faq-body');
+        if (body) body.style.maxHeight = (body.querySelector('p').scrollHeight + 28) + 'px';
+    });
 }
 
 /* ═══════════════════════════════════════
@@ -3035,67 +3381,30 @@ function initApp() {
 
 /* Pull-to-refresh на главной */
 function initPullToRefresh() {
-    const content = $('.content');
-    if (!content) return;
-
-    // Создаём индикатор
-    const ind = document.createElement('div');
-    ind.className = 'ptr-indicator';
-    ind.innerHTML = '<i class="fas fa-arrow-down"></i>';
-    const stageLayer = $('.ui-layer') || document.body;
-    stageLayer.appendChild(ind);
-
-    const THRESHOLD = 70;
-    let startY = 0, curY = 0, pulling = false, active = false;
-
-    content.addEventListener('touchstart', (e) => {
-        if (currentTab !== 'home') return;
-        if (content.scrollTop > 2) return;
-        startY = e.touches[0].clientY;
-        pulling = true;
-        active = false;
+    const indicator = document.createElement('div');
+    indicator.className = 'ptr-indicator'; indicator.setAttribute('aria-hidden', 'true');
+    indicator.innerHTML = '<i class="fas fa-arrow-down"></i>'; uiLayer.appendChild(indicator);
+    let start = null, distance = 0, refreshing = false;
+    const reset = () => { start = null; distance = 0; indicator.classList.remove('visible', 'loading'); indicator.style.top = '-60px'; indicator.innerHTML = '<i class="fas fa-arrow-down"></i>'; };
+    contentEl.addEventListener('touchstart', e => {
+        if (refreshing || currentTab !== 'home' || contentEl.scrollTop > 2 || e.touches.length !== 1) return;
+        start = e.touches[0].clientY; distance = 0;
     }, { passive: true });
-
-    content.addEventListener('touchmove', (e) => {
-        if (!pulling) return;
-        curY = e.touches[0].clientY;
-        const d = curY - startY;
-        if (d <= 0) { ind.classList.remove('visible'); return; }
-        const dampened = Math.min(d * 0.5, THRESHOLD + 20);
-        ind.style.top = `${-60 + dampened}px`;
-        ind.classList.add('visible');
-        if (dampened >= THRESHOLD && !active) {
-            active = true;
-            HapticFeedback.buttonMedium();
-            ind.style.transform = 'translateX(-50%) scale(1.1)';
-        } else if (dampened < THRESHOLD && active) {
-            active = false;
-            ind.style.transform = 'translateX(-50%) scale(1)';
-        }
+    contentEl.addEventListener('touchmove', e => {
+        if (start === null) return;
+        if (currentTab !== 'home' || e.touches.length !== 1) { reset(); return; }
+        distance = Math.min(Math.max(0, e.touches[0].clientY - start) * .5, 90);
+        indicator.classList.toggle('visible', distance > 0); indicator.style.top = (-60 + distance) + 'px';
     }, { passive: true });
-
-    content.addEventListener('touchend', () => {
-        if (!pulling) return;
-        pulling = false;
-        if (active) {
-            ind.classList.add('loading');
-            ind.innerHTML = '<i class="fas fa-circle-notch"></i>';
-            ind.style.top = '20px';
-            // Имитация рефреша
-            setTimeout(() => {
-                invalidateTabCache('home');
-                showTab('home');
-                HapticFeedback.success();
-                ind.classList.remove('visible', 'loading');
-                ind.style.top = '-60px';
-                ind.style.transform = 'translateX(-50%) scale(1)';
-                ind.innerHTML = '<i class="fas fa-arrow-down"></i>';
-            }, 900);
-        } else {
-            ind.classList.remove('visible');
-            ind.style.top = '-60px';
-            ind.style.transform = 'translateX(-50%) scale(1)';
-        }
+    contentEl.addEventListener('touchcancel', reset, { passive: true });
+    contentEl.addEventListener('touchend', () => {
+        if (start === null || distance < 70) { reset(); return; }
+        const revision = tabRevision; start = null; refreshing = true;
+        indicator.classList.add('loading'); indicator.style.top = '20px'; indicator.innerHTML = '<i class="fas fa-circle-notch"></i>';
+        setTimeout(() => {
+            if (currentTab === 'home' && tabRevision === revision) { invalidateTabCache('home'); showTab('home'); showToast('Предпросмотр обновлён', 'info'); }
+            refreshing = false; reset();
+        }, reduceMotion() ? 0 : 450);
     }, { passive: true });
 }
 
@@ -3120,34 +3429,24 @@ function initFlagChipHaptic() {
 /* ═══════════════════════════════════════
    LOADING OVERLAY (styles in main <style>)
 ═══════════════════════════════════════ */
+let loadingCount = 0;
+let loadingHideTimer;
 function showLoading(message = 'Загрузка...') {
-    let overlay = document.getElementById('loading-overlay');
+    ++loadingCount; clearTimeout(loadingHideTimer);
+    let overlay = $('#loading-overlay');
     if (!overlay) {
-        overlay = document.createElement('div');
-        overlay.id = 'loading-overlay';
-        overlay.innerHTML = `<div class="lo-spinner"></div><span class="lo-msg">${escapeHtml(message)}</span>`;
-        document.body.appendChild(overlay);
-    } else {
-        const msgEl = overlay.querySelector('.lo-msg');
-        if (msgEl) msgEl.textContent = message;
-        // FIX v3 #13: Don't clone spinner if already visible (prevents blink)
-        if (!overlay.classList.contains('visible')) {
-            const old = overlay.querySelector('.lo-spinner');
-            if (old) old.replaceWith(old.cloneNode(true));
-        }
+        overlay = document.createElement('div'); overlay.id = 'loading-overlay';
+        overlay.setAttribute('role', 'status'); overlay.setAttribute('aria-live', 'polite');
+        overlay.innerHTML = '<div class="lo-spinner"></div><span class="lo-msg"></span>'; document.body.appendChild(overlay);
     }
-    overlay.style.display = 'flex';
-    /* FIX v5.5 #10: Explicit reflow instead of double rAF hack */
-    void overlay.offsetHeight;
-    overlay.classList.add('visible');
+    $('.lo-msg', overlay).textContent = message;
+    overlay.style.display = 'flex'; overlay.classList.add('visible');
 }
-
 function hideLoading() {
-    const overlay = document.getElementById('loading-overlay');
-    if (overlay) {
-        overlay.classList.remove('visible');
-        setTimeout(() => { overlay.style.display = 'none'; }, 250);
-    }
+    loadingCount = Math.max(0, loadingCount - 1);
+    if (loadingCount) return;
+    const overlay = $('#loading-overlay');
+    if (overlay) { overlay.classList.remove('visible'); loadingHideTimer = setTimeout(() => { if (!loadingCount) overlay.style.display = 'none'; }, reduceMotion() ? 0 : 250); }
 }
 
 function _hideSplash() {
@@ -3173,7 +3472,7 @@ function _hideSplash() {
 })();
 
 // FIX v3-14: Splash waits for BOTH initApp completion AND splash animation (1.55s)
-const _splashMinTime = new Promise(r => setTimeout(r, 1550));
+const _splashMinTime = new Promise(r => setTimeout(r, reduceMotion() ? 0 : 1150));
 let _initOk = true;
 try {
     initApp();
@@ -3194,6 +3493,199 @@ try {
 }
 // Hide splash after animation finishes (regardless of init success/failure)
 _splashMinTime.then(() => _hideSplash());
+
 </script>
+<!--
+FONT LICENSE NOTICES
+Copyright 2020 The Inter Project Authors (https://github.com/rsms/inter)
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at:
+https://scripts.sil.org/OFL
+
+
+—————————————————————————————-
+SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
+—————————————————————————————-
+
+PREAMBLE
+The goals of the Open Font License (OFL) are to stimulate worldwide
+development of collaborative font projects, to support the font creation
+efforts of academic and linguistic communities, and to provide a free and
+open framework in which fonts may be shared and improved in partnership
+with others.
+
+The OFL allows the licensed fonts to be used, studied, modified and
+redistributed freely as long as they are not sold by themselves. The
+fonts, including any derivative works, can be bundled, embedded, 
+redistributed and/or sold with any software provided that any reserved
+names are not used by derivative works. The fonts and derivatives,
+however, cannot be released under any other type of license. The
+requirement for fonts to remain under this license does not apply
+to any document created using the fonts or their derivatives.
+
+DEFINITIONS
+"Font Software" refers to the set of files released by the Copyright
+Holder(s) under this license and clearly marked as such. This may
+include source files, build scripts and documentation.
+
+"Reserved Font Name" refers to any names specified as such after the
+copyright statement(s).
+
+"Original Version" refers to the collection of Font Software components as
+distributed by the Copyright Holder(s).
+
+"Modified Version" refers to any derivative made by adding to, deleting,
+or substituting — in part or in whole — any of the components of the
+Original Version, by changing formats or by porting the Font Software to a
+new environment.
+
+"Author" refers to any designer, engineer, programmer, technical
+writer or other person who contributed to the Font Software.
+
+PERMISSION & CONDITIONS
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of the Font Software, to use, study, copy, merge, embed, modify,
+redistribute, and sell modified and unmodified copies of the Font
+Software, subject to the following conditions:
+
+1) Neither the Font Software nor any of its individual components,
+in Original or Modified Versions, may be sold by itself.
+
+2) Original or Modified Versions of the Font Software may be bundled,
+redistributed and/or sold with any software, provided that each copy
+contains the above copyright notice and this license. These can be
+included either as stand-alone text files, human-readable headers or
+in the appropriate machine-readable metadata fields within text or
+binary files as long as those fields can be easily viewed by the user.
+
+3) No Modified Version of the Font Software may use the Reserved Font
+Name(s) unless explicit written permission is granted by the corresponding
+Copyright Holder. This restriction only applies to the primary font name as
+presented to the users.
+
+4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font
+Software shall not be used to promote, endorse or advertise any
+Modified Version, except to acknowledge the contribution(s) of the
+Copyright Holder(s) and the Author(s) or with their explicit written
+permission.
+
+5) The Font Software, modified or unmodified, in part or in whole,
+must be distributed entirely under this license, and must not be
+distributed under any other license. The requirement for fonts to
+remain under this license does not apply to any document created
+using the Font Software.
+
+TERMINATION
+This license becomes null and void if any of the above conditions are
+not met.
+
+DISCLAIMER
+THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
+OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
+DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
+OTHER DEALINGS IN THE FONT SOFTWARE.
+
+
+Copyright 2020 The Space Grotesk Project Authors (https://github.com/floriankarsten/space-grotesk)
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at:
+http://scripts.sil.org/OFL
+
+
+—————————————————————————————-
+SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
+—————————————————————————————-
+
+PREAMBLE
+The goals of the Open Font License (OFL) are to stimulate worldwide
+development of collaborative font projects, to support the font creation
+efforts of academic and linguistic communities, and to provide a free and
+open framework in which fonts may be shared and improved in partnership
+with others.
+
+The OFL allows the licensed fonts to be used, studied, modified and
+redistributed freely as long as they are not sold by themselves. The
+fonts, including any derivative works, can be bundled, embedded, 
+redistributed and/or sold with any software provided that any reserved
+names are not used by derivative works. The fonts and derivatives,
+however, cannot be released under any other type of license. The
+requirement for fonts to remain under this license does not apply
+to any document created using the fonts or their derivatives.
+
+DEFINITIONS
+"Font Software" refers to the set of files released by the Copyright
+Holder(s) under this license and clearly marked as such. This may
+include source files, build scripts and documentation.
+
+"Reserved Font Name" refers to any names specified as such after the
+copyright statement(s).
+
+"Original Version" refers to the collection of Font Software components as
+distributed by the Copyright Holder(s).
+
+"Modified Version" refers to any derivative made by adding to, deleting,
+or substituting — in part or in whole — any of the components of the
+Original Version, by changing formats or by porting the Font Software to a
+new environment.
+
+"Author" refers to any designer, engineer, programmer, technical
+writer or other person who contributed to the Font Software.
+
+PERMISSION & CONDITIONS
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of the Font Software, to use, study, copy, merge, embed, modify,
+redistribute, and sell modified and unmodified copies of the Font
+Software, subject to the following conditions:
+
+1) Neither the Font Software nor any of its individual components,
+in Original or Modified Versions, may be sold by itself.
+
+2) Original or Modified Versions of the Font Software may be bundled,
+redistributed and/or sold with any software, provided that each copy
+contains the above copyright notice and this license. These can be
+included either as stand-alone text files, human-readable headers or
+in the appropriate machine-readable metadata fields within text or
+binary files as long as those fields can be easily viewed by the user.
+
+3) No Modified Version of the Font Software may use the Reserved Font
+Name(s) unless explicit written permission is granted by the corresponding
+Copyright Holder. This restriction only applies to the primary font name as
+presented to the users.
+
+4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font
+Software shall not be used to promote, endorse or advertise any
+Modified Version, except to acknowledge the contribution(s) of the
+Copyright Holder(s) and the Author(s) or with their explicit written
+permission.
+
+5) The Font Software, modified or unmodified, in part or in whole,
+must be distributed entirely under this license, and must not be
+distributed under any other license. The requirement for fonts to
+remain under this license does not apply to any document created
+using the Font Software.
+
+TERMINATION
+This license becomes null and void if any of the above conditions are
+not met.
+
+DISCLAIMER
+THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
+OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
+DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
+OTHER DEALINGS IN THE FONT SOFTWARE.
+
+-->
 </body>
 </html>
